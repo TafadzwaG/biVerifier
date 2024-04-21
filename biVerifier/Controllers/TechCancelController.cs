@@ -29,7 +29,12 @@ namespace biVerifier.Controllers
                             var cData = new TechCancelData();
                             cData.ID = reader["ID"] != DBNull.Value ? Convert.ToInt32(reader["ID"]) : null;
                             cData.ClientID = reader["ClientID"].ToString();
-
+                            cData.SiteID = reader["SiteID"].ToString();
+                            cData.Date = reader["Date"].ToString();
+                            cData.TechResponsible = reader["TechResponsible"].ToString();
+                            cData.Total_Channels = reader["Total_channels"] != DBNull.Value ? Convert.ToInt32(reader["Total_channels"]) : null;
+                            cData.Platform = reader["Platform"].ToString();
+                            cData.Cancel_GSM = reader["Cancel_GSM"].ToString();
                             techCancelDataList.Add(cData);
                         }
                     }
