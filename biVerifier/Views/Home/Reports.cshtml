@@ -1,0 +1,75 @@
+﻿@{
+    ViewData["Title"] = "Reports Policy";
+}
+
+<style>
+    ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    li {
+        margin-bottom: 5px;
+    }
+
+    .a-link {
+            display: block;
+            padding: 10px;
+            background-color: #f0f0f0;
+            text-decoration: none;
+            color: #333;
+            border-radius: 5px;
+        }
+
+            li a:hover {
+                background-color: #ddd;
+            }
+</style>
+
+<div class="rounded10" style="margin-left: 3rem; margin-right: 3rem">
+    <div class="card">
+        <div class="card-header bg-dark" >
+            <h4 style="color: white">Reports</h4>
+        </div>
+        <div class="card-body">
+
+            <h5>Dynamic Reports</h5>
+
+            <div class="row mt-8 mb-8">
+                <div class="col-md-6">
+                    <h5 style="text-transform: uppercase" >Sales Report</h5>
+                    <ul  class="ul-s">
+                        <li><a class="a-link fw-400"  asp-controller="Reports" asp-action="FilterByDateRange">Filter by date range</a></li>
+                        <li><a class="a-link" href="/Sales/FilterBySalesPerson">Filter by date range and sales person </a></li>
+                        <li><a class="a-link"  asp-controller="Reports" asp-action="FilterByProvince">Filter by province</a></li>
+                        <li><a class="a-link"  href="/Sales/FilterByBusinessType">Filter by business type</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h5>Cancellation Report</h5>
+                    <ul class="ul-s">
+                        <li><a class="a-link fw-400" asp-controller="Reports" asp-action="FilterByDateRange">Filter By Date Range</a></li>
+                        <li><a class="a-link" href="/Sales/FilterBySalesPerson">Filter Cancellation Reason </a></li>
+                    </ul>
+
+                </div>
+            </div>
+            <div class="row  mt-8">
+                <div class="col-md-6">
+                    <h5>Management Reports</h5>
+                </div>
+                <div class="col-md-6">
+                    <h5>Technical Reports</h5>
+                    <ul class="ul-s">
+                        <li><a class="a-link fw-400" asp-controller="Reports" asp-action="FilterByDateRange">Filter By Client Type</a></li>
+                        <li><a class="a-link" href="/Sales/FilterBySalesPerson">Filter By Technician </a></li>
+                        <li><a class="a-link" href="/Sales/FilterBySalesPerson">Filter By Date Range </a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+

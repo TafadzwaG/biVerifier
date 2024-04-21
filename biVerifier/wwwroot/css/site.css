@@ -1,0 +1,138 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+
+.custom-container{
+    margin-left: 3rem;
+    margin-right: 3rem;
+}
+
+
+.card {
+    border-radius: 10px;
+    box-shadow: 3px 3px 5px 1px rgba(0, 0, 0, 0.05);
+    margin-bottom: 1.5rem !important;
+    border: none
+}
+
+.card-img-top {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+    .card-body .card-title {
+        margin-bottom: 0.75rem;
+        border-bottom: none;
+    }
+
+.card-header {
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    align-items: center;
+    padding: 1.5rem;
+    background-color: transparent;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+}
+
+    .card-header .card-title {
+        padding: 0;
+        border: none;
+    }
+
+    .card-header > *:first-child {
+        margin-left: 0;
+    }
+
+    .card-header > *:last-child {
+        margin-right: 0;
+    }
+
+    .card-header > * {
+        margin-left: 8px;
+        margin-right: 8px;
+    }
+
+.card-title {
+    margin-bottom: 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+}
+
+.card-controls {
+    list-style-type: none;
+    padding-left: 0;
+    margin-bottom: 0;
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: reverse;
+    flex-direction: row-reverse;
+}
+
+    .card-controls [data-bs-toggle="dropdown"],
+    .card-controls .card-btn-reload {
+        font-size: 1rem;
+    }
+
+    .card-controls li > a {
+        font-size: 0.8571rem;
+        display: inline-block;
+        padding: 0 4px;
+        margin: 0 4px;
+        color: #608acf;
+        opacity: 0.8;
+        -webkit-transition: 0.3s linear;
+        transition: 0.3s linear;
+    }
+
+.card-footer {
+    padding: 1.5rem;
+    background-color: transparent;
+}
+
+.card-inverse {
+    color: #ffffff !important;
+    background-color: #172b4c;
+}
+
+    .card-inverse h1,
+    .card-inverse h2,
+    .card-inverse h3,
+    .card-inverse h4,
+    .card-inverse h5,
+    .card-inverse h6,
+    .card-inverse .card-title,
+    .card-inverse small,
+    .card-inverse .card-controls li > a {
+        color: #ffffff !important;
+    }
+
+.card-tt{
+    text-transform: uppercase
+}

@@ -1,0 +1,23 @@
+﻿@model List<biVerifier.Models.CRMData>
+
+<h1>CRM Data</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Sites</th>
+            <th>Suburb</th>
+            <!-- Add other column headers as needed -->
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var crmData in Model)
+        {
+            <tr>
+                <td>@crmData.Sites</td>
+                <td>@crmData.Suburb</td>
+                <!-- Add other columns as needed -->
+            </tr>
+        }
+    </tbody>
+</table>

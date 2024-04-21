@@ -1,0 +1,20 @@
+﻿@model List<biVerifier.Models.AggregatedSalesData>
+
+
+<table>
+    <thead>
+        <tr>
+            <th>Consultant Name</th>
+            <th>Total Sales</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var salesData in Model)
+        {
+            <tr>
+                <td>@(salesData?.ConsultantName ?? "N/A")</td>
+                <td>@(salesData?.TotalSales ?? 0)</td>
+            </tr>
+        }
+    </tbody>
+</table>

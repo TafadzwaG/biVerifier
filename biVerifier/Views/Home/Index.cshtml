@@ -1,0 +1,142 @@
+﻿@model List<biVerifier.Models.AggregatedSalesData>
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="custom-container" style="margin: 3rem">
+    <div class="row">
+        <div class="col-md-4 text-center">
+            <h4 style="text-transform: uppercase; font-weight: bold">TOTAL SALES 2024</h4>
+
+            <div class="row">
+                @foreach (var salesData in Model)
+                {
+                    <div class="col-md-12">
+                        <div class="card mb-3">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Consultant Name: @(salesData?.ConsultantName ?? "N/A")</h5>
+                                <p class="card-text">Total Sales: @(salesData?.TotalSales ?? 0)</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card" style="border: none; min-height: 300px">
+                        <div class="card-body">
+                            <h5 class="card-title text-center card-tt">New Sales (Rands)</h5>
+                            <p class="card-text text-center">771131.98</p>
+                           
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card" style="border: none;  min-height: 300px">
+                        <div class="card-body">
+                            <h5 class="card-title text-center card-tt">Cancellation</h5>
+                            <p class="card-text text-center">10</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card" style="border: none;  min-height: 300px">
+                        <div class="card-body">
+                            <h5 class="card-title text-center card-tt">Active Sites</h5>
+                            <p class="card-text text-center">51</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 style="text-transform: uppercase">Aggregated Sales By Consultant</h6>
+                            <canvas id="barChart"></canvas> <!-- Add canvas for the bar chart -->
+                        </div>
+                    </div>
+                   
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 style="text-transform: uppercase">Cancellations Lost</h6>
+                            <canvas id="lineChart"></canvas> <!-- Add canvas for the line chart -->
+                        </div>
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Data for bar chart (replace with your data)
+    var barChartData = {
+        labels: ["Consultant 1", "Consultant 2", "Consultant 3"], // Replace with your consultant names
+        datasets: [{
+            label: 'Total Sales',
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1,
+            data: [50000, 75000, 100000] // Replace with your sales data for each consultant
+        }]
+    };
+
+    // Options for bar chart
+    var barChartOptions = {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    };
+
+    // Draw bar chart
+    var ctxBar = document.getElementById('barChart').getContext('2d');
+    new Chart(ctxBar, {
+        type: 'bar',
+        data: barChartData,
+        options: barChartOptions
+    });
+
+    // Data for line chart (replace with your data)
+    var lineChartData = {
+        labels: ["Reason 1", "Reason 2", "Reason 3"], // Replace with your cancellation reasons
+        datasets: [{
+            label: 'Revenue Lost',
+            fill: false,
+            borderColor: 'rgb(255, 99, 132)',
+            borderWidth: 2,
+            data: [1000, 2000, 3000] // Replace with your revenue lost data for each reason
+        }]
+    };
+
+    // Options for line chart
+    var lineChartOptions = {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    };
+
+    // Draw line chart
+    var ctxLine = document.getElementById('lineChart').getContext('2d');
+    new Chart(ctxLine, {
+        type: 'line',
+        data: lineChartData,
+        options: lineChartOptions
+    });
+</script>
+
