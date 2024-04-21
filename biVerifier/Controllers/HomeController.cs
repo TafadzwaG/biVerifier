@@ -16,8 +16,8 @@ namespace biVerifier.Controllers
 
         public IActionResult Index()
         {
-            AggregatedSalesConsultant();
             getCountsInDb();
+            AggregatedSalesConsultant();
             return View();
         }
 
@@ -126,6 +126,8 @@ namespace biVerifier.Controllers
             // Pass the counts to the Index view
             ViewData["SiteCount"] = siteCount;
             ViewData["CancellationCount"] = cancellationCount;
+
+            Console.WriteLine("Count of sites: " + ViewData["SiteCount"] + "CancellationCount" + ViewData["CancellationCount"]);
 
             // Return the counts instead of a view
             return RedirectToAction("Index");
