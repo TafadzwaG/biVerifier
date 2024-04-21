@@ -80,15 +80,26 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    // Data for bar chart (replace with your data)
+   // Initialize arrays to store consultant names and total sales
+    var consultantNames = [];
+    var totalSalesData = [];
+
+    // Iterate over the sales data in Model and populate arrays
+    @foreach (var salesData in Model)
+    {
+        <text>consultantNames.push('@(salesData?.ConsultantName ?? "N/A")');</text>
+        <text>totalSalesData.push(@(salesData?.TotalSales ?? 0));</text>
+    }
+
+    // Data for bar chart
     var barChartData = {
-        labels: ["Consultant 1", "Consultant 2", "Consultant 3"], // Replace with your consultant names
+        labels: consultantNames,
         datasets: [{
             label: 'Total Sales',
             backgroundColor: 'rgba(54, 162, 235, 0.2)',
             borderColor: 'rgba(54, 162, 235, 1)',
             borderWidth: 1,
-            data: [50000, 75000, 100000] // Replace with your sales data for each consultant
+            data: totalSalesData
         }]
     };
 
