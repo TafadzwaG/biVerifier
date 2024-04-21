@@ -16,6 +16,7 @@
                     <div class="row">
                         @foreach (var salesData in Model)
                         {
+
                             <div class="col-md-12 mb-3">
                                 <h5 class="card-title">Consultant Name: @(salesData?.ConsultantName ?? "N/A")</h5>
                                 <p class="card-text">Total Sales: @(salesData?.TotalSales ?? 0)</p>
@@ -30,6 +31,7 @@
                 <div class="col-md-4">
                     <div class="card" style="border: none; min-height: 300px">
                         <div class="card-body">
+
                             <h5 class="card-title text-center card-tt">New Sales (Rands)</h5>
                             <p class="card-text text-center">771131.98</p>
                           
@@ -39,6 +41,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="card" style="border: none;  min-height: 300px">
+
                         <div class="card-body">
                             <h5 class="card-title text-center card-tt">Cancellation</h5>
                             <p class="card-text text-center">@cancellationCount</p>
@@ -57,8 +60,11 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="card">
+                        <div class="card-header bg-dark text-white text-center">
+                             <h6 style="text-transform: uppercase">Aggregated Sales By Consultant</h6>
+                        </div>
                         <div class="card-body">
-                            <h6 style="text-transform: uppercase">Aggregated Sales By Consultant</h6>
+                           
                             <canvas id="barChart"></canvas> <!-- Add canvas for the bar chart -->
                         </div>
                     </div>
@@ -66,8 +72,11 @@
                 </div>
                 <div class="col-md-6">
                     <div class="card">
+                          <div class="card-header bg-dark text-white text-center">
+                          <h6 style="text-transform: uppercase">Cancellations Lost</h6>
+                        </div>
                         <div class="card-body">
-                            <h6 style="text-transform: uppercase">Cancellations Lost</h6>
+                          
                             <canvas id="lineChart"></canvas> <!-- Add canvas for the line chart -->
                         </div>
                     </div>

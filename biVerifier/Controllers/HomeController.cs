@@ -2,6 +2,7 @@ using biVerifier.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Data.OleDb;
 using System.Diagnostics;
+using System.Data.Odbc;
 
 namespace biVerifier.Controllers
 {
@@ -41,7 +42,7 @@ namespace biVerifier.Controllers
         [HttpGet]
         public IActionResult AggregatedSalesConsultant()
         {
-            string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
+            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
 
             string query = @"
             SELECT Consultant, SUM(GandTotal) AS TotalSales
@@ -51,13 +52,15 @@ namespace biVerifier.Controllers
 
             var aggregatedSalesData = new List<AggregatedSalesData>();
 
-            using (OleDbConnection connection = new OleDbConnection(connectionString))
-            using (OleDbCommand command = new OleDbCommand(query, connection))
+            using (OdbcConnection connection = new OdbcConnection(connectionString))
+            using (OdbcCommand command = new OdbcCommand(query, connection))
+
             {
                 try
                 {
                     connection.Open();
-                    using (OleDbDataReader reader = command.ExecuteReader())
+                    using (OdbcDataReader reader = command.ExecuteReader())
+
                     {
                         while (reader.Read())
                         {
@@ -98,21 +101,20 @@ namespace biVerifier.Controllers
             // Your logic to query the database and get the counts
             // Assuming you're using ADO.NET with OleDbConnection and OleDbCommand
 
-            string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
+            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
+
             string siteCountQuery = "SELECT COUNT(*) FROM Sites";
             string cancellationCountQuery = "SELECT COUNT(*) FROM Cancellations";
 
-            using (OleDbConnection connection = new OleDbConnection(connectionString))
+            using (OdbcConnection connection = new OdbcConnection(connectionString))
             {
-                using (OleDbCommand siteCommand = new OleDbCommand(siteCountQuery, connection))
-                using (OleDbCommand cancellationCommand = new OleDbCommand(cancellationCountQuery, connection))
+                using (OdbcCommand siteCommand = new OdbcCommand(siteCountQuery, connection))
+                using (OdbcCommand cancellationCommand = new OdbcCommand(cancellationCountQuery, connection))
                 {
                     try
                     {
                         connection.Open();
-                        // Execute query to get site count
                         siteCount = (int)siteCommand.ExecuteScalar();
-                        // Execute query to get cancellation count
                         cancellationCount = (int)cancellationCommand.ExecuteScalar();
                     }
                     catch (OleDbException ex)

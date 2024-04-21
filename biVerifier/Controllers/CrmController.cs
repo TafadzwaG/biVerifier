@@ -1,16 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Data.OleDb;
 using biVerifier.Models;
+using System.Data.Odbc;
 
 
 namespace biVerifier.Controllers
 {
     public class CrmController : Controller
     {
+
+        public IActionResult Index()
+        {
+           
+            return View();
+        }
         public IActionResult RetrieveCrmData()
         {
 
-            string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
+            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
+
             // SQL query to execute
 
 
@@ -19,13 +27,14 @@ namespace biVerifier.Controllers
 
             var crmDataList = new List<CRMData>();
 
-            using (OleDbConnection connection = new OleDbConnection(connectionString))
-            using (OleDbCommand command = new OleDbCommand(query, connection))
+            using (OdbcConnection connection = new OdbcConnection(connectionString))
+            using (OdbcCommand command = new OdbcCommand(query, connection))
+
             {
                 try
                 {
                     connection.Open();
-                    using (OleDbDataReader reader = command.ExecuteReader())
+                    using (OdbcDataReader reader = command.ExecuteReader())
                     {
                         while (reader.Read())
                         {
@@ -39,7 +48,7 @@ namespace biVerifier.Controllers
                 }
                 catch (OleDbException ex)
                 {
-                    // Handle exception
+                    Console.WriteLine("There was an error " + ex.Message);
                 }
             }
 
@@ -49,19 +58,20 @@ namespace biVerifier.Controllers
 
         public IActionResult FilterByProvince()
         {
-            string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
+            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
 
             string query = "SELECT * FROM CRM WHERE Region = 'GP'";
 
             var crmDataList = new List<CRMData>();
 
-            using (OleDbConnection connection = new OleDbConnection(connectionString))
-            using (OleDbCommand command = new OleDbCommand(query, connection))
+            using (OdbcConnection connection = new OdbcConnection(connectionString))
+            using (OdbcCommand command = new OdbcCommand(query, connection))
+
 
                 try
                 {
                     connection.Open();
-                    using (OleDbDataReader reader = command.ExecuteReader())
+                    using (OdbcDataReader reader = command.ExecuteReader())
                     {
                         while (reader.Read())
                         {
@@ -75,7 +85,7 @@ namespace biVerifier.Controllers
                 }
                 catch (OleDbException ex)
                 {
-                    // Handle exception
+                    Console.WriteLine("There was an error " + ex.Message);
                 }
 
             return View(crmDataList);

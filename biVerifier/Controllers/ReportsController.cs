@@ -2,6 +2,7 @@
 using System.Data.OleDb;
 
 using biVerifier.Models;
+using System.Data.Odbc;
 
 namespace biVerifier.Controllers
 {
@@ -22,7 +23,7 @@ namespace biVerifier.Controllers
 
 
 
-            string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
+            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
 
             string query = @"
                 SELECT Consultant, Sites
@@ -32,10 +33,11 @@ namespace biVerifier.Controllers
 
             var filteredData = new List<DateRangeData>();
 
-            using (OleDbConnection connection = new OleDbConnection(connectionString))
-            using (OleDbCommand command = new OleDbCommand(query, connection))
+            using (OdbcConnection connection = new OdbcConnection(connectionString))
+            using (OdbcCommand command = new OdbcCommand(query, connection))
+
             {
-              
+
                 command.Parameters.AddWithValue("@StartYear", startDate.Year);
                 command.Parameters.AddWithValue("@StartMonth", startDate.ToString("MMM"));
                 command.Parameters.AddWithValue("@EndYear", endDate.Year);
@@ -44,7 +46,8 @@ namespace biVerifier.Controllers
                 try
                 {
                     connection.Open();
-                    using (OleDbDataReader reader = command.ExecuteReader())
+                    using (OdbcDataReader reader = command.ExecuteReader())
+
                     {
                         while (reader.Read())
                         {
@@ -74,6 +77,21 @@ namespace biVerifier.Controllers
 
             return View(filteredData);
         }
+
+        [HttpPost]
+        public IActionResult FilterByBusinessType(string businessType)
+        {
+            Console.WriteLine("Selected region: " + businessType);
+            return View("FilterByBusinessType");
+        }
+
+        [HttpPost]
+        public IActionResult FilterByDateAndConsultant(string businessType)
+        {
+            Console.WriteLine("Selected region: " + businessType);
+            return View();
+        }
+
 
         [HttpGet]
         public IActionResult ProvinceSelection()
@@ -108,36 +126,33 @@ namespace biVerifier.Controllers
             // Your logic to query the database and get the counts
             // Assuming you're using ADO.NET with OleDbConnection and OleDbCommand
 
-            string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
+            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
+
             string siteCountQuery = "SELECT COUNT(*) FROM Sites";
             string cancellationCountQuery = "SELECT COUNT(*) FROM Cancellations";
 
-            using (OleDbConnection connection = new OleDbConnection(connectionString))
+            using (OdbcConnection connection = new OdbcConnection(connectionString))
             {
-                using (OleDbCommand siteCommand = new OleDbCommand(siteCountQuery, connection))
-                using (OleDbCommand cancellationCommand = new OleDbCommand(cancellationCountQuery, connection))
+                using (OdbcCommand siteCommand = new OdbcCommand(siteCountQuery, connection))
+                using (OdbcCommand cancellationCommand = new OdbcCommand(cancellationCountQuery, connection))
                 {
                     try
                     {
                         connection.Open();
-                        // Execute query to get site count
                         siteCount = (int)siteCommand.ExecuteScalar();
-                        // Execute query to get cancellation count
                         cancellationCount = (int)cancellationCommand.ExecuteScalar();
                     }
                     catch (OleDbException ex)
                     {
-                        // Handle exception if needed
                         Console.WriteLine("OleDbException occurred: " + ex.Message);
                     }
                 }
             }
 
-            // Pass the counts to the Index view
             ViewData["SiteCount"] = siteCount;
             ViewData["CancellationCount"] = cancellationCount;
 
-            return RedirectToAction("Index"); // Redirect to the Index action method to display the counts
+            return RedirectToAction("Index"); 
         }
 
 
@@ -149,13 +164,13 @@ namespace biVerifier.Controllers
 
             List<CRMData> uniqueRegions = new List<CRMData>();
 
-            using (OleDbConnection connection = new OleDbConnection(connectionString))
-            using (OleDbCommand command = new OleDbCommand(query, connection))
+            using (OdbcConnection connection = new OdbcConnection(connectionString))
+            using (OdbcCommand command = new OdbcCommand(query, connection))
             {
                 try
                 {
                     connection.Open();
-                    using (OleDbDataReader reader = command.ExecuteReader())
+                    using (OdbcDataReader reader = command.ExecuteReader())
                     {
                         while (reader.Read())
                         {
@@ -178,13 +193,15 @@ namespace biVerifier.Controllers
 
         private List<CRMData> RetrieveDataByRegion(string region)
         {
-            string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
+            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
+
             string query = "SELECT * FROM CRM WHERE Region = @Region";
 
             List<CRMData> dataList = new List<CRMData>();
 
-            using (OleDbConnection connection = new OleDbConnection(connectionString))
-            using (OleDbCommand command = new OleDbCommand(query, connection))
+            using (OdbcConnection connection = new OdbcConnection(connectionString))
+            using (OdbcCommand command = new OdbcCommand(query, connection))
+
             {
                 // Add parameter for the region
                 command.Parameters.AddWithValue("@Region", region);
@@ -192,7 +209,8 @@ namespace biVerifier.Controllers
                 try
                 {
                     connection.Open();
-                    using (OleDbDataReader reader = command.ExecuteReader())
+                    using (OdbcDataReader reader = command.ExecuteReader())
+
                     {
                         while (reader.Read())
                         {

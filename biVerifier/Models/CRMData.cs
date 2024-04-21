@@ -19,14 +19,14 @@
         public string? Category { get; set;}
         public string? Branch { get; set;}
 
-        public string Status { get; set;}
-        public string Probability { get; set;}
-        public string LEAD_Year { get; set;}
-        public string LEAD_Month { get; set;}
-        public string LIVE_Year { get; set;}
-        public string LIVE_Month { get; set;}
-        public string GandTotal { get; set;}
-        public string Onceoffsetupcosts { get; set;}
-        public string Install_Comm { get; set;}
+        public string? Status { get; set;}
+        public string? Probability { get; set;}
+        public string? LEAD_Year { get; set;}
+        public string? LEAD_Month { get; set;}
+        public string? LIVE_Year { get; set;}
+        public string? LIVE_Month { get; set;}
+        public string? GandTotal { get; set;}
+        public string? Onceoffsetupcosts { get; set;}
+        public string? Install_Comm { get; set;}
     }
 }

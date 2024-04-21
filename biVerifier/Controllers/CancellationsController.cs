@@ -1,6 +1,7 @@
 ﻿using biVerifier.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Data.OleDb;
+using System.Data.Odbc;
 
 namespace biVerifier.Controllers
 {
@@ -9,19 +10,20 @@ namespace biVerifier.Controllers
         public IActionResult Index()
         {
 
-            string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
+            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
 
             string query = "SELECT * FROM Cancellations";
 
             var cancellationsDataList = new List<CancellationsData>();
 
-            using (OleDbConnection connection = new OleDbConnection(connectionString))
-            using (OleDbCommand command = new OleDbCommand(query, connection))
+            using (OdbcConnection connection = new OdbcConnection(connectionString))
+            using (OdbcCommand command = new OdbcCommand(query, connection))
 
                 try
                 {
                     connection.Open();
-                    using (OleDbDataReader reader = command.ExecuteReader())
+                    using (OdbcDataReader reader = command.ExecuteReader())
+
                     {
                         while (reader.Read())
                         {
@@ -30,13 +32,16 @@ namespace biVerifier.Controllers
                             cData.Client = reader["Client"].ToString();
                             cData.Status = reader["Status"].ToString();
                             cData.Cancel_Billing = reader["Cancel_Billing"].ToString();
+                            cData.Site = reader["Site"].ToString();
+                            cData.Contact_Person = reader["Contact Person"].ToString();
+                            cData.Account_Manager = reader["Account Manager"].ToString();
                             cancellationsDataList.Add(cData);
                         }
                     }
                 }
                 catch (OleDbException ex)
                 {
-                    // Handle exception
+                  Console.WriteLine("There was an error " + ex.Message);
                 }
 
             return View(cancellationsDataList);

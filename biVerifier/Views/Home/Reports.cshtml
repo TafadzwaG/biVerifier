@@ -41,9 +41,9 @@
                     <h5 style="text-transform: uppercase" >Sales Report</h5>
                     <ul  class="ul-s">
                         <li><a class="a-link fw-400"  asp-controller="Reports" asp-action="FilterByDateRange">Filter by date range</a></li>
-                        <li><a class="a-link" href="/Sales/FilterBySalesPerson">Filter by date range and sales person </a></li>
+                        <li><a class="a-link" asp-controller="Reports" asp-action="" >Filter by date range and sales person </a></li>
                         <li><a class="a-link"  asp-controller="Reports" asp-action="FilterByProvince">Filter by province</a></li>
-                        <li><a class="a-link"  href="/Sales/FilterByBusinessType">Filter by business type</a></li>
+                        <li><a class="a-link" asp-controller="Reports" asp-action="FilterByBusinessType">Filter by business type</a></li>
                     </ul>
                 </div>
                 <div class="col-md-6">
