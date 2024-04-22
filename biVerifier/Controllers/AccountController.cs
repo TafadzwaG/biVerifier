@@ -1,5 +1,9 @@
 ﻿using biVerifier.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Security.Claims;
+
 
 namespace biVerifier.Controllers
 {
@@ -23,7 +27,6 @@ namespace biVerifier.Controllers
         [HttpPost]
         public IActionResult Login(string UserName, string UserPW)
         {
-            // Print out the values of username and password for debugging purposes
             Console.WriteLine("Username: {0}", UserName);
             Console.WriteLine("Password: {0}", UserPW);
 
@@ -33,12 +36,23 @@ namespace biVerifier.Controllers
                 var user = userRepository.GetUserByUsernameAndPassword(UserName, UserPW);
                 if (user != null)
                 {
-                    // Authentication successful, redirect to dashboard or another page
-                    return RedirectToAction("Index", "Dashboard");
+                    // Set authentication cookie
+                    var claims = new[]
+                    {
+                       new Claim(ClaimTypes.Name, UserName),
+                        // Add more claims if needed
+                    };
+                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    var authProperties = new AuthenticationProperties
+                    {
+                        // Set any additional properties
+                    };
+                    HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
+
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {
-                    // Authentication failed, return to login page with error message
                     ViewBag.ErrorMessage = "Invalid username or password";
                     return View();
                 }
@@ -46,12 +60,11 @@ namespace biVerifier.Controllers
             catch (Exception ex)
             {
                 ViewBag.ErrorMessage = "An error occurred while trying to authenticate. Please try again later.";
-                // Log the exception for troubleshooting
-                //logger.LogError(ex, "An error occurred while trying to authenticate user.");
                 Console.WriteLine("ERROR: {0}", ex.ToString());
                 return View();
             }
         }
+
 
     }
 }
