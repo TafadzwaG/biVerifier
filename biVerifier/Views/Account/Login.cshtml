@@ -8,8 +8,8 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="box" style="width: 600px">
-            <div class="box-header">
-                <h4 style="text-transform: uppercase; font-weight: bold">Login</h4>
+            <div class="box-header border-0" style="text-align: center">
+                <h4 style="text-transform: uppercase; font-weight: bold">USER LOGIN</h4>
             </div>
             <div class="box-body">
                 <div class="col-md-12">
@@ -22,12 +22,15 @@
                             <input asp-for="UserPW" class="form-control" />
                             <label asp-for="UserPW" class="font-weight-bold"></label>
                         </div>
-                        <button type="submit" class="btn btn-primary text-capitalize" style="text-transform: uppercase; font-weight: bold">Login</button>
+                        <div style="display: flex; justify-content: center; align-items: center">
+                            <button type="submit" class="btn btn-primary text-capitalize" style="text-transform: uppercase; font-weight: bold">LOGIN</button>
+
+                        </div>
                     </form>
 
                     @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
                     {
-                        <div class="alert alert-danger mt-3" role="alert">
+                        <div style="font-weight: bold" class="alert alert-danger mt-3" role="alert">
                             @ViewBag.ErrorMessage
                         </div>
                     }
