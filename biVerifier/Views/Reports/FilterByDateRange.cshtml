@@ -1,38 +1,51 @@
-﻿@model List<biVerifier.Models.DateRangeData>
+﻿@model List<biVerifier.Models.CRMData>
 
 
 @{
     ViewData["Title"] = "Filter By Date Range";
 }
 
+
+
+
 <div class="container" style="margin: 3rem">
-    <h5>SALES FILTER BY DATE RANGE </h5>
     <div class="box">
         <div class="box-body">
-            <form id="dateRangeForm" method="post" action="/Reports/FilterByDateRange">
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="form-floating">
-                            <input type="month" id="startDate" name="startDate" class="form-control" required>
-                            <label for="startDate">START DATE:</label>
+            <h5 style="text-transform: uppercase">SALES FILTER BY DATE RANGE</h5>
+
+            <div class="">
+                <div class="">
+                    <form id="dateRangeForm" method="post" action="/Reports/FilterByDateRange">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-floating">
+                                            <input type="month" id="startDate" name="startDate" class="form-control" required>
+                                            <label for="startDate">START DATE:</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating">
+                                            <input type="month" id="endDate" name="endDate" class="form-control" required>
+                                            <label for="endDate">END DATE:</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 d-flex justify-content-start align-items-center">
+                                <!-- Center align the button -->
+                                <button type="submit" class="btn btn-dark" style="text-transform: uppercase; font-weight: bold">Apply Filter</button>
+                            </div>
+                           
                         </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-floating">
-                            <input type="month" id="endDate" name="endDate" class="form-control" required>
-                            <label for="endDate">END DATE:</label>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <button type="submit" class="btn btn-dark">Apply Filter</button>
-                    </div>
+                    </form>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
-
-  
 </div>
+
 
 <div class="custom-container" style="margin-top: 4rem">
     <div class="row">
@@ -67,34 +80,27 @@
                                     <th>Service Type</th>
                                     <th>Market Type</th>
                                     <th>Category </th>
-                                    <th>Consultant </th>
-                                    <th>Branch </th>
-                                    <th>Status </th>
-                                    <th>Probability </th>
+
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach (var data in Model)
                                 {
                                     <tr class="hover-primary">
-                                        <td>@data?.Consultant</td>
+                                        <td>@data?.ClientID</td>
                                         <td>@data?.Sites</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <td>@data?.Contact_Person</td>
+                                        <td>@data?.EmailAdd</td>
+                                        <td>@data?.Contact_Num</td>
+                                        <td>@data?.Num</td>
+                                        <td>@data?.Street</td>
+                                        <td>@data?.Suburb</td>
+                                        <td>@data?.City</td>
+                                        <td>@data?.Region</td>
+                                        <td>@data?.Lead_Source</td>
+                                        <td>@data?.Service_Type</td>
+                                        <td>@data?.Market_Type</td>
+                                        <td>@data?.Category</td>
                                     </tr>
                                 }
                             </tbody>

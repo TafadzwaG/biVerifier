@@ -14,9 +14,10 @@
                     <div class="">
                         <div class="d-flex  align-items-center justify-content-between mb-20">
                             <div>
-                                <h5 style="text-transform: uppercase ">LIST OF ALL CANCELLATIONS</h5>
+                                <h5 class="box-title" style="text-transform: uppercase; font-weight: bold;">LIST OF ALL CANCELLATIONS</h5>
                             </div>
                             <div>
+                                <button class="btn btn-secondary">PRINT DATTA</button>
                                 <button class="btn btn-primary">EXPORT TO EXCEL</button>
                             </div>
                         </div>
@@ -32,6 +33,7 @@
                                     <th>Contact_Person</th>
                                     <th>Account_Manager</th>
                                     <th>Cancellation_Month</th>
+                                    <th>Cancellation Received Date</th>
                                     <th>Cancellation_End_Date</th>
                                     <th>Reason</th>
                                     <th>Notes</th>
@@ -57,18 +59,20 @@
                                         <td>@cData?.Site</td>
                                         <td>@cData?.Contact_Person</td>
                                         <td>@cData?.Account_Manager</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <td>@cData?.Cancellation_Month</td>
+                                        <td>@cData?.Cancellation_Received_Date</td>
+                                        <td>@cData?.Cancellation_End_Date</td>
+                                        <td>@cData?.Reason</td>
+                                        <td>@cData?.Notes</td>
+                                        <td>@cData?.Reduced_Value_Ex_Vat</td>
+                                        <td>@cData?.TechResponsible</td>
+                                        <td>@cData?.Total_Channels</td>
+                                        <td>@cData?.Platform</td>
+                                        <td>@cData?.Cancel_GSM</td>
+                                        <td>@cData?.Cancel_DNS</td>
+                                        <td>@cData?.Cancel_LPR_Licenses</td>
+                                        <td>@cData?.Cancel_Video_Analytics_Licenses</td>
+                                        <td>@cData?.Cancel_Internet_Connectivity</td>
                                         <td>@cData?.Cancel_Billing</td>
                                         <td>@cData?.Status</td>
                                     </tr>

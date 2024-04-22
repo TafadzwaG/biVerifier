@@ -14,9 +14,10 @@
                     <div class="">
                         <div class="d-flex  align-items-center justify-content-between mb-20">
                             <div>
-                                <h5 style="text-transform: uppercase ">LIST TECH CANCELS</h5>
+                                <h4 class="box-title" style="text-transform: uppercase; font-weight: bold;">LIST TECH CANCELS</h4>
                             </div>
                             <div>
+                                <button class="btn btn-secondary">PRINT DATA</button>
                                 <button class="btn btn-primary">EXPORT TO EXCEL</button>
                             </div>
                         </div>
@@ -31,13 +32,13 @@
                                     <th>Date </th>
                                     <th>Tech Responsibility</th>
                                     <th>Total Channels</th>
-                                    <th>Street</th>
-                                    <th>Suburb</th>
-                                    <th>Reason</th>
-                                    <th>Notes</th>
-                                    <th>Reduced_Value_Ex_Vat</th>
-                                    <th>TechResponsible</th>
-                                    <th>Total_Channels</th>
+                                    <th>Platform </th>
+                                    <th>Canvcel GSM</th>
+                                    <th>Cancel DNS</th>
+                                    <th>Cancel LPR Licences</th>
+                                    <th>Cancel Video Analytics Licensest</th>
+                                    <th>Cancel Internet Connectivity</th>
+                                    <th>Cancel Billing</th>
 
                                 </tr>
                             </thead>
@@ -52,13 +53,13 @@
                                         <td>@cData?.Date</td>
                                         <td>@cData?.TechResponsible</td>
                                         <td>@cData?.Total_Channels</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <td>@cData?.Platform</td>
+                                        <td>@cData?.Cancel_GSM</td>
+                                        <td>@cData?.Cancel_DNS</td>
+                                        <td>@cData?.Cancel_LPR_Licenses</td>
+                                        <td>@cData?.Cancel_Video_Analytics_Licenses</td>
+                                        <td>@cData?.Cancel_Internet_Connectivity</td>
+                                        <td>@cData?.Cancel_Billing</td>
 
                                     </tr>
 

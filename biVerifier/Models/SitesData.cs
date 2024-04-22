@@ -21,6 +21,7 @@ namespace biVerifier.Models
         public string? RTSP_Port { get; set; }
         public string? Username { get; set; }
         public string? Password { get; set; }
+        public string? No_Channels { get; set; }
         public string? No_Channels_On_Analytics { get; set; }
         public string? Monitoring_Platform { get; set; }
         public string? GSM_Radio { get; set; }

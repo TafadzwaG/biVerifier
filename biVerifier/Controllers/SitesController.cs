@@ -28,6 +28,31 @@ namespace biVerifier.Controllers
                         {
                             var cData = new SitesData();
                             cData.Site = reader["Site"].ToString();
+                            cData.ClientID = reader["ClientID"].ToString();
+                            cData.Contact_Person = reader["Contact_Person"].ToString();
+                            cData.Email_Add = reader["EmailAdd"].ToString();
+                            cData.Contact_Num = reader["ContactNum"].ToString();
+                            cData.Num = reader["Num"].ToString();
+                            cData.Street = reader["Street"].ToString();
+                            cData.Suburb = reader["Suburb"].ToString();
+                            cData.City = reader["City"].ToString();
+                            cData.Region = reader["Region"].ToString();
+                            cData.DNS_IP = reader["DNS _ IP"].ToString();
+                            cData.IPv4 = reader["IPv4"].ToString();
+                            cData.Server_Port = reader["Server Port"].ToString();
+                            cData.HTTP_Port = reader["HTTP Port"].ToString();
+                            cData.RTSP_Port = reader["RTSP Port"].ToString();
+                            cData.Username = reader["Username"].ToString();
+                            cData.Password = reader["Password"].ToString();
+                            cData.No_Channels = reader["No Channels"].ToString();
+                            cData.No_Channels_On_Analytics = reader["No Channels on analytics"].ToString();
+                            cData.Monitoring_Platform = reader["Monitoring Platform"].ToString();
+                            cData.GSM_Radio = reader["GSM Radio"].ToString();
+                            cData.Alarm_Inputs = reader["Alarm Inputs"].ToString();
+                            cData.Audio = reader["Audio"].ToString();
+                            cData.SMTP_Server_Port = reader["SMTP Server Port"].ToString();
+                            cData.Public_IP = reader["Public IP"].ToString();
+                            cData.Notes = reader["Notes"].ToString();
                             sitesDataList.Add(cData);
                         }
                     }

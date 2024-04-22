@@ -4,6 +4,7 @@ using System.Data.OleDb;
 using biVerifier.Models;
 using System.Data.Odbc;
 
+
 namespace biVerifier.Controllers
 {
     public class ReportsController : Controller
@@ -15,68 +16,86 @@ namespace biVerifier.Controllers
 
         public IActionResult FilterByDateRange(DateTime startDate, DateTime endDate)
         {
-            Console.WriteLine("Executing");
-            Console.WriteLine(endDate.ToString());
-            Console.WriteLine(startDate.ToString());
-            Console.WriteLine(startDate.Year);
-            Console.WriteLine(startDate.ToString("MMM"));
-
-
-
             string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
 
             string query = @"
-                SELECT Consultant, Sites
-                FROM CRM
-                WHERE (LIVE_Year > @StartYear OR (LIVE_Year = @StartYear AND LIVE_Month >= @StartMonth))
-                AND (LIVE_Year < @EndYear OR (LIVE_Year = @EndYear AND LIVE_Month <= @EndMonth))";
+              SELECT *
+              FROM CRM
+              WHERE
+              (LIVE_Year > ? OR (LIVE_Year = ? AND LIVE_Month >= ?))
+              AND
+              (LIVE_Year < ? OR (LIVE_Year = ? AND LIVE_Month <= ?))";
 
-            var filteredData = new List<DateRangeData>();
+            var filteredData = new List<CRMData>();
 
             using (OdbcConnection connection = new OdbcConnection(connectionString))
             using (OdbcCommand command = new OdbcCommand(query, connection))
-
             {
-
-                command.Parameters.AddWithValue("@StartYear", startDate.Year);
-                command.Parameters.AddWithValue("@StartMonth", startDate.ToString("MMM"));
-                command.Parameters.AddWithValue("@EndYear", endDate.Year);
-                command.Parameters.AddWithValue("@EndMonth", endDate.ToString("MMM"));
+                // Parameters for ? placeholders in the query
+                command.Parameters.AddWithValue("?", startDate.Year);
+                command.Parameters.AddWithValue("?", startDate.Year);
+                command.Parameters.AddWithValue("?", startDate.ToString("MMM"));
+                command.Parameters.AddWithValue("?", endDate.Year);
+                command.Parameters.AddWithValue("?", endDate.Year);
+                command.Parameters.AddWithValue("?", endDate.ToString("MMM"));
 
                 try
                 {
                     connection.Open();
                     using (OdbcDataReader reader = command.ExecuteReader())
-
                     {
                         while (reader.Read())
                         {
-                            var data = new DateRangeData
+                            CRMData crmData = new CRMData
                             {
-                                Consultant = reader["Consultant"].ToString(),
                                 Sites = reader["Sites"].ToString(),
+                                Suburb = reader["Suburb"].ToString(), 
+                                Region = reader["Region"].ToString(),
+                                ClientID = (int)reader["ClientID"],
+                                Contact_Person = reader["Contact_Person"].ToString(), 
+                                EmailAdd = reader["EmailAdd"].ToString(),
+                                Contact_Num = reader["ContactNum"].ToString(),
+                                Num = reader["Num"].ToString(),
+                                Street = reader["Street"].ToString(),
+                                City = reader["City"].ToString(),
+                                Lead_Source = reader["Lead_Source"].ToString(),
+                                Service_Type = reader["Service_Type"].ToString(),
+                                Market_Type = reader["Market_Type"].ToString(),
+                                Category = reader["Category"].ToString(),
+                                Consultant = reader["Consultant"].ToString(),
+                                Branch = reader["Branch"].ToString(),
+                                Status = reader["Status"].ToString(),
+                                Probability = reader["Probability"].ToString(),
+                                LEAD_Year = reader["LEAD_Year"].ToString(),
+                                LEAD_Month = reader["LEAD_Month"].ToString(),
+                                LIVE_Year = reader["LIVE_Year"].ToString(),
+                                LIVE_Month = reader["LIVE_Month"].ToString(),
+                                GandTotal = reader["GandTotal"].ToString(),
+                                Onceoffsetupcosts = reader["Onceoffsetupcosts"].ToString(),
+                                Install_Comm = reader["Install_Comm"].ToString()
                             };
-                            filteredData.Add(data);
+                            filteredData.Add(crmData);
                         }
                     }
                 }
-                catch (OleDbException ex)
+                catch (OdbcException ex)
                 {
                     Console.WriteLine("OleDbException occurred: " + ex.Message);
-                    // Handle the exception
+                    // Handle the exception as needed
+                    // For example:
+                    // return RedirectToAction("Error", "Home");
                 }
             }
 
-
-            Console.WriteLine("Filtered Data: " + filteredData);
-
-            foreach (var item in filteredData)
-            {
-                Console.WriteLine("Consultant: " + item.Consultant + ", Sites: " + item.Sites);
-            }
-
+            // Now you have filteredData containing the records that match the date range
+            Console.WriteLine("Filtered Data: " + filteredData.Count());
             return View(filteredData);
         }
+
+
+
+
+
 
         [HttpPost]
         public IActionResult FilterByBusinessType(string businessType)
@@ -159,7 +178,7 @@ namespace biVerifier.Controllers
 
         private List<CRMData> RetrieveUniqueRegionsFromDatabase()
         {
-            string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
+            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
             string query = "SELECT DISTINCT Region FROM CRM";
 
             List<CRMData> uniqueRegions = new List<CRMData>();
@@ -180,7 +199,7 @@ namespace biVerifier.Controllers
                         }
                     }
                 }
-                catch (OleDbException ex)
+                catch (OdbcException ex)
                 {
                     // Handle exception
                     Console.WriteLine("OleDbException occurred: " + ex.Message);
@@ -190,18 +209,16 @@ namespace biVerifier.Controllers
             return uniqueRegions;
         }
 
-
         private List<CRMData> RetrieveDataByRegion(string region)
         {
             string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
 
-            string query = "SELECT * FROM CRM WHERE Region = @Region";
+            string query = "SELECT * FROM CRM WHERE Region = ?"; // Using "?" for parameter placeholder
 
             List<CRMData> dataList = new List<CRMData>();
 
             using (OdbcConnection connection = new OdbcConnection(connectionString))
             using (OdbcCommand command = new OdbcCommand(query, connection))
-
             {
                 // Add parameter for the region
                 command.Parameters.AddWithValue("@Region", region);
@@ -210,30 +227,51 @@ namespace biVerifier.Controllers
                 {
                     connection.Open();
                     using (OdbcDataReader reader = command.ExecuteReader())
-
                     {
                         while (reader.Read())
                         {
                             CRMData crmData = new CRMData
                             {
                                 Sites = reader["Sites"].ToString(),
-                                Suburb = reader["Suburb"].ToString(),
-                                Region = reader["Region"].ToString()
-                                // Assign other properties as needed
+                                Suburb = reader["Suburb"].ToString(), // This line is redundant, it's already assigned above
+                                Region = reader["Region"].ToString(),
+                                ClientID = (int)reader["ClientID"],
+                                Contact_Person = reader["Contact_Person"].ToString(), // Corrected property name
+                                EmailAdd = reader["EmailAdd"].ToString(),
+                                Contact_Num = reader["ContactNum"].ToString(),
+                                Num = reader["Num"].ToString(),
+                                Street = reader["Street"].ToString(),
+                                City = reader["City"].ToString(), // Assuming City is a property in CRMData
+                                Lead_Source = reader["Lead_Source"].ToString(),
+                                Service_Type = reader["Service_Type"].ToString(),
+                                Market_Type = reader["Market_Type"].ToString(),
+                                Category = reader["Category"].ToString(),
+                                Consultant = reader["Consultant"].ToString(),
+                                Branch = reader["Branch"].ToString(),
+                                Status = reader["Status"].ToString(),
+                                Probability = reader["Probability"].ToString(),
+                                LEAD_Year = reader["LEAD_Year"].ToString(),
+                                LEAD_Month = reader["LEAD_Month"].ToString(),
+                                LIVE_Year = reader["LIVE_Year"].ToString(),
+                                LIVE_Month = reader["LIVE_Month"].ToString(),
+                                GandTotal = reader["GandTotal"].ToString(),
+                                Onceoffsetupcosts = reader["Onceoffsetupcosts"].ToString(),
+                                Install_Comm = reader["Install_Comm"].ToString()
                             };
                             dataList.Add(crmData);
                         }
                     }
                 }
-                catch (OleDbException ex)
+                catch (OdbcException ex)
                 {
                     // Handle exception
-                    Console.WriteLine("OleDbException occurred: " + ex.Message);
+                    Console.WriteLine("Error whilst fetching_Data: " + ex.Message);
                 }
             }
 
             return dataList;
         }
+
 
 
 

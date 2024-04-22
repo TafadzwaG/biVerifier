@@ -2,6 +2,7 @@
 {
     public class CRMData
     {
+        public int ClientID { get; set; }
         public string? Sites { get; set; }
         public string? Suburb { get; set;}
 
@@ -9,7 +10,10 @@
         public string? Consultant { get; set;}
 
         public string? Contact_Person { get; set;}
+
         public string? EmailAdd { get; set;}
+        public string? Contact_Num { get; set;}
+
         public string? Num {  get; set;}
         public string? Street { get; set; }
         public string? City { get; set;}

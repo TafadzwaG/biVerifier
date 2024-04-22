@@ -7,6 +7,11 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/biVerifier.styles.css" asp-append-version="true" />
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.css"
+          integrity="sha512-YTuMx+CIxXa1l+j5aDPm98KFbVcYFNhlr2Auha3pwjHCF1lLbY9/ITQQlsUzdM1scW45kHC5KNib4mNa1IFvJg=="
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer" />
 </head>
 <body>
     <header>
@@ -25,7 +30,7 @@
                             <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">Dashboard</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Reports">CRM</a>
+                            <a class="nav-link text-white" asp-area="" asp-controller="Crm" asp-action="Index">Crm</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-white" asp-area="" asp-controller="Sites" asp-action="Index">Sites</a>
@@ -37,7 +42,7 @@
                             <a class="nav-link text-white" asp-area="" asp-controller="TechCancel" asp-action="Index">TechCancel</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Reports">Reports</a>
+                            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Reports">Generate Reports</a>
                         </li>
                     </ul>
                     <ul class="navbar-nav">

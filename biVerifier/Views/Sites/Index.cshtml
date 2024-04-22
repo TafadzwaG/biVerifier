@@ -14,9 +14,10 @@
                     <div class="">
                         <div class="d-flex  align-items-center justify-content-between mb-20">
                             <div>
-                                <h5 style="text-transform: uppercase ">LIST OF ALL SITES</h5>
+                                <h4 class="box-title" style="text-transform: uppercase; font-weight: bold;">LIST OF ALL SITES</h4>
                             </div>
                             <div>
+                                <button class="btn btn-secondary">PRINT DATA</button>
                                 <button class="btn btn-primary">EXPORT TO EXCEL</button>
                             </div>
                         </div>
@@ -33,11 +34,24 @@
                                     <th>Number</th>
                                     <th>Street</th>
                                     <th>Suburb</th>
-                                    <th>Reason</th>
+                                    <th>City</th>
+                                    <th>Region</th>
+                                    <th>DNS IP</th>
+                                    <th>IPv4</th>
+                                    <th>Server Port</th>
+                                    <th>HTTP Port</th>
+                                    <th>RSTP Port</th>
+                                    <th>Username</th>
+                                    <th>Password</th>
+                                    <th>No Channels</th>
+                                    <th>No Channels On Analytics</th>
+                                    <th>Monitoring Platform</th>
+                                    <th>GSM Radio</th>
+                                    <th>Alarm Inputs</th>
+                                    <th>Audio</th>
+                                    <th>SMTP Server Port</th>
+                                    <th>Public IP</th>
                                     <th>Notes</th>
-                                    <th>Reduced_Value_Ex_Vat</th>
-                                    <th>TechResponsible</th>
-                                    <th>Total_Channels</th>
                                    
                                 </tr>
                             </thead>
@@ -47,18 +61,32 @@
                                     <tr class="hover-primary">
                                       
                                         <td>@cData?.Site</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <td>@cData?.ClientID</td>
+                                        <td>@cData?.Contact_Person</td>
+                                        <td>@cData?.Email_Add</td>
+                                        <td>@cData?.Contact_Num</td>
+                                        <td>@cData?.Num</td>
+                                        <td>@cData?.Street</td>
+                                        <td>@cData?.Suburb</td>
+                                        <td>@cData?.City</td>
+                                        <td>@cData?.Region</td>
+                                        <td>@cData?.DNS_IP</td>
+                                        <td>@cData?.IPv4</td>
+                                        <td>@cData?.Server_Port</td>
+                                        <td>@cData?.HTTP_Port</td>
+                                        <td>@cData?.RTSP_Port</td>
+                                        <td>@cData?.Username</td>
+                                        <td>@cData?.Password</td>
+                                        <td>@cData?.No_Channels</td>
+                                        <td>@cData?.No_Channels_On_Analytics</td>
+                                        <td>@cData?.Monitoring_Platform</td>
+                                        <td>@cData?.GSM_Radio</td>
+                                        <td>@cData?.Alarm_Inputs</td>
+                                        <td>@cData?.Audio</td>
+                                        <td>@cData?.SMTP_Server_Port</td>
+                                        <td>@cData?.Public_IP</td>
+                                        <td>@cData?.Notes</td>
+                                       
                                      
                                     </tr>
 

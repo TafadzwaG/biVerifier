@@ -9,6 +9,8 @@
         public string? Contact_Person { get; set; }
         public string? Account_Manager { get; set; }
         public string? Cancellation_Month { get; set; }
+
+        public string? Cancellation_Received_Date { get; set; }
         public string? Cancellation_End_Date { get; set; }
 
         public string? Reason { get;  set; }

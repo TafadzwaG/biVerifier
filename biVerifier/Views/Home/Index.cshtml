@@ -4,162 +4,251 @@
     ViewData["Title"] = "Dashboard";
     int siteCount = ViewData["SiteCount"] != null ? (int)ViewData["SiteCount"] : 0;
     int cancellationCount = ViewData["CancellationCount"] != null ? (int)ViewData["CancellationCount"] : 0;
+    List<string> cancellationReasons = ViewData["CancellationReasons"] as List<string>;
+    List<decimal> revenueLost = ViewData["RevenueLost"] as List<decimal>;
+    Dictionary<string, int> leadSourceCounts = ViewData["LeadSourceCounts"] as Dictionary<string, int>;
+    List<decimal> totalRevenueList = ViewData["TotalRevenue"] as List<decimal>;
 }
 
 <div class="custom-container" style="margin: 3rem">
     <div class="row">
-        <div class="col-md-4 text-center">
-            <div class="card mb-3" style="height: 100vh">
-                <div class="card-body">
-                    <h4 class="card-title" style="text-transform: uppercase; font-weight: bold">TOTAL SALES 2024</h4>
-
-                    <div class="row">
-                        @foreach (var salesData in Model)
-                        {
-
-                            <div class="col-md-12 mb-3">
-                                <h5 class="card-title">Consultant Name: @(salesData?.ConsultantName ?? "N/A")</h5>
-                                <p class="card-text">Total Sales: @(salesData?.TotalSales ?? 0)</p>
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-xl-4 col-md-6 col-6">
+                    <div class="box">
+                        <div class="box-body text-center">
+                            <div class="bg-primary-light rounded10 p-20 mx-auto w-100 h-100">
+                                <img style="height: 40px" src="https://rhythm-admin-template.multipurposethemes.com/images/svg-icon/medical/icon-2.svg" class="" alt="">
                             </div>
-                        }
+                            <p class="text-fade mt-15 mb-5 text-capitalize fw-bold">ACTIVE SITES</p>
+                             <h3 class="mt-0">
+                                <span class="badge bg-secondary rounded-pill">
+                                   @siteCount
+                                </span>
+                            </h3>
+                        </div>
                     </div>
                 </div>
+                <div class="col-xl-4 col-md-6 col-6">
+                    <div class="box">
+                        <div class="box-body text-center">
+                            <div class="bg-primary-light rounded10 p-20 mx-auto w-100 h-100">
+                                <img style="height: 40px" src="https://rhythm-admin-template.multipurposethemes.com/images/svg-icon/medical/icon-2.svg" class="" alt="">
+                            </div>
+                            <p class="text-fade mt-15 mb-5 text-capitalize fw-bold">TOTAL CANCELLATIONS</p>
+                             <h3 class="mt-0">
+                                <span class="badge bg-secondary rounded-pill">
+                                    @cancellationCount
+                                </span>
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-md-6 col-6">
+                    <div class="box">
+                        <div class="box-body text-center">
+                            <div class="bg-primary-light rounded10 p-20 mx-auto w-100 h-100">
+                                <img style="height: 40px" src="https://rhythm-admin-template.multipurposethemes.com/images/svg-icon/medical/icon-2.svg" class="" alt="">
+                            </div>
+                            <p class="text-fade mt-15 mb-5 text-capitalize fw-bold"" >CURRENT REVENUE (2024) </p>
+                            <h3 class="mt-0">
+                                <span class="badge bg-secondary rounded-pill">
+                                    @totalRevenueList[0].ToString("0.00")
+                                </span>
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12" >
+                    <div class="row">
+                         <div class="box">
+                              <div class="box-header">
+                            <h5 style="font-weight: bold">SALES BY LEAD SOURCE</h5>
+                        </div>
+                             <div lass="box-body">
+                                  <div id="pieChart"></div>
+                             </div>
+                         </div>
+                    </div>
+                </div>  
+              <div class="col-md-12">
+                <div class="row">
+                    <div class="box">
+                        <div class="box-header">
+                            <h5 style="font-weight: bold">SITES BY REGION</h5>
+                        </div>
+                        <div class="box-body">
+                               <div id="bcc"></div>
+                        </div>
+                    </div>
+                </div>
+            </div> 
             </div>
         </div>
         <div class="col-md-8">
             <div class="row">
-                <div class="col-md-4">
-                    <div class="card" style="border: none; min-height: 300px">
-                        <div class="card-body">
-
-                            <h5 class="card-title text-center card-tt">New Sales (Rands)</h5>
-                            <p class="card-text text-center">771131.98</p>
-                          
-                           
+                <div class="col-md-6">
+                    <div class="box">
+                        <div class="box-header">
+                            <h5 style="font-weight: bold">SALE BY PERSON</h5>
+                        </div>
+                        <div class="box-body">
+                            <div id="barChart" style="height: 350px;"></div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="card" style="border: none;  min-height: 300px">
-
-                        <div class="card-body">
-                            <h5 class="card-title text-center card-tt">Cancellation</h5>
-                            <p class="card-text text-center">@cancellationCount</p>
+                <div class="col-md-6">
+                    <div class="box">
+                        <div class="box-header">
+                            <h5 style="font-weight: bold">REVENUE LOST PER CANCELLATION</h5>
                         </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card" style="border: none;  min-height: 300px">
-                        <div class="card-body">
-                            <h5 class="card-title text-center card-tt">Active Sites</h5>
-                            <p class="card-text text-center">@siteCount</p>
+                        <div class="box-body">
+                            <div id="lineChart" style="height: 350px;"></div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6">
-                    <div class="card">
-                        <div class="card-header bg-dark text-white text-center">
-                             <h6 style="text-transform: uppercase">Aggregated Sales By Consultant</h6>
-                        </div>
-                        <div class="card-body">
-                           
-                            <canvas id="barChart"></canvas> <!-- Add canvas for the bar chart -->
-                        </div>
-                    </div>
-                   
-                </div>
-                <div class="col-md-6">
-                    <div class="card">
-                          <div class="card-header bg-dark text-white text-center">
-                          <h6 style="text-transform: uppercase">Cancellations Lost</h6>
-                        </div>
-                        <div class="card-body">
-                          
-                            <canvas id="lineChart"></canvas> <!-- Add canvas for the line chart -->
-                        </div>
-                    </div>
-                   
+                <div class="col-md-12">
+                 
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-   // Initialize arrays to store consultant names and total sales
-    var consultantNames = [];
-    var totalSalesData = [];
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script>
+        // Render the Bar Chart for Aggregated Sales Consultant
+        var consultantNames = [];
+        var totalSalesData = [];
+        @foreach (var salesData in Model)
+        {
+            <text>consultantNames.push('@(salesData?.ConsultantName ?? "N/A")');</text>
+            <text>totalSalesData.push(@(salesData?.TotalSales ?? 0));</text>
+        }
 
-    // Iterate over the sales data in Model and populate arrays
-    @foreach (var salesData in Model)
-    {
-        <text>consultantNames.push('@(salesData?.ConsultantName ?? "N/A")');</text>
-        <text>totalSalesData.push(@(salesData?.TotalSales ?? 0));</text>
-    }
+        var barChartData = {
+            chart: {
+                type: 'bar',
+                height: 350
+            },
+            series: [{
+                name: 'Total Sales',
+                data: totalSalesData
+            }],
+            xaxis: {
+                categories: consultantNames
+            }
+        };
 
-    // Data for bar chart
-    var barChartData = {
-        labels: consultantNames,
-        datasets: [{
-            label: 'Total Sales',
-            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-            borderColor: 'rgba(54, 162, 235, 1)',
-            borderWidth: 1,
-            data: totalSalesData
+        var barChartOptions = {
+            chart: {
+                toolbar: {
+                    show: false
+                }
+            }
+        };
+
+        var barChart = new ApexCharts(document.getElementById('barChart'), barChartData);
+        barChart.render();
+
+        // Render the Line Chart for Revenue Lost per Cancellation
+        var cancellationReasons = @Html.Raw(Json.Serialize(cancellationReasons));
+        var revenueLost = @Html.Raw(Json.Serialize(revenueLost));
+
+        var lineChartData = {
+            chart: {
+                type: 'line',
+                height: 350
+            },
+            series: [{
+                name: 'Revenue Lost',
+                data: revenueLost
+            }],
+            xaxis: {
+                categories: cancellationReasons
+            }
+        };
+
+        var lineChartOptions = {
+            chart: {
+                toolbar: {
+                    show: false
+                }
+            }
+        };
+
+        var lineChart = new ApexCharts(document.getElementById('lineChart'), lineChartData);
+        lineChart.render();
+
+        // Render the Pie Chart for Sales Lead Source
+        var leadSourceCounts = @Html.Raw(Json.Serialize(leadSourceCounts));
+
+        var pieChartOptions = {
+            chart: {
+                type: 'pie',
+                height: 350
+            },
+            series: Object.values(leadSourceCounts),
+            labels: Object.keys(leadSourceCounts),
+            colors: ['#3e82f7', '#04d672', '#fa8b0c', '#ec4a3f', '#9050c6']
+        };
+
+        var pieChart = new ApexCharts(document.getElementById('pieChart'), pieChartOptions);
+        pieChart.render();
+
+
+
+
+   // Render the Bar Chart for Sites by Region
+    var sitesByRegion = @Html.Raw(Json.Serialize(ViewData["SitesByRegion"]));
+
+    console.log(sitesByRegion);
+
+    // Extract region names and site counts from the data
+    var regions = Object.keys(sitesByRegion);
+    var siteCounts = Object.values(sitesByRegion);
+
+    // Prepare data for the bar graph
+    var barChartDataForSites = {
+        // Define labels for the x-axis (regions)
+        categories: regions,
+        // Define series data for the y-axis (site counts)
+        series: [{
+            name: 'Number of Sites',
+            data: siteCounts
         }]
     };
 
-    // Options for bar chart
-    var barChartOptions = {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true
-                }
-            }]
+    // Define options for the bar graph
+    var barChartOptionsForSites = {
+        chart: {
+            type: 'area',
+            height: 350
+        },
+        plotOptions: {
+            bar: {
+                horizontal: false
+            }
+        },
+        xaxis: {
+            categories: barChartDataForSites.categories
+        },
+        yaxis: {
+            title: {
+                text: 'Number of Sites'
+            }
         }
     };
 
-    // Draw bar chart
-    var ctxBar = document.getElementById('barChart').getContext('2d');
-    new Chart(ctxBar, {
-        type: 'bar',
-        data: barChartData,
-        options: barChartOptions
-    });
+    // Render the bar graph for sites by region
+    var barChartForSites = new ApexCharts(document.getElementById('bcc'), barChartOptionsForSites);
+    barChartForSites.render();
 
-    // Data for line chart (replace with your data)
-    var lineChartData = {
-        labels: ["Reason 1", "Reason 2", "Reason 3"], // Replace with your cancellation reasons
-        datasets: [{
-            label: 'Revenue Lost',
-            fill: false,
-            borderColor: 'rgb(255, 99, 132)',
-            borderWidth: 2,
-            data: [1000, 2000, 3000] // Replace with your revenue lost data for each reason
-        }]
-    };
-
-    // Options for line chart
-    var lineChartOptions = {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true
-                }
-            }]
-        }
-    };
-
-    // Draw line chart
-    var ctxLine = document.getElementById('lineChart').getContext('2d');
-    new Chart(ctxLine, {
-        type: 'line',
-        data: lineChartData,
-        options: lineChartOptions
-    });
-</script>
-
+    </script>
+}
