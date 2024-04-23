@@ -52,16 +52,16 @@
                             @if (User.Identity.IsAuthenticated)
                             {
                                 <li class="nav-item">
-                                    <form id="logoutForm" asp-controller="Account" asp-action="Logout" method="post" class="d-flex">
+                                    <form id="logoutForm" asp-controller="Account" asp-action="Logout" method="post" class="d-flex" style="display: flex; align-items: center; justify-content: center;">
                                         <span style="margin-right: 10px;" class="text-white">Welcome, @User.Identity.Name</span>
-                                        <button type="submit" class="nav-link btn btn-primary">Logout</button>
+                                        <button type="submit" class="nav-link btn btn-primary" style="color: #fff; text-transform: uppercase; font-weight: 400">Logout</button>
                                     </form>
                                 </li>
                             }
                             else
                             {
                                 <li class="nav-item">
-                                    <a href="/Account/Login" class="nav-link">Login</a>
+                                    <a href="/Account/Login" class="nav-link btn btn-primary" style="color: #fff; text-transform: uppercase; font-weight: 400">Login</a>
                                 </li>
                             }
                         </ul>

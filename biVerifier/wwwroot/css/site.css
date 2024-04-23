@@ -177,3 +177,31 @@ body {
     margin: 0;
     font-weight: 400;
 }
+
+.login-container {
+    margin-top: 100px; /* Adjust as needed */
+    text-align: center;
+}
+
+.login-form {
+    width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+    .login-form h4 {
+        text-transform: uppercase;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+.form-floating input {
+    border-radius: 5px;
+}
+
+.login-button {
+    margin-top: 20px;
+}

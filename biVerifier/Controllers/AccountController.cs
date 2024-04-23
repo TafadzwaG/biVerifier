@@ -34,6 +34,7 @@ namespace biVerifier.Controllers
                     var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, UserName),
+                new Claim(ClaimTypes.Role, user.Role)
                 // Add more claims if needed
             };
 

@@ -2,28 +2,31 @@
 @using Microsoft.AspNetCore.Mvc.Rendering
 
 @{
+    Layout = "_LayoutNoNav";
     ViewBag.Title = "Login";
 }
 
-<div class="container">
-    <div class="row justify-content-center">
+
+
+<div class="container" >
+    <div class="row justify-content-center" style="margin-top: 13rem">
         <div class="box" style="width: 600px">
             <div class="box-header border-0" style="text-align: center">
-                <h4 style="text-transform: uppercase; font-weight: bold">USER LOGIN</h4>
+                <img style="height: 60px" src="~/images/logo.jpg" alt="biVerifier Logo" class="img-fluid">
             </div>
             <div class="box-body">
                 <div class="col-md-12">
                     <form asp-action="Login" asp-controller="Account" method="post" class="mt-4">
                         <div class="form-floating mb-4">
                             <input asp-for="UserName" class="form-control" />
-                            <label asp-for="UserName" class="font-weight-bold"></label>
+                            <label asp-for="UserName" class="font-weight-bold" style="font-weight: bold">USERNAME</label>
                         </div>
                         <div class="form-floating mb-4">
-                            <input asp-for="UserPW" class="form-control" />
-                            <label asp-for="UserPW" class="font-weight-bold"></label>
+                            <input asp-for="UserPW" class="form-control"  style="border: 2px solid #cccc"/>
+                            <label asp-for="UserPW" class="font-weight-bold" style="font-weight: bold">PASSWORD <span style="color: red">*</span> </label>
                         </div>
                         <div style="display: flex; justify-content: center; align-items: center">
-                            <button type="submit" class="btn btn-primary text-capitalize" style="text-transform: uppercase; font-weight: bold">LOGIN</button>
+                            <button type="submit" class="btn btn-primary text-capitalize" style="text-transform: uppercase; font-weight: bold; background-color: #A51E24; border: 1px solid #A51E24">LOGIN</button>
 
                         </div>
                     </form>
