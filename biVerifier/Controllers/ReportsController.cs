@@ -16,6 +16,11 @@ namespace biVerifier.Controllers
 
         public IActionResult FilterByDateRange(DateTime startDate, DateTime endDate)
         {
+
+            Console.WriteLine("StartDate", startDate);
+            Console.WriteLine("EndDate", endDate);
+
+
             string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
 
             string query = @"
@@ -181,9 +186,9 @@ namespace biVerifier.Controllers
         public IActionResult FilterByDateAndConsultant(DateTime startDate, DateTime endDate, string consultant)
         {
 
-            Console.WriteLine("Consultant", consultant);
-            Console.WriteLine("StartDate", startDate);
-            Console.WriteLine("EndDate", endDate);
+            Console.WriteLine("Consultant" + consultant);
+            Console.WriteLine("StartDate" + startDate);
+            Console.WriteLine("EndDate" +  endDate);
 
             string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
 
@@ -202,7 +207,7 @@ namespace biVerifier.Controllers
             }
 
             var filteredData = new List<CRMData>();
-
+            
             using (OdbcConnection connection = new OdbcConnection(connectionString))
             using (OdbcCommand command = new OdbcCommand(query, connection))
             {
