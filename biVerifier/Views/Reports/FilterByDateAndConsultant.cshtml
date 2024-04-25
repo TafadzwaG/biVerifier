@@ -5,3 +5,51 @@
     ViewData["Title"] = "Filter Consultant & Date";
 }
 
+
+<div class="container" style="margin: 3rem">
+    <div class="box">
+        <div class="box-body">
+            <h5 style="text-transform: uppercase; font-weight: bold">SALES FILTER BY DATE RANGE AND CONSULTANT</h5>
+
+            <div class="">
+                <div class="">
+                    <form id="dateRangeForm" method="post" action="/Reports/FilterByDateAndConsultant">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-floating">
+                                    <input type="month" id="startDate" name="startDate" class="form-control" required>
+                                    <label for="startDate">START DATE:</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-floating">
+                                    <input type="month" id="endDate" name="endDate" class="form-control" required>
+                                    <label for="endDate">END DATE:</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-floating">
+                                    <select id="consultant" name="consultant" class="form-select" required>
+                                        <option value="" disabled selected>Select Consultant</option>
+                                        <option value="Jean Meyer">Jean Meyer </option>
+                                        <option value="Shelley Scheepers">Shelley Scheepers</option>
+                                        <option value="Ryno Schutte">Ryno Schutte</option>
+                                        <option value="Simon Becker">Simon Becker</option>
+                                        <option value="Alicea Goosen">Alicea Goosen</option>
+                                        <option value="Mike Voortman">Mike Voortman</option>
+                                    </select>
+                                    <label for="consultant">CONSULTANT:</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-dark" style="text-transform: uppercase; font-weight: bold">Apply Filter</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -3,8 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using System.Data.OleDb;
 using System.Data.Odbc;
 
+
+using Microsoft.AspNetCore.Authorization;
+
 namespace biVerifier.Controllers
 {
+    [Authorize(Roles = "Tech")]
     public class CancellationsController : Controller
     {
         public IActionResult Index()

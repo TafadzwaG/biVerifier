@@ -81,7 +81,7 @@
                             <h5 style="font-weight: bold">SITES BY REGION</h5>
                         </div>
                         <div class="box-body">
-                               <div id="bcc"></div>
+                               <div id="secondBarChart" style="height: 350px;"></div>
                         </div>
                     </div>
                 </div>
@@ -111,11 +111,19 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-12">
-                 
+          <div class="row">
+            <div class="col-md-12">
+                <div class="row" style="margin: 10px">
+                    <div class="box">
+                        <div class="box-header">
+                            <h5 style="font-weight: bold">BAR CHART</h5>
+                        </div>
+                        <div class="box-body">
+                            <div id="lastChart" style="height: 350px;"></div>
+                    </div>
                 </div>
             </div>
+</div>
         </div>
     </div>
 </div>
@@ -205,50 +213,50 @@
 
 
 
-   // Render the Bar Chart for Sites by Region
-    var sitesByRegion = @Html.Raw(Json.Serialize(ViewData["SitesByRegion"]));
+        var sitesByRegion = @Html.Raw(Json.Serialize(ViewData["SitesByRegion"]));
+        var regions = Object.keys(sitesByRegion);
+        var siteCounts = Object.values(sitesByRegion);
 
-    console.log(sitesByRegion);
-
-    // Extract region names and site counts from the data
-    var regions = Object.keys(sitesByRegion);
-    var siteCounts = Object.values(sitesByRegion);
-
-    // Prepare data for the bar graph
-    var barChartDataForSites = {
-        // Define labels for the x-axis (regions)
-        categories: regions,
-        // Define series data for the y-axis (site counts)
-        series: [{
-            name: 'Number of Sites',
-            data: siteCounts
-        }]
-    };
-
-    // Define options for the bar graph
-    var barChartOptionsForSites = {
-        chart: {
-            type: 'area',
-            height: 350
-        },
-        plotOptions: {
-            bar: {
-                horizontal: false
+        var options = {
+            series: [{
+                data: siteCounts
+            }],
+            chart: {
+                type: 'bar',
+                height: 350
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: true
+                }
+            },
+            dataLabels: {
+                enabled: false
+            },
+            xaxis: {
+                categories: regions,
+                title: {
+                    text: 'Number of Sites'
+                }
+            },
+            yaxis: {
+                title: {
+                    text: 'Regions Codes '
+                }
             }
-        },
-        xaxis: {
-            categories: barChartDataForSites.categories
-        },
-        yaxis: {
-            title: {
-                text: 'Number of Sites'
-            }
-        }
-    };
+        };
 
-    // Render the bar graph for sites by region
-    var barChartForSites = new ApexCharts(document.getElementById('bcc'), barChartOptionsForSites);
-    barChartForSites.render();
+        // Render the bar graph
+        var chart = new ApexCharts(document.getElementById('secondBarChart'), options);
+        chart.render();
+
+
+
+
+
+
+
+  
 
     </script>
 }
