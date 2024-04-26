@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.8" />
     <title>@ViewData["Title"] - biVerifier</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
@@ -17,7 +17,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-dark border-bottom box-shadow mb-3" >
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-light border-bottom box-shadow mb-3" >
             <div class="container-fluid" style="margin-left: 3rem; margin-right: 3rem">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
                     <img style="height: 30px" src="~/images/logo.jpg" alt="biVerifier Logo" class="img-fluid">
@@ -29,25 +29,25 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">Dashboard</a>
+                            <a class="nav-link nav-text" asp-area="" asp-controller="Home" asp-action="Index">Dashboard</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Crm" asp-action="Index">Crm</a>
+                            <a class="nav-link nav-text" asp-area="" asp-controller="Crm" asp-action="Index">Crm</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Sites" asp-action="Index">Sites</a>
+                            <a class="nav-link nav-text" asp-area="" asp-controller="Sites" asp-action="Index">Sites</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Cancellations" asp-action="Index">Cancellations</a>
+                            <a class="nav-link nav-text" asp-area="" asp-controller="Cancellations" asp-action="Index">Cancellations</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="TechCancel" asp-action="Index">TechCancel</a>
+                            <a class="nav-link nav-text" asp-area="" asp-controller="TechCancel" asp-action="Index">TechCancel</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Lisenses" asp-action="Index">Licenses</a>
+                            <a class="nav-link nav-text" asp-area="" asp-controller="Lisenses" asp-action="Index">Licenses</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Reports">Generate Reports</a>
+                            <a class="nav-link nav-text" asp-area="" asp-controller="Home" asp-action="Reports">Generate Reports</a>
                         </li>
                     </ul>
                     <div style="display: flex; align-items: center; justify-content: center;">
@@ -56,7 +56,7 @@
                             {
                                 <li class="nav-item">
                                     <form id="logoutForm" asp-controller="Account" asp-action="Logout" method="post" class="d-flex" style="display: flex; align-items: center; justify-content: center;">
-                                        <span style="margin-right: 10px;" class="text-white">Welcome, @User.Identity.Name</span>
+                                        <span style="margin-right: 10px;" class="nav-text">Welcome, @User.Identity.Name </span>
                                         <button type="submit" class="nav-link btn btn-primary" style="color: #fff; text-transform: uppercase; font-weight: 400">Logout</button>
                                     </form>
                                 </li>
@@ -64,7 +64,7 @@
                             else
                             {
                                 <li class="nav-item">
-                                    <a href="/Account/Login" class="nav-link btn btn-primary" style="color: #fff; text-transform: uppercase; font-weight: 400">Login</a>
+                                    <a href="/Account/Login" class="nav-link btn btn-outline-info" style="color: #A61D25; text-transform: uppercase; font-weight: 400">Login</a>
                                 </li>
                             }
                         </ul>

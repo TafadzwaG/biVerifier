@@ -3,6 +3,7 @@ using System.Data.OleDb;
 
 using biVerifier.Models;
 using System.Data.Odbc;
+using System.Data;
 
 
 namespace biVerifier.Controllers
@@ -54,10 +55,10 @@ namespace biVerifier.Controllers
                             CRMData crmData = new CRMData
                             {
                                 Sites = reader["Sites"].ToString(),
-                                Suburb = reader["Suburb"].ToString(), 
+                                Suburb = reader["Suburb"].ToString(),
                                 Region = reader["Region"].ToString(),
                                 ClientID = (int)reader["ClientID"],
-                                Contact_Person = reader["Contact_Person"].ToString(), 
+                                Contact_Person = reader["Contact_Person"].ToString(),
                                 EmailAdd = reader["EmailAdd"].ToString(),
                                 Contact_Num = reader["ContactNum"].ToString(),
                                 Num = reader["Num"].ToString(),
@@ -86,7 +87,7 @@ namespace biVerifier.Controllers
                 catch (OdbcException ex)
                 {
                     Console.WriteLine("OleDbException occurred: " + ex.Message);
-                 
+
                 }
             }
 
@@ -100,7 +101,7 @@ namespace biVerifier.Controllers
 
 
 
-      
+
 
         public IActionResult FilterByBusinessType(string businessType)
         {
@@ -116,7 +117,7 @@ namespace biVerifier.Controllers
             }
             else
             {
-                query += " WHERE Market_Type IS NULL OR Market_Type = ''"; 
+                query += " WHERE Market_Type IS NULL OR Market_Type = ''";
             }
 
             var filteredData = new List<CRMData>();
@@ -180,15 +181,15 @@ namespace biVerifier.Controllers
         }
 
 
-     
-        
+
+
 
         public IActionResult FilterByDateAndConsultant(DateTime startDate, DateTime endDate, string consultant)
         {
 
             Console.WriteLine("Consultant" + consultant);
             Console.WriteLine("StartDate" + startDate);
-            Console.WriteLine("EndDate" +  endDate);
+            Console.WriteLine("EndDate" + endDate);
 
             string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
 
@@ -207,7 +208,7 @@ namespace biVerifier.Controllers
             }
 
             var filteredData = new List<CRMData>();
-            
+
             using (OdbcConnection connection = new OdbcConnection(connectionString))
             using (OdbcCommand command = new OdbcCommand(query, connection))
             {
@@ -286,7 +287,7 @@ namespace biVerifier.Controllers
         [HttpGet]
         public IActionResult FilterByProvince()
         {
-           return ProvinceSelection();
+            return ProvinceSelection();
         }
 
         [HttpPost]
@@ -335,7 +336,7 @@ namespace biVerifier.Controllers
             ViewData["SiteCount"] = siteCount;
             ViewData["CancellationCount"] = cancellationCount;
 
-            return RedirectToAction("Index"); 
+            return RedirectToAction("Index");
         }
 
 
@@ -434,6 +435,101 @@ namespace biVerifier.Controllers
             }
 
             return dataList;
+        }
+
+
+        //Cancellation Reports 
+        public IActionResult CancellationByDateRange(DateTime startDate, DateTime endDate)
+        {
+            // Ensure that the date format matches "yyyy/MM/dd"
+            string startDateString = startDate.ToString("yyyy/MM/dd");
+            string endDateString = endDate.ToString("yyyy/MM/dd");
+
+            // Connection string for Microsoft Access
+            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
+
+            // SQL query to filter cancellations by date range
+            string query = $"SELECT * FROM Cancellations WHERE [Cancellation End Date] BETWEEN #{startDateString}# AND #{endDateString}#";
+
+            // Create a DataTable to store the results
+            var cancellationsDataList = new List<CancellationsData>();
+
+            // Connect to the database and execute the query
+            using (OdbcConnection connection = new OdbcConnection(connectionString))
+            using (OdbcCommand command = new OdbcCommand(query, connection))
+            {
+                try
+                {
+                    connection.Open();
+                    using (OdbcDataReader reader = command.ExecuteReader())
+
+                    {
+                        while (reader.Read())
+                        {
+                            var cData = new CancellationsData();
+                            cData.ID = (int)reader["ID"];
+                            cData.Client = reader["Client"].ToString();
+                            cData.Status = reader["Status"].ToString();
+                            cData.Cancel_Billing = reader["Cancel_Billing"].ToString();
+                            cData.Site = reader["Site"].ToString();
+                            cData.Contact_Person = reader["Contact Person"].ToString();
+                            cData.Account_Manager = reader["Account Manager"].ToString();
+                            cData.Cancellation_Month = reader["Cancellation Month"].ToString();
+                            cData.Cancellation_Received_Date = reader["Cancellation received Date"].ToString();
+                            cData.Cancellation_End_Date = reader["Cancellation End date"].ToString();
+                            cData.Reason = reader["Reason"].ToString();
+                            cData.Notes = reader["Notes"].ToString();
+                            cData.Reduced_Value_Ex_Vat = reader["Reduced Value ex vat"].ToString();
+                            cData.TechResponsible = reader["TechResponsible"].ToString();
+                            cData.Total_Channels = reader["Total_channels"].ToString();
+                            cData.Platform = reader["Platform"].ToString();
+                            cData.Cancel_GSM = reader["Cancel_GSM"].ToString();
+                            cData.Cancel_DNS = reader["Cancel_DNS"].ToString();
+                            cData.Cancel_LPR_Licenses = reader["Cancel_LPR_Licenses"].ToString();
+                            cData.Cancel_Video_Analytics_Licenses = reader["Cancel_Video_Analytics_Licenses"].ToString();
+                            cData.Cancel_Internet_Connectivity = reader["Cancel_Internet_Connectivity"].ToString();
+                            cData.Cancel_Billing = reader["Cancel_Billing"].ToString();
+                            cData.Status = reader["Status"].ToString();
+
+                            cancellationsDataList.Add(cData);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Handle exceptions, such as connection errors or query errors
+                    Console.WriteLine("An error occurred: " + ex.Message);
+                    // Optionally, return an error view or redirect to an error page
+                    return View("Error");
+                }
+            }
+
+            // Pass the DataTable to the view to display the filtered cancellations
+            Console.WriteLine(cancellationsDataList.Count());
+            return View(cancellationsDataList);
+        }
+    
+
+    public IActionResult CancellationFilterByReason(string reason)
+        {
+            return View();
+        }
+
+
+        //Technical Reports 
+        public IActionResult TechnicalByClientType(string client)
+        {
+            return View();
+        }
+        
+        public IActionResult TechnicalByTechnician(string technician)
+        {
+            return View();
+        }
+        
+        public IActionResult TechnicalByDateRange(DateTime startDate, DateTime endDate)
+        {
+            return View();
         }
 
 
