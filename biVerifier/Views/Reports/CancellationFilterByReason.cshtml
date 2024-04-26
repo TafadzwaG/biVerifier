@@ -3,4 +3,191 @@
 }
 
 
-<p>Cancellation Report By Reason</p>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+    <script>
+        function exportToExcel() {
+            // Get the table element
+            var table = document.getElementById('dataTable');
+
+            // Convert the table to a worksheet
+            var ws = XLSX.utils.table_to_sheet(table);
+
+            // Create a new workbook
+            var wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+            XLSX.writeFile(wb, 'CancellationReason.xlsx');
+        }
+
+        function hideTable() {
+            var table = document.getElementById('dataTable');
+            table.style.display = 'none';
+        }
+
+        // Call the hideTable function when the page loads
+        window.onload = hideTable;
+    </script>
+}
+
+<div class="container" style="margin: 3rem">
+    <div class="box">
+        <div class="box-body">
+            <h5 style="text-transform: uppercase">Filter By CANCELLATION REASON</h5>
+
+            <div class="">
+                <div class="">
+                    <form id="cancellationReasonForm" method="post" action="/Reports/CancellationFilterByReason">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <select class="form-control" id="provinceSelect" name="reason">
+                                        <option value="">Select Cancellation Reason</option>
+                                        <option value="Do not see value in service">Do not see value in service</option>
+                                        <option value="Cannot afford anymore">Cannot afford anymore</option>
+                                        <option value="Found a cheaper alternative">Found a cheaper alternative</option>
+                                        <option value="other">Other Reasons</option>
+                                      
+                                    </select>
+                                    <label for="provinceSelect">SELECT CANCELLATION REASON</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 d-flex justify-content-start align-items-center">
+                                <!-- Center align the button -->
+                                <button type="submit" class="btn btn-dark" style="text-transform: uppercase; font-weight: bold">Apply Filter</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="custom-container" style="margin-top: 4rem">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-body">
+                    <div class="">
+                        <div class="d-flex  align-items-center justify-content-between mb-20">
+                            <div>
+                                <h5 class="box-title" style="text-transform: uppercase; font-weight: bold;">LIST OF ALL CANCELLATIONS</h5>
+                            </div>
+                            <div>
+                                <button class="btn btn-secondary">PRINT DATA</button>
+                                <button class="btn btn-primary" onclick="exportToExcel()">EXPORT TO EXCEL</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive rounded card-table">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Client</th>
+                                    <th>SageAcc </th>
+                                    <th>Site </th>
+                                    <th>Contact_Person</th>
+                                    <th>Account_Manager</th>
+                                    <th>Cancellation_Month</th>
+                                    <th>Cancellation Received Date</th>
+                                    <th>Cancellation_End_Date</th>
+                                    <th>Reason</th>
+                                    <th>Notes</th>
+                                    <th>Reduced_Value_Ex_Vat</th>
+
+                                    <th>Status </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var cData in Model)
+                                {
+                                    <tr class="hover-primary">
+                                        <td>@cData?.ID</td>
+                                        <td>@cData?.Client</td>
+                                        <td>@cData?.SageAcc</td>
+                                        <td>@cData?.Site</td>
+                                        <td>@cData?.Contact_Person</td>
+                                        <td>@cData?.Account_Manager</td>
+                                        <td>@cData?.Cancellation_Month</td>
+                                        <td>@cData?.Cancellation_Received_Date</td>
+                                        <td>@cData?.Cancellation_End_Date</td>
+                                        <td>@cData?.Reason</td>
+                                        <td>@cData?.Notes</td>
+                                        <td>@cData?.Reduced_Value_Ex_Vat</td>
+
+                                        <td>@cData?.Status</td>
+                                    </tr>
+
+                                }
+
+                            </tbody>
+                        </table>
+                        <table id="dataTable" class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Client</th>
+                                    <th>SageAcc </th>
+                                    <th>Site </th>
+                                    <th>Contact_Person</th>
+                                    <th>Account_Manager</th>
+                                    <th>Cancellation_Month</th>
+                                    <th>Cancellation Received Date</th>
+                                    <th>Cancellation_End_Date</th>
+                                    <th>Reason</th>
+                                    <th>Notes</th>
+                                    <th>Reduced_Value_Ex_Vat</th>
+                                    <th>TechResponsible</th>
+                                    <th>Total_Channels</th>
+                                    <th>Platform </th>
+                                    <th>Cancel_GSM </th>
+                                    <th>Cancel_DNS </th>
+                                    <th>Cancel_LPR_Licenses </th>
+                                    <th>Cancel_Video_Analytics_Licenses </th>
+                                    <th>Cancel_Internet_Connectivity </th>
+                                    <th>Status </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var cData in Model)
+                                {
+                                    <tr class="hover-primary">
+                                        <td>@cData?.ID</td>
+                                        <td>@cData?.Client</td>
+                                        <td>@cData?.SageAcc</td>
+                                        <td>@cData?.Site</td>
+                                        <td>@cData?.Contact_Person</td>
+                                        <td>@cData?.Account_Manager</td>
+                                        <td>@cData?.Cancellation_Month</td>
+                                        <td>@cData?.Cancellation_Received_Date</td>
+                                        <td>@cData?.Cancellation_End_Date</td>
+                                        <td>@cData?.Reason</td>
+                                        <td>@cData?.Notes</td>
+                                        <td>@cData?.Reduced_Value_Ex_Vat</td>
+                                        <td>@cData?.TechResponsible</td>
+                                        <td>@cData?.Total_Channels</td>
+                                        <td>@cData?.Platform</td>
+                                        <td>@cData?.Cancel_GSM</td>
+                                        <td>@cData?.Cancel_DNS</td>
+                                        <td>@cData?.Cancel_LPR_Licenses</td>
+                                        <td>@cData?.Cancel_Video_Analytics_Licenses</td>
+                                        <td>@cData?.Cancel_Internet_Connectivity</td>
+                                        <td>@cData?.Cancel_Billing</td>
+                                        <td>@cData?.Status</td>
+                                    </tr>
+
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

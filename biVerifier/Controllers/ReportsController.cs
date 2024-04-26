@@ -508,12 +508,91 @@ namespace biVerifier.Controllers
             Console.WriteLine(cancellationsDataList.Count());
             return View(cancellationsDataList);
         }
-    
 
-    public IActionResult CancellationFilterByReason(string reason)
+
+
+
+        public IActionResult CancellationFilterByReason(string reason)
         {
-            return View();
+            Console.WriteLine("Cancellation" + " " + reason);
+            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
+
+            // SQL query to execute
+            string query = "SELECT * FROM Cancellations";
+
+            // Append WHERE clause conditionally based on the provided reason
+            if (!string.IsNullOrEmpty(reason))
+            {
+                if (reason.ToLower() != "other")
+                {
+                    query += " WHERE Reason = ?";
+                }
+                else
+                {
+                    query += " WHERE Reason IS NULL OR Reason = ''";
+                }
+            }
+
+            var cancellationData = new List<CancellationsData>();
+
+            using (OdbcConnection connection = new OdbcConnection(connectionString))
+            using (OdbcCommand command = new OdbcCommand(query, connection))
+            {
+                // Add parameter for the reason if it's not "other"
+                if (!string.IsNullOrEmpty(reason) && reason.ToLower() != "other")
+                {
+                    command.Parameters.AddWithValue("Reason", reason);
+                }
+
+                try
+                {
+                    connection.Open();
+                    using (OdbcDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var cData = new CancellationsData();
+                            {
+                                cData.ID = (int)reader["ID"];
+                                cData.Client = reader["Client"].ToString();
+                                cData.Status = reader["Status"].ToString();
+                                cData.Cancel_Billing = reader["Cancel_Billing"].ToString();
+                                cData.Site = reader["Site"].ToString();
+                                cData.Contact_Person = reader["Contact Person"].ToString();
+                                cData.Account_Manager = reader["Account Manager"].ToString();
+                                cData.Cancellation_Month = reader["Cancellation Month"].ToString();
+                                cData.Cancellation_Received_Date = reader["Cancellation received Date"].ToString();
+                                cData.Cancellation_End_Date = reader["Cancellation End date"].ToString();
+                                cData.Reason = reader["Reason"].ToString();
+                                cData.Notes = reader["Notes"].ToString();
+                                cData.Reduced_Value_Ex_Vat = reader["Reduced Value ex vat"].ToString();
+                                cData.TechResponsible = reader["TechResponsible"].ToString();
+                                cData.Total_Channels = reader["Total_channels"].ToString();
+                                cData.Platform = reader["Platform"].ToString();
+                                cData.Cancel_GSM = reader["Cancel_GSM"].ToString();
+                                cData.Cancel_DNS = reader["Cancel_DNS"].ToString();
+                                cData.Cancel_LPR_Licenses = reader["Cancel_LPR_Licenses"].ToString();
+                                cData.Cancel_Video_Analytics_Licenses = reader["Cancel_Video_Analytics_Licenses"].ToString();
+                                cData.Cancel_Internet_Connectivity = reader["Cancel_Internet_Connectivity"].ToString();
+                                cData.Cancel_Billing = reader["Cancel_Billing"].ToString();
+                                cData.Status = reader["Status"].ToString();
+
+                            };
+                            cancellationData.Add(cData);
+                        }
+                    }
+                }
+                catch (OdbcException ex)
+                {
+                    Console.WriteLine("OleDbException occurred: " + ex.Message);
+                }
+            }
+
+            // Pass the filtered data to the view
+            Console.WriteLine("Cancellation Found Count" + " " + cancellationData.Count());
+            return View(cancellationData);
         }
+
 
 
         //Technical Reports 
