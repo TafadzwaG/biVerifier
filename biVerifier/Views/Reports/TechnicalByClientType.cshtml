@@ -3,4 +3,135 @@
 }
 
 
-<p>Technical Report By Client Type</p>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+    <script>
+        function exportToExcel() {
+            // Get the table element
+            var table = document.getElementById('dataTable');
+
+            // Convert the table to a worksheet
+            var ws = XLSX.utils.table_to_sheet(table);
+
+            // Create a new workbook
+            var wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+            XLSX.writeFile(wb, 'TechCancels.xlsx');
+        }
+
+    
+    </script>
+}
+
+<div class="container" style="margin: 3rem">
+    <div class="box">
+        <div class="box-body">
+            <h5 style="text-transform: uppercase">Filter By Platform</h5>
+
+            <div class="">
+                <div class="">
+                    <form id="clientType" method="post" action="/Reports/TechnicalByClientType">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <select class="form-control" id="clientTypeSelect" name="client">
+                                        <option value="">Select Platform</option>
+                                        <option value="Milestone/Umbo">Milestone/Umbo</option>
+                                        <option value="Dahua">Dahua</option>
+                                        <option value="Hikvision">Hikvision</option>
+                                        <option value="ACC/Hikvision">ACC/Hikvision</option>
+                                        <option value="CMS3">CMS3</option>
+                                        <option value="Snipr">Snipr</option>
+                                        <option value="NVMS1000">NVMS1000</option>
+                                        <option value="Alarm monitoring">Alarm monitoring</option>
+                                        <option value="other">Other</option>
+                                       
+                                    </select>
+                                    <label for="clientTypeSelect">FILTER BY CLIENT PLATFORM</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 d-flex justify-content-start align-items-center">
+                                <!-- Center align the button -->
+                                <button type="submit" class="btn btn-dark" style="text-transform: uppercase; font-weight: bold">Apply Filter</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="custom-container" style="margin-top: 4rem">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-body">
+                    <div class="">
+                        <div class="d-flex  align-items-center justify-content-between mb-20">
+                            <div>
+                                <h4 class="box-title" style="text-transform: uppercase; font-weight: bold;">LIST TECH CANCELS</h4>
+                            </div>
+                            <div>
+                                <button class="btn btn-secondary">PRINT DATA</button>
+                                <button class="btn btn-primary" onclick="exportToExcel()">EXPORT TO EXCEL</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive rounded card-table">
+                        <table id="dataTable" class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Client Name</th>
+                                    <th>Site ID </th>
+                                    <th>Date </th>
+                                    <th>Tech Responsibility</th>
+                                    <th>Total Channels</th>
+                                    <th>Platform </th>
+                                    <th>Canvcel GSM</th>
+                                    <th>Cancel DNS</th>
+                                    <th>Cancel LPR Licences</th>
+                                    <th>Cancel Video Analytics Licensest</th>
+                                    <th>Cancel Internet Connectivity</th>
+                                    <th>Cancel Billing</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var cData in Model)
+                                {
+                                    <tr class="hover-primary">
+
+                                        <td>@cData?.ID</td>
+                                        <td>@cData?.ClientID</td>
+                                        <td>@cData?.SiteID</td>
+                                        <td>@cData?.Date</td>
+                                        <td>@cData?.TechResponsible</td>
+                                        <td>@cData?.Total_Channels</td>
+                                        <td>@cData?.Platform</td>
+                                        <td>@cData?.Cancel_GSM</td>
+                                        <td>@cData?.Cancel_DNS</td>
+                                        <td>@cData?.Cancel_LPR_Licenses</td>
+                                        <td>@cData?.Cancel_Video_Analytics_Licenses</td>
+                                        <td>@cData?.Cancel_Internet_Connectivity</td>
+                                        <td>@cData?.Cancel_Billing</td>
+
+                                    </tr>
+
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
