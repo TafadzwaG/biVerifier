@@ -665,12 +665,114 @@ namespace biVerifier.Controllers
 
         public IActionResult TechnicalByTechnician(string technician)
         {
-            return View();
+            if (technician == null)
+            {
+                return View(new List<TechCancelData>());
+            }
+
+            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
+
+            string query = "SELECT * FROM TechCancel WHERE TechResponsible = ?";
+            var techCancelDataList = new List<TechCancelData>();
+
+            using (OdbcConnection connection = new OdbcConnection(connectionString))
+            using (OdbcCommand command = new OdbcCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@TechResponsible", technician);
+                try
+                {
+                    connection.Open();
+                    using (OdbcDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var cData = new TechCancelData
+                            {
+                                ID = reader["ID"] != DBNull.Value ? Convert.ToInt32(reader["ID"]) : 0,
+                                ClientID = reader["ClientID"].ToString(),
+                                SiteID = reader["SiteID"].ToString(),
+                                Date = reader["Date"].ToString(),
+                                TechResponsible = reader["TechResponsible"].ToString(),
+                                Total_Channels = reader["Total_channels"] != DBNull.Value ? Convert.ToInt32(reader["Total_channels"]) : 0,
+                                Platform = reader["Platform"].ToString(),
+                                Cancel_GSM = reader["Cancel_GSM"].ToString(),
+                                Cancel_DNS = reader["Cancel_DNS"].ToString(),
+                                Cancel_LPR_Licenses = reader["Cancel_LPR_Licenses"].ToString(),
+                                Cancel_Video_Analytics_Licenses = reader["Cancel_Internet_Connectivity"].ToString(),
+                                Cancel_Billing = reader["Cancel_Billing"].ToString()
+                            };
+                            techCancelDataList.Add(cData);
+                        }
+                    }
+                }
+                catch (OdbcException ex)
+                {
+                    // Handle exception
+                    Console.WriteLine("Error whilst fetching Data: " + ex.Message);
+                   
+                }
+            }
+            Console.Write("TechCancel" + " " + techCancelDataList.Count());
+            return View(techCancelDataList);
         }
-        
+
+
+
         public IActionResult TechnicalByDateRange(DateTime startDate, DateTime endDate)
         {
-            return View();
+            // Ensure that the date format matches "dd.MM.yyyy"
+            string startDateString = startDate.ToString("dd.MM.yyyy");
+            string endDateString = endDate.ToString("dd.MM.yyyy");
+
+            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
+
+            var techCancelDataList = new List<TechCancelData>();
+
+            // SQL query to filter TechCancelData by date range
+            string query = "SELECT * FROM TechCancel WHERE [Date] BETWEEN ? AND ?";
+
+            using (OdbcConnection connection = new OdbcConnection(connectionString))
+            using (OdbcCommand command = new OdbcCommand(query, connection))
+            {
+                // Add parameters for the start and end dates
+                command.Parameters.AddWithValue("@StartDate", startDateString);
+                command.Parameters.AddWithValue("@EndDate", endDateString);
+
+                try
+                {
+                    connection.Open();
+                    using (OdbcDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var cData = new TechCancelData
+                            {
+                                ID = reader["ID"] != DBNull.Value ? Convert.ToInt32(reader["ID"]) : 0,
+                                ClientID = reader["ClientID"].ToString(),
+                                SiteID = reader["SiteID"].ToString(),
+                                Date = reader["Date"].ToString(),
+                                TechResponsible = reader["TechResponsible"].ToString(),
+                                Total_Channels = reader["Total_channels"] != DBNull.Value ? Convert.ToInt32(reader["Total_channels"]) : 0,
+                                Platform = reader["Platform"].ToString(),
+                                Cancel_GSM = reader["Cancel_GSM"].ToString(),
+                                Cancel_DNS = reader["Cancel_DNS"].ToString(),
+                                Cancel_LPR_Licenses = reader["Cancel_LPR_Licenses"].ToString(),
+                                Cancel_Video_Analytics_Licenses = reader["Cancel_Internet_Connectivity"].ToString(),
+                                Cancel_Billing = reader["Cancel_Billing"].ToString()
+                            };
+                            techCancelDataList.Add(cData);
+                        }
+                    }
+                }
+                catch (OdbcException ex)
+                {
+                    Console.WriteLine("Error whilst fetching Data: " + ex.Message);
+                   
+                }
+            }
+            Console.WriteLine("TECH COUNTS" + " " + techCancelDataList.Count());
+
+            return View(techCancelDataList);
         }
 
 
