@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Data.OleDb;
 using System.Diagnostics;
 using System.Data.Odbc;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+
 
 namespace biVerifier.Controllers
 {

@@ -13,7 +13,7 @@ namespace biVerifier.Repositories
             _connectionString = connectionString;
         }
 
-        public User GetUserByUsernameAndPassword(string username, string password)
+        public User? GetUserByUsernameAndPassword(string username, string password)
         {
             Console.WriteLine("Username", username);
             Console.WriteLine("Password", password);

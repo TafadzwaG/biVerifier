@@ -4,6 +4,10 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
+
+
 
 namespace biVerifier
 {
@@ -29,7 +33,7 @@ namespace biVerifier
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios.
+               
                 app.UseHsts();
             }
 
@@ -43,14 +47,38 @@ namespace biVerifier
 
             app.UseRouting();
 
-            app.UseAuthentication(); // Enable authentication
+            app.UseAuthentication(); 
             app.UseAuthorization();
 
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
+            OpenBrowser("http://localhost:5000/");
             app.Run();
         }
+
+        public static void OpenBrowser(string url)
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                Process.Start("xdg-open", url);
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                Process.Start("open", url);
+            }
+            else
+            {
+                // throw 
+            }
+        }
+
+
+
     }
 }
