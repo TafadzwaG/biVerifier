@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace biVerifier.Controllers
 {
-    [Authorize(Roles = "Tech")]
+    [Authorize(Roles = "Management, Sales")]
     public class CancellationsController : Controller
     {
         public IActionResult Index()

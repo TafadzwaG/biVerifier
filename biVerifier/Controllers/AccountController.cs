@@ -69,5 +69,10 @@ namespace biVerifier.Controllers
             return RedirectToAction("Login", "Account");
         }
 
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
     }
 }
