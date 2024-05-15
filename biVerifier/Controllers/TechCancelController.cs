@@ -10,11 +10,11 @@ namespace biVerifier.Controllers
         public IActionResult Index()
         {
 
-            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
+            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
 
             string query = "SELECT * FROM TechCancel";
 
-            var techCancelDataList = new List<TechCancelData>();
+            var techCancelDataList = new List<TechCancel>();
 
             using (OdbcConnection connection = new OdbcConnection(connectionString))
             using (OdbcCommand command = new OdbcCommand(query, connection))
@@ -26,9 +26,8 @@ namespace biVerifier.Controllers
                     {
                         while (reader.Read())
                         {
-                            var cData = new TechCancelData();
-                            cData.ID = reader["ID"] != DBNull.Value ? Convert.ToInt32(reader["ID"]) : null;
-                            cData.ClientID = reader["ClientID"].ToString();
+                            var cData = new TechCancel();
+                            cData.Client = reader["Client"].ToString();
                             cData.SiteID = reader["SiteID"].ToString();
                             cData.Date = reader["Date"].ToString();
                             cData.TechResponsible = reader["TechResponsible"].ToString();

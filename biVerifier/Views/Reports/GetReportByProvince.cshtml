@@ -2,8 +2,9 @@
 
 
 @{
-    ViewData["Title"] = "Filter By Date Range";
+    ViewData["Title"] = "Report By Province";
 }
+
 
 
 @section Scripts {
@@ -20,7 +21,7 @@
             var wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
 
-            XLSX.writeFile(wb, 'FilterByDateRange.xlsx');
+            XLSX.writeFile(wb, 'FilterByProvince.xlsx');
         }
 
         function hideTable() {
@@ -37,33 +38,33 @@
 <div class="container" style="margin: 3rem">
     <div class="box">
         <div class="box-body">
-            <h5 style="text-transform: uppercase; font-weight: bold">SALES FILTER BY DATE RANGE</h5>
+            <h5 style="text-transform: uppercase">Filter By Province</h5>
 
             <div class="">
                 <div class="">
-                    <form id="dateRangeForm" method="post" action="/Reports/FilterByDateRange">
+                    <form id="provinceForm" method="post" action="/Reports/GetReportByProvince">
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-floating">
-                                            <input type="month" id="startDate" name="startDate" class="form-control" required>
-                                            <label for="startDate">START DATE:</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-floating">
-                                            <input type="month" id="endDate" name="endDate" class="form-control" required>
-                                            <label for="endDate">END DATE:</label>
-                                        </div>
-                                    </div>
+                                <div class="form-floating">
+                                    <select class="form-control" id="provinceSelect" name="region">
+                                        <option value="">Select Province</option>
+                                        <option value="WC">Western Cape</option>
+                                        <option value="GP">Gauteng</option>
+                                        <option value="LP">Limpopo</option>
+                                        <option value="MP">Mpumalanga</option>
+                                        <option value="KZN">KwaZulu-Natal</option>
+                                        <option value="NC">Northern Cape</option>
+                                        <option value="EC">Eastern Cape</option>
+                                        <option value="FS">Free State</option>
+                                        <option value="NW">North West</option>
+                                    </select>
+                                    <label for="provinceSelect">SELECT PROVINCE</label>
                                 </div>
                             </div>
                             <div class="col-md-6 d-flex justify-content-start align-items-center">
                                 <!-- Center align the button -->
                                 <button type="submit" class="btn btn-dark" style="text-transform: uppercase; font-weight: bold">Apply Filter</button>
                             </div>
-                           
                         </div>
                     </form>
                 </div>
@@ -73,7 +74,7 @@
 </div>
 
 
-<div class="custom-container" style="margin-top: 4rem">
+<div class="custom-container" style="margin-top: 1rem">
     <div class="row">
         <div class="col-md-12">
             <div class="box">
@@ -138,7 +139,7 @@
                             <thead>
                                 <tr style="text-transform: uppercase; font-weight: bold">
                                     <th>ID</th>
-                                    <th>Client</th>
+                                    <th style="width: fit-content">Client</th>
                                     <th>Contact Person</th>
                                     <th>Email</th>
                                     <th>Contact Number</th>
@@ -170,7 +171,7 @@
                                 {
                                     <tr class="hover-primary">
                                         <td>@crmData.ID</td>
-                                        <td>@crmData.Client</td>
+                                        <td style="width: fit-content">@crmData.Client</td>
                                         <td>@crmData.Contact_Person</td>
                                         <td>@crmData.Email</td>
                                         <td>@crmData.Contact_Number</td>

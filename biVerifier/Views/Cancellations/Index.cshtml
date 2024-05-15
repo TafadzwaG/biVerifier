@@ -1,8 +1,36 @@
 ﻿@model List<biVerifier.Models.CancellationsData>
 
 @{
-    ViewData["Title"] = "Dashboard";
+    ViewData["Title"] = "Cancellation";
 
+}
+
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+    <script>
+        function exportToExcel() {
+            // Get the table element
+            var table = document.getElementById('dataTable');
+
+            // Convert the table to a worksheet
+            var ws = XLSX.utils.table_to_sheet(table);
+
+            // Create a new workbook
+            var wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+            XLSX.writeFile(wb, 'Cancellations.xlsx');
+        }
+
+        function hideTable() {
+            var table = document.getElementById('dataTable');
+            table.style.display = 'none';
+        }
+
+        // Call the hideTable function when the page loads
+        window.onload = hideTable;
+    </script>
 }
 
 
@@ -14,16 +42,63 @@
                     <div class="">
                         <div class="d-flex  align-items-center justify-content-between mb-20">
                             <div>
-                                <h5 class="box-title" style="text-transform: uppercase; font-weight: bold;">LIST OF ALL CANCELLATIONS</h5>
+                                <h5 class="box-title" style="text-transform: uppercase; font-weight: bold;">CANCELLATIONS </h5>
                             </div>
                             <div>
-                                <button class="btn btn-secondary">PRINT DATTA</button>
-                                <button class="btn btn-primary">EXPORT TO EXCEL</button>
+                                <button class="btn btn-primary" onclick="exportToExcel()">
+                                    <i class="fa fa-file-excel-o"></i>
+                                    EXPORT TO EXCEL</button>
                             </div>
                         </div>
                     </div>
                     <div class="table-responsive rounded card-table">
                         <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Client</th>
+                                    <th>SageAcc </th>
+                                    <th>Site </th>
+                                    <th>Contact_Person</th>
+                                    <th>Account_Manager</th>
+                                    <th>Cancellation_Month</th>
+                                    <th>Cancellation Received Date</th>
+                                    <th>Cancellation_End_Date</th>
+                                    <th>Reason</th>
+                                   
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var cData in Model)
+                                {
+                                    <tr class="hover-primary">
+                                        <td>@cData?.ID</td>
+                                        <td>@cData?.Client</td>
+                                        <td>@cData?.SageAcc</td>
+                                        <td>@cData?.Site</td>
+                                        <td>@cData?.Contact_Person</td>
+                                        <td>
+                                            <span class="badge bg-info px-3 py-2" style="text-transform: uppercase">
+                                                @cData?.Account_Manager
+                                            </span>
+                                        </td>
+                                        <td>@cData?.Cancellation_Month</td>
+                                        <td>@cData?.Cancellation_Received_Date</td>
+                                        <td>@cData?.Cancellation_End_Date</td>
+                                        <td>
+                                            <span class="badge bg-primary px-3 py-2">
+                                                @cData?.Reason
+                                            </span>
+                                           </td>
+                                      
+                                    </tr>
+                                
+                                }
+                              
+                            </tbody>
+                        </table>
+                        
+                        <table id="dataTable" class="table table-striped table-hover">
                             <thead>
                                 <tr>
                                     <th>ID</th>

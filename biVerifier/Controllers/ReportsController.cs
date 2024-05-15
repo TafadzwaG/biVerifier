@@ -10,10 +10,15 @@ namespace biVerifier.Controllers
 {
     public class ReportsController : Controller
     {
+       
+
+
         public IActionResult Index()
         {
             return View();
         }
+
+       
 
         public IActionResult FilterByDateRange(DateTime startDate, DateTime endDate)
         {
@@ -22,17 +27,17 @@ namespace biVerifier.Controllers
             Console.WriteLine("EndDate", endDate);
 
 
-            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
+            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
 
             string query = @"
               SELECT *
               FROM CRM
               WHERE
-              (LIVE_Year > ? OR (LIVE_Year = ? AND LIVE_Month >= ?))
+              (liveyear > ? OR (liveyear = ? AND livemonth >= ?))
               AND
-              (LIVE_Year < ? OR (LIVE_Year = ? AND LIVE_Month <= ?))";
+              (liveyear < ? OR (liveyear = ? AND livemonth <= ?))";
 
-            var filteredData = new List<CRMData>();
+            var filteredData = new List<Crm>();
 
             using (OdbcConnection connection = new OdbcConnection(connectionString))
             using (OdbcCommand command = new OdbcCommand(query, connection))
@@ -52,34 +57,37 @@ namespace biVerifier.Controllers
                     {
                         while (reader.Read())
                         {
-                            CRMData crmData = new CRMData
+                            Crm crmData = new Crm
                             {
-                                Sites = reader["Sites"].ToString(),
-                                Suburb = reader["Suburb"].ToString(),
-                                Region = reader["Region"].ToString(),
-                                ClientID = (int)reader["ClientID"],
-                                Contact_Person = reader["Contact_Person"].ToString(),
-                                EmailAdd = reader["EmailAdd"].ToString(),
-                                Contact_Num = reader["ContactNum"].ToString(),
-                                Num = reader["Num"].ToString(),
-                                Street = reader["Street"].ToString(),
-                                City = reader["City"].ToString(),
-                                Lead_Source = reader["Lead_Source"].ToString(),
-                                Service_Type = reader["Service_Type"].ToString(),
-                                Market_Type = reader["Market_Type"].ToString(),
-                                Category = reader["Category"].ToString(),
-                                Consultant = reader["Consultant"].ToString(),
-                                Branch = reader["Branch"].ToString(),
-                                Status = reader["Status"].ToString(),
-                                Probability = reader["Probability"].ToString(),
-                                LEAD_Year = reader["LEAD_Year"].ToString(),
-                                LEAD_Month = reader["LEAD_Month"].ToString(),
-                                LIVE_Year = reader["LIVE_Year"].ToString(),
-                                LIVE_Month = reader["LIVE_Month"].ToString(),
-                                GandTotal = reader["GandTotal"].ToString(),
-                                Onceoffsetupcosts = reader["Onceoffsetupcosts"].ToString(),
-                                Install_Comm = reader["Install_Comm"].ToString()
-                            };
+                            ID = (int)reader["ID"],
+                            Client = reader["Client"].ToString(),
+                            Contact_Person = reader["Contact_Person"].ToString(),
+                            Email = reader["Email"].ToString(),
+                            Contact_Number = reader["Contact_Number"].ToString(),
+                            No = reader["No"].ToString(),
+                            Street = reader["Street"].ToString(),
+                            Suburb = reader["Suburb"].ToString(),
+                            City = reader["City"].ToString(),
+                            Province = reader["Province"].ToString(),
+                            LeadSource = reader["LeadSource"].ToString(),
+                            Service = reader["Service"].ToString(),
+                            Market = reader["Market"].ToString(),
+                            Category = reader["Category"].ToString(),
+                            Consultant = reader["Consultant"].ToString(),
+                            Branch = reader["Branch"].ToString(),
+                            Status = reader["Status"].ToString(),
+                            Probability = reader["Probability"].ToString(),
+                            leadyear = reader["leadyear"].ToString(),
+                            leadmonth = reader["leadmonth"].ToString(),
+                            liveyear = reader["liveyear"].ToString(),
+                            livemonth = reader["livemonth"].ToString(),
+                            TotalMonitoringFees = reader["TotalMonitoringFees"].ToString(),
+                            Onceoffsetupcosts = reader["Onceoffsetupcosts"].ToString(),
+                            Install_Comm = reader["Install_Comm"].ToString(),
+                            ManagedServicesFees = reader["ManagedServicesFees"].ToString(),
+
+
+                        };
                             filteredData.Add(crmData);
                         }
                     }
@@ -105,7 +113,7 @@ namespace biVerifier.Controllers
 
         public IActionResult FilterByBusinessType(string businessType)
         {
-            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
+            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
 
             // SQL query to execute
             string query = "SELECT * FROM CRM";
@@ -113,14 +121,14 @@ namespace biVerifier.Controllers
             // Append WHERE clause conditionally based on businessType
             if (!string.IsNullOrEmpty(businessType))
             {
-                query += " WHERE Market_Type = ?";
+                query += " WHERE Market = ?";
             }
             else
             {
-                query += " WHERE Market_Type IS NULL OR Market_Type = ''";
+                query += " WHERE Market IS NULL OR Market = ''";
             }
 
-            var filteredData = new List<CRMData>();
+            var filteredData = new List<Crm>();
 
             using (OdbcConnection connection = new OdbcConnection(connectionString))
             using (OdbcCommand command = new OdbcCommand(query, connection))
@@ -128,7 +136,7 @@ namespace biVerifier.Controllers
                 // Add parameter for the businessType if it's not empty
                 if (!string.IsNullOrEmpty(businessType))
                 {
-                    command.Parameters.AddWithValue("Market_Type", businessType);
+                    command.Parameters.AddWithValue("Market", businessType);
                 }
 
                 try
@@ -138,33 +146,34 @@ namespace biVerifier.Controllers
                     {
                         while (reader.Read())
                         {
-                            CRMData crmData = new CRMData
+                            Crm crmData = new Crm
                             {
-                                Sites = reader["Sites"].ToString(),
-                                Suburb = reader["Suburb"].ToString(),
-                                Region = reader["Region"].ToString(),
-                                ClientID = (int)reader["ClientID"],
+                                ID = (int)reader["ID"],
+                                Client = reader["Client"].ToString(),
                                 Contact_Person = reader["Contact_Person"].ToString(),
-                                EmailAdd = reader["EmailAdd"].ToString(),
-                                Contact_Num = reader["ContactNum"].ToString(),
-                                Num = reader["Num"].ToString(),
+                                Email = reader["Email"].ToString(),
+                                Contact_Number = reader["Contact_Number"].ToString(),
+                                No = reader["No"].ToString(),
                                 Street = reader["Street"].ToString(),
+                                Suburb = reader["Suburb"].ToString(),
                                 City = reader["City"].ToString(),
-                                Lead_Source = reader["Lead_Source"].ToString(),
-                                Service_Type = reader["Service_Type"].ToString(),
-                                Market_Type = reader["Market_Type"].ToString(),
+                                Province = reader["Province"].ToString(),
+                                LeadSource = reader["LeadSource"].ToString(),
+                                Service = reader["Service"].ToString(),
+                                Market = reader["Market"].ToString(),
                                 Category = reader["Category"].ToString(),
                                 Consultant = reader["Consultant"].ToString(),
                                 Branch = reader["Branch"].ToString(),
                                 Status = reader["Status"].ToString(),
                                 Probability = reader["Probability"].ToString(),
-                                LEAD_Year = reader["LEAD_Year"].ToString(),
-                                LEAD_Month = reader["LEAD_Month"].ToString(),
-                                LIVE_Year = reader["LIVE_Year"].ToString(),
-                                LIVE_Month = reader["LIVE_Month"].ToString(),
-                                GandTotal = reader["GandTotal"].ToString(),
+                                leadyear = reader["leadyear"].ToString(),
+                                leadmonth = reader["leadmonth"].ToString(),
+                                liveyear = reader["liveyear"].ToString(),
+                                livemonth = reader["livemonth"].ToString(),
+                                TotalMonitoringFees = reader["TotalMonitoringFees"].ToString(),
                                 Onceoffsetupcosts = reader["Onceoffsetupcosts"].ToString(),
-                                Install_Comm = reader["Install_Comm"].ToString()
+                                Install_Comm = reader["Install_Comm"].ToString(),
+                                ManagedServicesFees = reader["ManagedServicesFees"].ToString(),
                             };
                             filteredData.Add(crmData);
                         }
@@ -191,15 +200,15 @@ namespace biVerifier.Controllers
             Console.WriteLine("StartDate" + startDate);
             Console.WriteLine("EndDate" + endDate);
 
-            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
+            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
 
             string query = @"
             SELECT *
             FROM CRM
             WHERE
-            (LIVE_Year > ? OR (LIVE_Year = ? AND LIVE_Month >= ?))
+            (liveyear > ? OR (liveyear = ? AND livemonth >= ?))
             AND
-            (LIVE_Year < ? OR (LIVE_Year = ? AND LIVE_Month <= ?))";
+            (liveyear < ? OR (liveyear = ? AND livemonth <= ?))";
 
             // Append consultant condition if it's not empty
             if (!string.IsNullOrEmpty(consultant))
@@ -207,7 +216,7 @@ namespace biVerifier.Controllers
                 query += " AND Consultant = ?";
             }
 
-            var filteredData = new List<CRMData>();
+            var filteredData = new List<Crm>();
 
             using (OdbcConnection connection = new OdbcConnection(connectionString))
             using (OdbcCommand command = new OdbcCommand(query, connection))
@@ -233,33 +242,34 @@ namespace biVerifier.Controllers
                     {
                         while (reader.Read())
                         {
-                            CRMData crmData = new CRMData
+                            Crm crmData = new Crm
                             {
-                                Sites = reader["Sites"].ToString(),
-                                Suburb = reader["Suburb"].ToString(),
-                                Region = reader["Region"].ToString(),
-                                ClientID = (int)reader["ClientID"],
+                                ID = (int)reader["ID"],
+                                Client = reader["Client"].ToString(),
                                 Contact_Person = reader["Contact_Person"].ToString(),
-                                EmailAdd = reader["EmailAdd"].ToString(),
-                                Contact_Num = reader["ContactNum"].ToString(),
-                                Num = reader["Num"].ToString(),
+                                Email = reader["Email"].ToString(),
+                                Contact_Number = reader["Contact_Number"].ToString(),
+                                No = reader["No"].ToString(),
                                 Street = reader["Street"].ToString(),
+                                Suburb = reader["Suburb"].ToString(),
                                 City = reader["City"].ToString(),
-                                Lead_Source = reader["Lead_Source"].ToString(),
-                                Service_Type = reader["Service_Type"].ToString(),
-                                Market_Type = reader["Market_Type"].ToString(),
+                                Province = reader["Province"].ToString(),
+                                LeadSource = reader["LeadSource"].ToString(),
+                                Service = reader["Service"].ToString(),
+                                Market = reader["Market"].ToString(),
                                 Category = reader["Category"].ToString(),
                                 Consultant = reader["Consultant"].ToString(),
                                 Branch = reader["Branch"].ToString(),
                                 Status = reader["Status"].ToString(),
                                 Probability = reader["Probability"].ToString(),
-                                LEAD_Year = reader["LEAD_Year"].ToString(),
-                                LEAD_Month = reader["LEAD_Month"].ToString(),
-                                LIVE_Year = reader["LIVE_Year"].ToString(),
-                                LIVE_Month = reader["LIVE_Month"].ToString(),
-                                GandTotal = reader["GandTotal"].ToString(),
+                                leadyear = reader["leadyear"].ToString(),
+                                leadmonth = reader["leadmonth"].ToString(),
+                                liveyear = reader["liveyear"].ToString(),
+                                livemonth = reader["livemonth"].ToString(),
+                                TotalMonitoringFees = reader["TotalMonitoringFees"].ToString(),
                                 Onceoffsetupcosts = reader["Onceoffsetupcosts"].ToString(),
-                                Install_Comm = reader["Install_Comm"].ToString()
+                                Install_Comm = reader["Install_Comm"].ToString(),
+                                ManagedServicesFees = reader["ManagedServicesFees"].ToString(),
                             };
                             filteredData.Add(crmData);
                         }
@@ -284,11 +294,7 @@ namespace biVerifier.Controllers
             return View("FilterByProvince", provinceList);
         }
 
-        [HttpGet]
-        public IActionResult FilterByProvince()
-        {
-            return ProvinceSelection();
-        }
+       
 
         [HttpPost]
         public IActionResult FilterByProvince(string region)
@@ -296,9 +302,15 @@ namespace biVerifier.Controllers
             Console.WriteLine("Selected region: " + region);
 
             // Retrieve data based on the provided region
-            List<CRMData> filteredData = RetrieveDataByRegion(region);
+            List<Crm> filteredData = RetrieveDataByRegion(region);
 
-            return View("FilterByProvince", filteredData);
+            return View(filteredData);
+        }
+
+        public IActionResult GetReportByProvince(string region)
+        {
+            List<Crm> filteredData = RetrieveDataByRegion(region);
+            return View(filteredData);
         }
 
         [HttpGet]
@@ -374,19 +386,20 @@ namespace biVerifier.Controllers
             return uniqueRegions;
         }
 
-        private List<CRMData> RetrieveDataByRegion(string region)
+        private List<Crm> RetrieveDataByRegion(string region)
         {
-            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
+            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
 
-            string query = "SELECT * FROM CRM WHERE Region = ?"; // Using "?" for parameter placeholder
+            string query = "SELECT * FROM CRM WHERE Province = ?"; // Using "?" for parameter placeholder
 
-            List<CRMData> dataList = new List<CRMData>();
+            List<Crm> dataList = new List<Crm>();
+
 
             using (OdbcConnection connection = new OdbcConnection(connectionString))
             using (OdbcCommand command = new OdbcCommand(query, connection))
             {
                 // Add parameter for the region
-                command.Parameters.AddWithValue("@Region", region);
+                command.Parameters.AddWithValue("@Province", region);
 
                 try
                 {
@@ -395,33 +408,34 @@ namespace biVerifier.Controllers
                     {
                         while (reader.Read())
                         {
-                            CRMData crmData = new CRMData
+                            Crm crmData = new Crm
                             {
-                                Sites = reader["Sites"].ToString(),
-                                Suburb = reader["Suburb"].ToString(), // This line is redundant, it's already assigned above
-                                Region = reader["Region"].ToString(),
-                                ClientID = (int)reader["ClientID"],
-                                Contact_Person = reader["Contact_Person"].ToString(), // Corrected property name
-                                EmailAdd = reader["EmailAdd"].ToString(),
-                                Contact_Num = reader["ContactNum"].ToString(),
-                                Num = reader["Num"].ToString(),
+                                ID = (int)reader["ID"],
+                                Client = reader["Client"].ToString(),
+                                Contact_Person = reader["Contact_Person"].ToString(),
+                                Email = reader["Email"].ToString(),
+                                Contact_Number = reader["Contact_Number"].ToString(),
+                                No = reader["No"].ToString(),
                                 Street = reader["Street"].ToString(),
-                                City = reader["City"].ToString(), // Assuming City is a property in CRMData
-                                Lead_Source = reader["Lead_Source"].ToString(),
-                                Service_Type = reader["Service_Type"].ToString(),
-                                Market_Type = reader["Market_Type"].ToString(),
+                                Suburb = reader["Suburb"].ToString(),
+                                City = reader["City"].ToString(),
+                                Province = reader["Province"].ToString(),
+                                LeadSource = reader["LeadSource"].ToString(),
+                                Service = reader["Service"].ToString(),
+                                Market = reader["Market"].ToString(),
                                 Category = reader["Category"].ToString(),
                                 Consultant = reader["Consultant"].ToString(),
                                 Branch = reader["Branch"].ToString(),
                                 Status = reader["Status"].ToString(),
                                 Probability = reader["Probability"].ToString(),
-                                LEAD_Year = reader["LEAD_Year"].ToString(),
-                                LEAD_Month = reader["LEAD_Month"].ToString(),
-                                LIVE_Year = reader["LIVE_Year"].ToString(),
-                                LIVE_Month = reader["LIVE_Month"].ToString(),
-                                GandTotal = reader["GandTotal"].ToString(),
+                                leadyear = reader["leadyear"].ToString(),
+                                leadmonth = reader["leadmonth"].ToString(),
+                                liveyear = reader["liveyear"].ToString(),
+                                livemonth = reader["livemonth"].ToString(),
+                                TotalMonitoringFees = reader["TotalMonitoringFees"].ToString(),
                                 Onceoffsetupcosts = reader["Onceoffsetupcosts"].ToString(),
-                                Install_Comm = reader["Install_Comm"].ToString()
+                                Install_Comm = reader["Install_Comm"].ToString(),
+                                ManagedServicesFees = reader["ManagedServicesFees"].ToString(),
                             };
                             dataList.Add(crmData);
                         }
@@ -446,7 +460,7 @@ namespace biVerifier.Controllers
             string endDateString = endDate.ToString("yyyy/MM/dd");
 
             // Connection string for Microsoft Access
-            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
+            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
 
             // SQL query to filter cancellations by date range
             string query = $"SELECT * FROM Cancellations WHERE [Cancellation End Date] BETWEEN #{startDateString}# AND #{endDateString}#";
@@ -515,7 +529,7 @@ namespace biVerifier.Controllers
         public IActionResult CancellationFilterByReason(string reason)
         {
             Console.WriteLine("Cancellation" + " " + reason);
-            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
+            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
 
             // SQL query to execute
             string query = "SELECT * FROM Cancellations";
@@ -601,13 +615,13 @@ namespace biVerifier.Controllers
 
             if (client == null)
             {
-                return View(new List<TechCancelData>());
+                return View(new List<TechCancel>());
             }
 
-            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
+            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
 
             string query;
-            var techCancelDataList = new List<TechCancelData>();
+            var techCancelDataList = new List<TechCancel>();
 
             // Check if client is "other" to adjust the query and parameters
             if (client.ToLower() == "other")
@@ -635,9 +649,8 @@ namespace biVerifier.Controllers
                     {
                         while (reader.Read())
                         {
-                            var cData = new TechCancelData();
-                            cData.ID = reader["ID"] != DBNull.Value ? Convert.ToInt32(reader["ID"]) : null;
-                            cData.ClientID = reader["ClientID"].ToString();
+                            var cData = new TechCancel();
+                            cData.Client = reader["Client"].ToString();
                             cData.SiteID = reader["SiteID"].ToString();
                             cData.Date = reader["Date"].ToString();
                             cData.TechResponsible = reader["TechResponsible"].ToString();
@@ -667,13 +680,13 @@ namespace biVerifier.Controllers
         {
             if (technician == null)
             {
-                return View(new List<TechCancelData>());
+                return View(new List<TechCancel>());
             }
 
-            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
+            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
 
             string query = "SELECT * FROM TechCancel WHERE TechResponsible = ?";
-            var techCancelDataList = new List<TechCancelData>();
+            var techCancelDataList = new List<TechCancel>();
 
             using (OdbcConnection connection = new OdbcConnection(connectionString))
             using (OdbcCommand command = new OdbcCommand(query, connection))
@@ -686,10 +699,9 @@ namespace biVerifier.Controllers
                     {
                         while (reader.Read())
                         {
-                            var cData = new TechCancelData
+                            var cData = new TechCancel
                             {
-                                ID = reader["ID"] != DBNull.Value ? Convert.ToInt32(reader["ID"]) : 0,
-                                ClientID = reader["ClientID"].ToString(),
+                                Client = reader["Client"].ToString(),
                                 SiteID = reader["SiteID"].ToString(),
                                 Date = reader["Date"].ToString(),
                                 TechResponsible = reader["TechResponsible"].ToString(),
@@ -724,9 +736,9 @@ namespace biVerifier.Controllers
             string startDateString = startDate.ToString("dd.MM.yyyy");
             string endDateString = endDate.ToString("dd.MM.yyyy");
 
-            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
+            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
 
-            var techCancelDataList = new List<TechCancelData>();
+            var techCancelDataList = new List<TechCancel>();
 
             // SQL query to filter TechCancelData by date range
             string query = "SELECT * FROM TechCancel WHERE [Date] BETWEEN ? AND ?";
@@ -745,10 +757,9 @@ namespace biVerifier.Controllers
                     {
                         while (reader.Read())
                         {
-                            var cData = new TechCancelData
+                            var cData = new TechCancel
                             {
-                                ID = reader["ID"] != DBNull.Value ? Convert.ToInt32(reader["ID"]) : 0,
-                                ClientID = reader["ClientID"].ToString(),
+                                Client = reader["Client"].ToString(),
                                 SiteID = reader["SiteID"].ToString(),
                                 Date = reader["Date"].ToString(),
                                 TechResponsible = reader["TechResponsible"].ToString(),

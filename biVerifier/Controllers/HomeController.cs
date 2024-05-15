@@ -27,6 +27,8 @@ namespace biVerifier.Controllers
             salesLeadSource();
             getCurrentYearRevenue();
             getSitesByRegion();
+            getSalesByRegion();
+            clientCountGraphByLeadSource();
             return View();
         }
 
@@ -327,6 +329,94 @@ namespace biVerifier.Controllers
             // Return the view to render the sites per region data
             return View("Index");
         }
+
+        public IActionResult getSalesByRegion()
+        {
+            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
+
+            List<string> provinces = new List<string>();
+            List<int> clientCounts = new List<int>();
+
+            string query = "SELECT Province, COUNT(Client) AS ClientCount FROM CRM GROUP BY Province";
+
+            using (OdbcConnection connection = new OdbcConnection(connectionString))
+            {
+                using (OdbcCommand command = new OdbcCommand(query, connection))
+                {
+                    try
+                    {
+                        connection.Open();
+                        using (OdbcDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                string province = reader["Province"].ToString();
+                                int clientCount = Convert.ToInt32(reader["ClientCount"]);
+
+                                provinces.Add(province);
+                                clientCounts.Add(clientCount);
+                            }
+                        }
+                    }
+                    catch (OdbcException ex)
+                    {
+                        // Handle exception
+                    }
+                }
+            }
+
+            ViewData["Provinces"] = provinces;
+            ViewData["ClientCounts"] = clientCounts;
+
+            return View("Index");
+        }
+
+        public IActionResult clientCountGraphByLeadSource()
+        {
+            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
+
+            var leadSourceCounts = new Dictionary<string, int>();
+
+            // Query the database to get the count of clients by lead source
+            string query = @"
+                SELECT LeadSource, COUNT(Client) AS ClientCount
+                FROM CRM
+                GROUP BY LeadSource";
+
+            using (OdbcConnection connection = new OdbcConnection(connectionString))
+            using (OdbcCommand command = new OdbcCommand(query, connection))
+            {
+                try
+                {
+                    connection.Open();
+                    using (OdbcDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            string leadSource = reader["LeadSource"].ToString();
+                            int clientCount = Convert.ToInt32(reader["ClientCount"]);
+                            leadSourceCounts.Add(leadSource, clientCount);
+                        }
+                    }
+
+                    // Log the lead source counts
+                    foreach (var kvp in leadSourceCounts)
+                    {
+                        Console.WriteLine($"Lead Source: {kvp.Key}, Client Count: {kvp.Value}");
+                    }
+                }
+                catch (OdbcException ex)
+                {
+                    // Handle exception
+                }
+            }
+
+            // Pass the lead source counts to the view
+            ViewData["LeadSourceCounts"] = leadSourceCounts;
+
+            return View("Index");
+        }
+
 
     }
 

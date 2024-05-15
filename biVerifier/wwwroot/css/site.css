@@ -19,7 +19,8 @@ html {
 
 body {
     margin-bottom: 60px;
-    background-color: #f1f5f8
+    background-color: #f1f5f8;
+    font-family: "Poppins", sans-serif !important;
 }
 
 

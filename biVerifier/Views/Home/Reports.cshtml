@@ -44,7 +44,7 @@
                         <ul class="ul-s mt-5">
                             <li><a class="a-link fw-400" asp-controller="Reports" asp-action="FilterByDateRange">Filter by date range</a></li>
                             <li><a class="a-link" asp-controller="Reports" asp-action="FilterByDateAndConsultant">Filter by date range and sales person </a></li>
-                            <li><a class="a-link" asp-controller="Reports" asp-action="FilterByProvince">Filter by province</a></li>
+                            <li><a class="a-link" asp-controller="Reports" asp-action="GetReportByProvince">Report By province</a></li>
                             <li><a class="a-link" asp-controller="Reports" asp-action="FilterByBusinessType">Filter by business type</a></li>
                         </ul>
                     </div>
@@ -64,11 +64,16 @@
                
             </div>
 
-            <div class="row  mt-8">
+            <div class="row  mt-3">
                 @if(User.IsInRole("Management"))
                     {
                     <div class="col-md-6 mb-3 mt-3">
                         <h5 style="text-transform: uppercase">Management Reports</h5>
+                        <ul class="ul-s mt-5">
+                            <li><a class="a-link fw-400" asp-controller="SalesPipeline" asp-action="FilterByDateRange">Report By Date Range</a></li>
+                            <li><a class="a-link  fw-400" asp-controller="SalesPipeline" asp-action="FilterBySalesPerson">Report By Sales Person </a></li>
+                            <li><a class="a-link  fw-400" asp-controller="SalesPipeline" asp-action="FilterByProvince">Report By Province </a></li>
+                        </ul>
                     </div>
                     }
                 @if (User.IsInRole("Management") || User.IsInRole("Tech"))

@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Cancellation Report By Date Range";
+    ViewData["Title"] = "CANCELLATIONS BY DATE";
 }
 
 @section Scripts {
@@ -81,10 +81,9 @@
                     <div class="">
                         <div class="d-flex  align-items-center justify-content-between mb-20">
                             <div>
-                                <h5 class="box-title" style="text-transform: uppercase; font-weight: bold;">LIST OF ALL CANCELLATIONS</h5>
+                                <h5 class="box-title" style="text-transform: uppercase; font-weight: bold;">CANCELLATIONS</h5>
                             </div>
                             <div>
-                                <button class="btn btn-secondary">PRINT DATA</button>
                                 <button class="btn btn-primary" onclick="exportToExcel()">EXPORT TO EXCEL</button>
                             </div>
                         </div>
@@ -103,10 +102,6 @@
                                     <th>Cancellation Received Date</th>
                                     <th>Cancellation_End_Date</th>
                                     <th>Reason</th>
-                                    <th>Notes</th>
-                                    <th>Reduced_Value_Ex_Vat</th>
-                                   
-                                    <th>Status </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -118,15 +113,19 @@
                                         <td>@cData?.SageAcc</td>
                                         <td>@cData?.Site</td>
                                         <td>@cData?.Contact_Person</td>
-                                        <td>@cData?.Account_Manager</td>
+                                        <td>
+                                            <span class="badge bg-info px-3 py-2" style="text-transform: uppercase">
+                                                @cData?.Account_Manager
+                                            </span>
+                                        </td>
                                         <td>@cData?.Cancellation_Month</td>
                                         <td>@cData?.Cancellation_Received_Date</td>
                                         <td>@cData?.Cancellation_End_Date</td>
-                                        <td>@cData?.Reason</td>
-                                        <td>@cData?.Notes</td>
-                                        <td>@cData?.Reduced_Value_Ex_Vat</td>
-                                       
-                                        <td>@cData?.Status</td>
+                                        <td>
+                                            <span class="badge bg-primary px-3 py-2">
+                                                @cData?.Reason
+                                            </span>
+                                        </td>
                                     </tr>
 
                                 }

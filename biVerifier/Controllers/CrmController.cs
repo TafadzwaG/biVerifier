@@ -12,7 +12,7 @@ namespace biVerifier.Controllers
         public IActionResult Index()
         {
 
-            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
+            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
 
             // SQL query to execute
 
@@ -20,7 +20,7 @@ namespace biVerifier.Controllers
             string query = "SELECT * FROM CRM";
 
 
-            var crmDataList = new List<CRMData>();
+            var crmDataList = new List<Crm>();
 
             using (OdbcConnection connection = new OdbcConnection(connectionString))
             using (OdbcCommand command = new OdbcCommand(query, connection))
@@ -33,32 +33,33 @@ namespace biVerifier.Controllers
                     {
                         while (reader.Read())
                         {
-                            var crmData = new CRMData();
-                            crmData.ClientID = (int)reader["ClientID"];
-                            crmData.Sites = reader["Sites"].ToString();
+                            var crmData = new Crm();
+                            crmData.ID = (int)reader["ID"];
+                            crmData.Client = reader["Client"].ToString();
                             crmData.Contact_Person = reader["Contact_Person"].ToString();
-                            crmData.EmailAdd = reader["EmailAdd"].ToString();
-                            crmData.Contact_Num = reader["ContactNum"].ToString();
-                            crmData.Num = reader["Num"].ToString();
+                            crmData.Email = reader["Email"].ToString();
+                            crmData.Contact_Number = reader["Contact_Number"].ToString();
+                            crmData.No = reader["No"].ToString();
                             crmData.Street = reader["Street"].ToString();
                             crmData.Suburb = reader["Suburb"].ToString();
                             crmData.City = reader["City"].ToString();
-                            crmData.Region = reader["Region"].ToString();
-                            crmData.Lead_Source = reader["Lead_Source"].ToString();
-                            crmData.Service_Type = reader["Service_Type"].ToString();
-                            crmData.Market_Type = reader["Market_Type"].ToString();
+                            crmData.Province = reader["Province"].ToString();
+                            crmData.LeadSource = reader["LeadSource"].ToString();
+                            crmData.Service = reader["Service"].ToString();
+                            crmData.Market = reader["Market"].ToString();
                             crmData.Category = reader["Category"].ToString();
                             crmData.Consultant = reader["Consultant"].ToString();
                             crmData.Branch = reader["Branch"].ToString();
                             crmData.Status = reader["Status"].ToString();
                             crmData.Probability = reader["Probability"].ToString();
-                            crmData.LEAD_Year = reader["LEAD_Year"].ToString();
-                            crmData.LEAD_Month = reader["LEAD_Month"].ToString();
-                            crmData.LIVE_Year = reader["LIVE_Year"].ToString();
-                            crmData.LIVE_Month = reader["LIVE_Month"].ToString();
-                            crmData.GandTotal = reader["GandTotal"].ToString();
+                            crmData.leadyear = reader["leadyear"].ToString();
+                            crmData.leadmonth = reader["leadmonth"].ToString();
+                            crmData.liveyear = reader["liveyear"].ToString();
+                            crmData.livemonth = reader["livemonth"].ToString();
+                            crmData.TotalMonitoringFees = reader["TotalMonitoringFees"].ToString();
                             crmData.Onceoffsetupcosts = reader["Onceoffsetupcosts"].ToString();
                             crmData.Install_Comm = reader["Install_Comm"].ToString();
+                            crmData.ManagedServicesFees = reader["ManagedServicesFees"].ToString();
 
                             // Assign other properties as needed
                             crmDataList.Add(crmData);

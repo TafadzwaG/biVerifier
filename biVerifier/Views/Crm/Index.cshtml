@@ -1,4 +1,4 @@
-﻿@model List<biVerifier.Models.CRMData>
+﻿@model List<biVerifier.Models.Crm>
 
 @{
     ViewData["Title"] = "CRM DATA LIST";
@@ -61,43 +61,39 @@
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr>
-                                    <th>Client Id</th>
-                                    <th>Sites</th>
+                                    <th>ID</th>
+                                    <th>Client</th>
                                     <th>Contact Person</th>
-                                    <th>Email Address</th>
+                                    <th>Email</th>
                                     <th>Contact Number</th>
-                                    <th>Number</th>
+                                    <th>No</th>
                                     <th>Street</th>
                                     <th>Suburb</th>
                                     <th>City</th>
-                                    <th>Region</th>
+                                    <th>Province</th>
                                     <th>Lead Source</th>
-                                    <th>Service Type</th>
-                                    <th>Market Type</th>
-                                    <th>Category </th>
+                                    <th>Service</th>
+                                   
                                   
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var data in Model)
+                                @foreach (var crmData in Model)
                                 {
                                     <tr class="hover-primary">
-                                        <td>@data?.ClientID</td>
-                                        <td>@data?.Sites</td>
-                                        <td>@data?.Contact_Person</td>
-                                        <td>@data?.EmailAdd</td>
-                                        <td>@data?.Contact_Num</td>
-                                        <td>@data?.Num</td>
-                                        <td>@data?.Street</td>
-                                        <td>@data?.Suburb</td>
-                                        <td>@data?.City</td>
-                                        <td>@data?.Region</td>
-                                        <td>@data?.Lead_Source</td>
-                                        <td>@data?.Service_Type</td>
-                                        <td>@data?.Market_Type</td>
-                                        <td>@data?.Category</td>
-                                       
-                                       
+                                        <td>@crmData.ID</td>
+                                        <td>@crmData.Client</td>
+                                        <td>@crmData.Contact_Person</td>
+                                        <td>@crmData.Email</td>
+                                        <td>@crmData.Contact_Number</td>
+                                        <td>@crmData.No</td>
+                                        <td>@crmData.Street</td>
+                                        <td>@crmData.Suburb</td>
+                                        <td>@crmData.City</td>
+                                        <td>@crmData.Province</td>
+                                        <td>@crmData.LeadSource</td>
+                                        <td>@crmData.Service</td>
+                                      
                                     </tr>
                                 }
                             </tbody>
@@ -106,61 +102,64 @@
                         <table id="dataTable" class="table table-striped table-hover">
                             <thead>
                                 <tr>
-                                    <th>Client Id</th>
-                                    <th>Sites</th>
+                                    <th>ID</th>
+                                    <th>Client</th>
                                     <th>Contact Person</th>
-                                    <th>Email Address</th>
+                                    <th>Email</th>
                                     <th>Contact Number</th>
-                                    <th>Number</th>
+                                    <th>No</th>
                                     <th>Street</th>
                                     <th>Suburb</th>
                                     <th>City</th>
-                                    <th>Region</th>
+                                    <th>Province</th>
                                     <th>Lead Source</th>
-                                    <th>Service Type</th>
-                                    <th>Market Type</th>
-                                    <th>Category </th>
-                                    <th>Consultant </th>
-                                    <th>Branch </th>
-                                    <th>Status </th>
-                                    <th>Probability </th>
-                                    <th>Lead Year </th>
-                                    <th>Lead Month </th>
-                                    <th>Live Year </th>
-                                    <th>Live Month </th>
-                                    <th>Grand Total </th>
-                                    <th>Once Off Setup Costs</th>
+                                    <th>Service</th>
+                                    <th>Market</th>
+                                    <th>Category</th>
+                                    <th>Consultant</th>
+                                    <th>Branch</th>
+                                    <th>Status</th>
+                                    <th>Probability</th>
+                                    <th>Lead Year</th>
+                                    <th>Lead Month</th>
+                                    <th>Live Year</th>
+                                    <th>Live Month</th>
+                                    <th>Total Monitoring Fees</th>
+                                    <th>Once-off Setup Costs</th>
                                     <th>Install Comm</th>
+                                    <th>Managed Services Fees</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var data in Model)
+                                @foreach (var crmData in Model)
                                 {
                                     <tr class="hover-primary">
-                                        <td>@data?.ClientID</td>
-                                        <td>@data?.Sites</td>
-                                        <td>@data?.Contact_Person</td>
-                                        <td>@data?.EmailAdd</td>
-                                        <td>@data?.Contact_Num</td>
-                                        <td>@data?.Num</td>
-                                        <td>@data?.Street</td>
-                                        <td>@data?.Suburb</td>
-                                        <td>@data?.City</td>
-                                        <td>@data?.Region</td>
-                                        <td>@data?.Lead_Source</td>
-                                        <td>@data?.Service_Type</td>
-                                        <td>@data?.Market_Type</td>
-                                        <td>@data?.Category</td>
-                                        <td>@data?.Consultant</td>
-                                        <td>@data?.Branch</td>
-                                        <td>@data?.Status</td>
-                                        <td>@data?.Probability</td>
-                                        <td>@data?.LEAD_Year</td>
-                                        <td>@data?.LEAD_Month</td>
-                                        <td>@data?.LIVE_Year</td>
-                                        <td>@data?.LIVE_Month</td>
-                                        <td>@data?.GandTotal</td>
-                                        <td>@data?.Onceoffsetupcosts</td>
+                                        <td>@crmData.ID</td>
+                                        <td>@crmData.Client</td>
+                                        <td>@crmData.Contact_Person</td>
+                                        <td>@crmData.Email</td>
+                                        <td>@crmData.Contact_Number</td>
+                                        <td>@crmData.No</td>
+                                        <td>@crmData.Street</td>
+                                        <td>@crmData.Suburb</td>
+                                        <td>@crmData.City</td>
+                                        <td>@crmData.Province</td>
+                                        <td>@crmData.LeadSource</td>
+                                        <td>@crmData.Service</td>
+                                        <td>@crmData.Market</td>
+                                        <td>@crmData.Category</td>
+                                        <td>@crmData.Consultant</td>
+                                        <td>@crmData.Branch</td>
+                                        <td>@crmData.Status</td>
+                                        <td>@crmData.Probability</td>
+                                        <td>@crmData.leadyear</td>
+                                        <td>@crmData.leadmonth</td>
+                                        <td>@crmData.liveyear</td>
+                                        <td>@crmData.livemonth</td>
+                                        <td>@crmData.TotalMonitoringFees</td>
+                                        <td>@crmData.Onceoffsetupcosts</td>
+                                        <td>@crmData.Install_Comm</td>
+                                        <td>@crmData.ManagedServicesFees</td>
                                        
                                     </tr>
                                 }

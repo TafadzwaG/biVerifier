@@ -1,0 +1,35 @@
+﻿@model Dictionary<string, int>
+
+<h5>Sales Data by Region</h5>
+<div id="salesByRegionChart"></div>
+
+
+
+@section scripts {
+    <!-- Add the ApexCharts library -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script>
+        var salesData = @Html.Raw(Json.Serialize(Model));
+
+        // Extract keys and values from the salesData dictionary
+        var regions = Object.keys(salesData);
+        var clientCounts = Object.values(salesData);
+
+        // Initialize ApexCharts
+        var options = {
+            chart: {
+                type: 'bar'
+            },
+            series: [{
+                name: 'Client Count',
+                data: clientCounts
+            }],
+            xaxis: {
+                categories: regions
+            }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#salesByRegionChart"), options);
+        chart.render();
+    </script>
+}

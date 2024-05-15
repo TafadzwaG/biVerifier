@@ -11,125 +11,62 @@
 }
 
 <div class="custom-container" style="margin: 3rem">
-    <div class="row">
-        <div class="col-md-4">
-            <div class="row">
-                <div class="col-xl-4 col-md-6 col-6">
-                    <div class="box">
-                        <div class="box-body text-center">
-                            <div class="bg-primary-light rounded10 p-20 mx-auto w-100 h-100">
-                                <img style="height: 40px" src="https://rhythm-admin-template.multipurposethemes.com/images/svg-icon/medical/icon-2.svg" class="" alt="">
-                            </div>
-                            <p class="text-fade mt-15 mb-5 text-capitalize fw-bold">SALES ACTIVE <br/> SITES</p>
-                             <h3 class="mt-0">
-                                <span class="badge bg-secondary rounded-pill">
-                                   @siteCount
-                                </span>
-                            </h3>
-                        </div>
+    <div class="col-md-8">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="box">
+                    <div class="box-header">
+                        <h5 style="font-weight: bold">SALE BY PERSON</h5>
                     </div>
-                </div>
-                <div class="col-xl-4 col-md-6 col-6">
-                    <div class="box">
-                        <div class="box-body text-center">
-                            <div class="bg-primary-light rounded10 p-20 mx-auto w-100 h-100">
-                                <img style="height: 40px" src="https://rhythm-admin-template.multipurposethemes.com/images/svg-icon/medical/icon-2.svg" class="" alt="">
-                            </div>
-                            <p class="text-fade mt-15 mb-5 text-capitalize fw-bold">TOTAL CANCELLATIONS</p>
-                             <h3 class="mt-0">
-                                <span class="badge bg-secondary rounded-pill">
-                                    @cancellationCount
-                                </span>
-                            </h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-4 col-md-6 col-6">
-                    <div class="box">
-                        <div class="box-body text-center">
-                            <div class="bg-primary-light rounded10 p-20 mx-auto w-100 h-100">
-                                <img style="height: 40px" src="https://rhythm-admin-template.multipurposethemes.com/images/svg-icon/medical/icon-2.svg" class="" alt="">
-                            </div>
-                            <p class="text-fade mt-15 mb-5 text-capitalize fw-bold"" >CURRENT REVENUE (2024) </p>
-                            <h3 class="mt-0">
-                                <span class="badge bg-secondary rounded-pill">
-                                    @totalRevenueList[0].ToString("0.00")
-                                </span>
-                            </h3>
-                        </div>
+                    <div class="box-body">
+                        <div id="barChart" style="height: 350px;"></div>
                     </div>
                 </div>
             </div>
-
-            <div class="row">
-                <div class="col-md-12" >
-                    <div class="row">
-                         <div class="box">
-                              <div class="box-header">
-                            <h5 style="font-weight: bold">SALES BY LEAD SOURCE</h5>
-                        </div>
-                             <div lass="box-body">
-                                  <div id="pieChart"></div>
-                             </div>
-                         </div>
+            <div class="col-md-6">
+                <div class="box">
+                    <div class="box-header">
+                        <h5 style="font-weight: bold">REVENUE LOST PER CANCELLATION</h5>
                     </div>
-                </div>  
-              <div class="col-md-12">
-                <div class="row">
-                    <div class="box">
-                        <div class="box-header">
-                            <h5 style="font-weight: bold">SITES BY REGION</h5>
-                        </div>
-                        <div class="box-body">
-                               <div id="secondBarChart" style="height: 350px;"></div>
-                        </div>
-                    </div>
-                </div>
-            </div> 
-            </div>
-        </div>
-        <div class="col-md-8">
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="box">
-                        <div class="box-header">
-                            <h5 style="font-weight: bold">SALE BY PERSON</h5>
-                        </div>
-                        <div class="box-body">
-                            <div id="barChart" style="height: 350px;"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="box">
-                        <div class="box-header">
-                            <h5 style="font-weight: bold">REVENUE LOST PER CANCELLATION</h5>
-                        </div>
-                        <div class="box-body">
-                            <div id="lineChart" style="height: 350px;"></div>
-                        </div>
+                    <div class="box-body">
+                        <div id="lineChart" style="height: 350px;"></div>
                     </div>
                 </div>
             </div>
-          <div class="row">
+        </div>
+        <div class="row">
             <div class="col-md-12">
-                <div class="row" style="margin: 10px">
+                <!-- Sales by Region Chart Section -->
+                @section SalesByRegionChart {
                     <div class="box">
                         <div class="box-header">
-                            <h5 style="font-weight: bold">BAR CHART</h5>
+                            <h5 style="font-weight: bold">SALES BY REGION</h5>
                         </div>
                         <div class="box-body">
-                            <div id="lastChart" style="height: 350px;"></div>
+                            <div id="salesByRegionChart" style="height: 350px;"></div>
+                        </div>
                     </div>
-                </div>
+                }
+
+
+                 @section ClientCountByLeadSourceChart {
+                    <div class="box">
+                        <div class="box-header">
+                            <h5 style="font-weight: bold">CLIENT COUNT BY LEAD SOURCE</h5>
+                        </div>
+                        <div class="box-body">
+                              <canvas id="clientCountByLeadSourceChartCanvas" style="height: 350px;"></canvas>
+                        </div>
+                    </div>
+                 }
             </div>
-</div>
         </div>
     </div>
 </div>
 
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         // Render the Bar Chart for Aggregated Sales Consultant
         var consultantNames = [];
@@ -210,53 +147,58 @@
         var pieChart = new ApexCharts(document.getElementById('pieChart'), pieChartOptions);
         pieChart.render();
 
+        // Retrieve data from ViewData for Sales by Region Chart
+        var provinces = @Html.Raw(Json.Serialize(ViewData["Provinces"]));
+        var clientCounts = @Html.Raw(Json.Serialize(ViewData["ClientCounts"]));
 
-
-
-        var sitesByRegion = @Html.Raw(Json.Serialize(ViewData["SitesByRegion"]));
-        var regions = Object.keys(sitesByRegion);
-        var siteCounts = Object.values(sitesByRegion);
-
-        var options = {
-            series: [{
-                data: siteCounts
-            }],
+        // Prepare data for the Sales by Region Chart
+        var salesByRegionChartData = {
             chart: {
                 type: 'bar',
                 height: 350
             },
-            plotOptions: {
-                bar: {
-                    horizontal: true
-                }
-            },
-            dataLabels: {
-                enabled: false
-            },
+            series: [{
+                name: 'Number of Clients',
+                data: clientCounts
+            }],
             xaxis: {
-                categories: regions,
-                title: {
-                    text: 'Number of Sites'
-                }
-            },
-            yaxis: {
-                title: {
-                    text: 'Regions Codes '
-                }
+                categories: provinces
             }
         };
 
-        // Render the bar graph
-        var chart = new ApexCharts(document.getElementById('secondBarChart'), options);
-        chart.render();
+        // Render the Sales by Region Chart
+        var salesByRegionChart = new ApexCharts(document.getElementById('salesByRegionChart'), salesByRegionChartData);
+        salesByRegionChart.render();
 
 
 
 
 
+        // Prepare data for the Client Count by Lead Source Chart
+    var leadSourceCounts = @Html.Raw(Json.Serialize(ViewData["LeadSourceCounts"]));
+    var leadSources = Object.keys(leadSourceCounts);
+    var clientCounts = Object.values(leadSourceCounts);
 
-
-  
-
+    var ctx = document.getElementById('clientCountByLeadSourceChartCanvas').getContext('2d');
+    var clientCountByLeadSourceChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: leadSources,
+            datasets: [{
+                label: 'Client Count',
+                data: clientCounts,
+                backgroundColor: '#26A0FC',
+                borderColor: '#26A0FC',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
     </script>
 }

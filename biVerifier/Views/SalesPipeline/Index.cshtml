@@ -1,0 +1,66 @@
+﻿@model List<biVerifier.Models.SalesPipeline>
+
+@{
+    ViewData["Title"] = "SALES PIPELINE";
+
+}
+
+
+
+<div class="custom-container" style="margin-top: 4rem">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-body">
+                    <div class="">
+                        <div class="d-flex  align-items-center justify-content-between mb-20">
+                            <div>
+                                <h4 class="box-title" style="text-transform: uppercase; font-weight: bold;">SALES PIPELINE LIST</h4>
+                            </div>
+                            <div>
+                                <button class="btn btn-secondary">PRINT DATA</button>
+                                <button class="btn btn-primary">EXPORT TO EXCEL</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive rounded card-table">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Client</th>
+                                    <th>Lead_Source</th>
+                                    <th>Contact_Person</th>
+                                    <th>Email</th>
+                                    <th>City</th>
+                                    <th>Service</th>
+                                    <th>Enquiry Date</th>
+
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var cData in Model)
+                                {
+                                    <tr class="hover-primary">
+                                        <td>@cData?.ID</td>
+                                        <td>@cData?.Client</td>
+                                        <td>@cData?.Lead_Source</td>
+                                        <td>@cData?.Contact_Person</td>
+                                        <td>@cData?.Email</td>
+                                        <td>@cData?.City</td>
+                                        <td>@cData?.Service</td>
+                                        <td>@cData?.Enquiry_Date</td>
+                                       
+                                    </tr>
+
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,43 @@
+﻿@{
+
+    List<string> cancellationReasons = ViewData["CancellationReasons"] as List<string>;
+    List<decimal> revenueLost = ViewData["RevenueLost"] as List<decimal>;
+}
+
+<div id="lineChart" style="height: 350px;"></div>
+
+
+@section scripts {
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script>
+        // Render the Line Chart for Revenue Lost per Cancellation
+        var cancellationReasons = @Html.Raw(Json.Serialize(cancellationReasons));
+        var revenueLost = @Html.Raw(Json.Serialize(revenueLost));
+
+        var lineChartData = {
+            chart: {
+                type: 'bar',
+                height: 350
+            },
+            series: [{
+                name: 'Revenue Lost',
+                data: revenueLost
+            }],
+            xaxis: {
+                categories: cancellationReasons
+            }
+        };
+
+        var lineChartOptions = {
+            chart: {
+                toolbar: {
+                    show: false
+                }
+            }
+        };
+
+        var lineChart = new ApexCharts(document.getElementById('lineChart'), lineChartData);
+        lineChart.render();
+    </script>
+
+}
