@@ -2,8 +2,7 @@
 {
     public class Licenses
     {
-        public int ID { get; set; }
-        public string? Sites { get; set; }
+        public string Client { get; set; }
         public string? Requestor { get; set; }
         public string? ChangeDate { get; set; }
         public string? ChangeCode { get; set; }

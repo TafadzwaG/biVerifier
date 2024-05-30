@@ -12,7 +12,8 @@
         public string? City { get; set;}
 
         public string? Service { get; set;}
-        public string? Enquiry_Date { get; set; }
+        public string? Lead_Month { get; set; }
+        public string? Consultant { get; set; }
 
 
     }

@@ -9,7 +9,7 @@ namespace biVerifier.Controllers
     {
         public IActionResult Index()
         {
-            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\CRM Server\Documents\veriDB\VERIFIER1.accdb;Persist Security Info=False;";
+            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\Tafadzwag\Documents\DATABASE\VERIFIER2.accdb;Persist Security Info=False;";
             //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
 
             // SQL query to execute
@@ -34,17 +34,17 @@ namespace biVerifier.Controllers
                             var licencesData = new Licenses();
 
                             // Check if ID is DBNull
-                            if (reader["ID"] != DBNull.Value)
-                            {
-                                licencesData.ID = (int)reader["ID"];
-                            }
-                            else
-                            {
-                                // Assign a default value or handle the case appropriately
-                                licencesData.ID = -1; // Or any other default value
-                            }
+                            //if (reader["ID"] != DBNull.Value)
+                            //{
+                            //    licencesData.ID = (int)reader["ID"];
+                            //}
+                            //else
+                            //{
+                            //    // Assign a default value or handle the case appropriately
+                            //    licencesData.ID = -1; // Or any other default value
+                            //}
 
-                            licencesData.Sites = reader["Sites"].ToString();
+                            licencesData.Client = reader["Client"].ToString();
                             licencesData.Requestor = reader["Requestor"].ToString();
                             licencesData.ChangeDate = reader["ChangeDate"].ToString();
                             licencesData.ChangeCode = reader["ChangeCode"].ToString();
