@@ -30,5 +30,7 @@
         public string? Install_Comm { get; set;}
         public string? ManagedServicesFees { get; set;}
 
+        public string? Comments { get; set;}
+
     }
 }

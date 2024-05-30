@@ -71,7 +71,7 @@
                                     <th>Suburb</th>
                                     <th>City</th>
                                     <th>Province</th>
-                                    <th>Lead Source</th>
+                                    <th>Live Year</th>
                                     <th>Service</th>
                                    
                                   
@@ -91,7 +91,14 @@
                                         <td>@crmData.Suburb</td>
                                         <td>@crmData.City</td>
                                         <td>@crmData.Province</td>
-                                        <td>@crmData.LeadSource</td>
+                                        @if (!string.IsNullOrEmpty(crmData.liveyear))
+                                        {
+                                            <span class="btn btn-primary">@crmData.liveyear</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="btn btn-secondary">N/A</span>
+                                        }
                                         <td>@crmData.Service</td>
                                       
                                     </tr>

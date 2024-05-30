@@ -8,7 +8,6 @@
         public string? Surname { get; set;}
         public string? UserPW { get; set;}
         public string? email { get; set;}
-        public string? JobTitle { get; set;}
 
         public string? Security { get; set;}
         public string? Department { get; set;}

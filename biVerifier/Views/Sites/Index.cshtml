@@ -2,9 +2,58 @@
 
 @{
     ViewData["Title"] = "SITES DATA";
-
 }
 
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+    <script>
+        function exportToExcel() {
+            // Get the table element
+            var table = document.getElementById('dataTable');
+
+            // Convert the table to a worksheet
+            var ws = XLSX.utils.table_to_sheet(table);
+
+            // Create a new workbook
+            var wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+            XLSX.writeFile(wb, 'technicalsData.xlsx');
+        }
+
+        function hideTable() {
+            var table = document.getElementById('dataTable');
+            table.style.display = 'none';
+        }
+
+        // Call the hideTable function when the page loads
+        window.onload = hideTable;
+
+        function searchTable() {
+            // Declare variables
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById('searchInput');
+            filter = input.value.toUpperCase();
+            table = document.getElementById('dataTable');
+            tr = table.getElementsByTagName('tr');
+
+            // Loop through all table rows, and hide those who don't match the search query
+            for (i = 1; i < tr.length; i++) {
+                tr[i].style.display = 'none';
+                td = tr[i].getElementsByTagName('td');
+                for (var j = 0; j < td.length; j++) {
+                    if (td[j]) {
+                        txtValue = td[j].textContent || td[j].innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            tr[i].style.display = '';
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+}
 
 <div class="custom-container" style="margin-top: 4rem">
     <div class="row">
@@ -12,14 +61,19 @@
             <div class="box">
                 <div class="box-body">
                     <div class="">
-                        <div class="d-flex  align-items-center justify-content-between mb-20">
+                        <div class="d-flex align-items-center justify-content-between mb-20">
                             <div>
-                                <h4 class="box-title" style="text-transform: uppercase; font-weight: bold;">LIST OF ALL SITES</h4>
+                                <h4 class="box-title" style="text-transform: uppercase; font-weight: bold;">OVERVIEW OF ALL SITES(TECHNICALS)</h4>
                             </div>
                             <div>
-                                <button class="btn btn-secondary">PRINT DATA</button>
-                                <button class="btn btn-primary">EXPORT TO EXCEL</button>
+                                <button class="btn btn-primary" onclick="exportToExcel()">EXPORT TO EXCEL</button>
                             </div>
+                        </div>
+                    </div>
+                    <div class="mb-3 mt-3">
+                        <div class="col-md-6">
+                            <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Search for names.." class="form-control">
+
                         </div>
                     </div>
                     <div class="table-responsive rounded card-table">
@@ -28,8 +82,38 @@
                                 <tr>
                                     <th>Site</th>
                                     <th>Client ID</th>
-                                    <th>Contact Person </th>
-                                    <th>Emmail Address </th>
+                                    <th>Contact Person</th>
+                                    <th>Number</th>
+                                    <th>Street</th>
+                                    <th>Suburb</th>
+                                    <th>City</th>
+                                    <th>Region</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var cData in Model)
+                                {
+                                    <tr class="hover-primary">
+                                        <td>@cData?.SiteID</td>
+                                        <td>@cData?.Client</td>
+                                        <td>@cData?.Contact_Person</td>
+                                        <td>@cData?.Num</td>
+                                        <td>@cData?.Street</td>
+                                        <td>@cData?.Suburb</td>
+                                        <td>@cData?.City</td>
+                                        <td>@cData?.Region</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
+                        <table id="dataTable" class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Site</th>
+                                    <th>Client ID</th>
+                                    <th>Contact Person</th>
+                                    <th>Email Address</th>
                                     <th>Contact Number</th>
                                     <th>Number</th>
                                     <th>Street</th>
@@ -52,19 +136,17 @@
                                     <th>SMTP Server Port</th>
                                     <th>Public IP</th>
                                     <th>Notes</th>
-                                   
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach (var cData in Model)
                                 {
                                     <tr class="hover-primary">
-                                      
-                                        <td>@cData?.Site</td>
-                                        <td>@cData?.ClientID</td>
+                                        <td>@cData?.SiteID</td>
+                                        <td>@cData?.Client</td>
                                         <td>@cData?.Contact_Person</td>
-                                        <td>@cData?.Email_Add</td>
-                                        <td>@cData?.Contact_Num</td>
+                                        <td>@cData?.EmailAdd</td>
+                                        <td>@cData?.ContactNum</td>
                                         <td>@cData?.Num</td>
                                         <td>@cData?.Street</td>
                                         <td>@cData?.Suburb</td>
@@ -86,12 +168,8 @@
                                         <td>@cData?.SMTP_Server_Port</td>
                                         <td>@cData?.Public_IP</td>
                                         <td>@cData?.Notes</td>
-                                       
-                                     
                                     </tr>
-
                                 }
-
                             </tbody>
                         </table>
                     </div>

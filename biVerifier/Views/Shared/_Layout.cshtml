@@ -1,7 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Authentication
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="zoom: 80%;">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=0.8" />
@@ -27,7 +27,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-light border-bottom box-shadow mb-3" >
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-light border-bottom box-shadow mb-3" style="height: 6rem" >
             <div class="container-fluid" style="margin-left: 3rem; margin-right: 3rem">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
                     <img style="height: 30px" src="~/images/logo.jpg" alt="biVerifier Logo" class="img-fluid">
@@ -45,7 +45,7 @@
                             <a class="nav-link nav-text" asp-area="" asp-controller="Crm" asp-action="Index">Crm</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link nav-text" asp-area="" asp-controller="Sites" asp-action="Index">Sites</a>
+                            <a class="nav-link nav-text" asp-area="" asp-controller="Sites" asp-action="Index">Technicals</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link nav-text" asp-area="" asp-controller="Cancellations" asp-action="Index">Cancellations</a>
@@ -90,8 +90,27 @@
     <div class="">
         <main role="main" class="pb-3">
             @RenderBody()
-            @RenderSection("SalesByRegionChart", required: false)
-            @RenderSection("ClientCountByLeadSourceChart", required: false)
+
+            <div class="row">
+                <div class="col-md-4">
+                    @RenderSection("SalesByRegionChart", required: false)
+                </div> 
+                <div class="col-md-4">
+                    @RenderSection("ClientCountByLeadSourceChart", required: false)
+                </div>
+                <div class="col-md-4">
+                    @RenderSection("ConsultantTotalMonitoringFees", required: false)
+
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    @RenderSection("ClientCountByMarketType", required: false)
+
+                </div>
+            </div>
+           
         </main>
     </div>
 

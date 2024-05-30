@@ -3,12 +3,12 @@ namespace biVerifier.Models
 {
     public class SitesData
     {
-        public string? Site { get; set; }
-        public string? ClientID { get; set; }
+        public string? SiteID { get; set; }
+        public string? Client { get; set; }
         public string? Contact_Person { get; set; }
 
-        public string? Email_Add { get; set; }
-        public string? Contact_Num { get; set; }
+        public string? EmailAdd { get; set; }
+        public string? ContactNum { get; set; }
         public string? Num { get; set; }
         public string? Street { get; set; }
         public string? Suburb { get; set; }

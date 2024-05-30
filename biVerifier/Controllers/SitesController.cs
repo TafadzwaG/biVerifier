@@ -10,7 +10,8 @@ namespace biVerifier.Controllers
     {
         public IActionResult Index()
         {
-            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
+            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\Tafadzwag\Documents\DATABASE\VERIFIER2.accdb;Persist Security Info=False;";
+            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
 
             string query = "SELECT * FROM Sites";
             var sitesDataList = new List<SitesData>();
@@ -26,11 +27,11 @@ namespace biVerifier.Controllers
                         while (reader.Read())
                         {
                             var cData = new SitesData();
-                            cData.Site = reader["Site"].ToString();
-                            cData.ClientID = reader["ClientID"].ToString();
+                            cData.SiteID = reader["SiteID"].ToString();
+                            cData.Client = reader["Client"].ToString();
                             cData.Contact_Person = reader["Contact_Person"].ToString();
-                            cData.Email_Add = reader["EmailAdd"].ToString();
-                            cData.Contact_Num = reader["ContactNum"].ToString();
+                            cData.EmailAdd = reader["EmailAdd"].ToString();
+                            cData.ContactNum = reader["ContactNum"].ToString();
                             cData.Num = reader["Num"].ToString();
                             cData.Street = reader["Street"].ToString();
                             cData.Suburb = reader["Suburb"].ToString();

@@ -11,6 +11,9 @@ namespace biVerifier.Controllers
     [Authorize]
     public class HomeController : Controller
     {
+        private string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\Tafadzwag\Documents\DATABASE\VERIFIER2.accdb;Persist Security Info=False;";
+        //private string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
+
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)
@@ -18,18 +21,93 @@ namespace biVerifier.Controllers
             _logger = logger;
         }
 
-        
+
         public IActionResult Index()
         {
             getCountsInDb();
             AggregatedSalesConsultant();
             reasonForCancellation();
-            salesLeadSource();
+            //salesLeadSource();
             getCurrentYearRevenue();
-            getSitesByRegion();
+            //getSitesByRegion();
             getSalesByRegion();
             clientCountGraphByLeadSource();
+            consultantTotalMonitoringFees();
+            clientCountByMarketType();
             return View();
+        }
+
+
+        public IActionResult clientCountByMarketType()
+        {
+            Dictionary<string, int> clientCountByMarket = new Dictionary<string, int>();
+
+            using (OdbcConnection connection = new OdbcConnection(connectionString))
+            {
+                connection.Open();
+
+                using (OdbcCommand command = new OdbcCommand("SELECT Market, COUNT(Client) AS ClientCount FROM CRM GROUP BY Market", connection))
+                {
+                    using (OdbcDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            string market = reader["Market"].ToString();
+                            int clientCount = int.Parse(reader["ClientCount"].ToString());
+                            clientCountByMarket.Add(string.IsNullOrEmpty(market) ? "Other" : market, clientCount);
+                        }
+                    }
+                }
+            }
+
+            // Output the result to the console
+            foreach (var item in clientCountByMarket)
+            {
+                Console.WriteLine($"Market: {item.Key}, ClientCount: {item.Value}");
+            }
+
+            ViewData["ClientCountByMarket"] = clientCountByMarket;
+            return View("Index");
+        }
+
+        public IActionResult consultantTotalMonitoringFees()
+        {
+            Dictionary<string, decimal> totalMonitoringFeesByConsultant = new Dictionary<string, decimal>();
+
+            using (OdbcConnection connection = new OdbcConnection(connectionString))
+            {
+                connection.Open();
+
+                using (OdbcCommand command = new OdbcCommand("SELECT Consultant, SUM(TotalMonitoringFees) FROM CRM GROUP BY Consultant", connection))
+                {
+                    using (OdbcDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            string consultant = reader["Consultant"].ToString();
+                            if (!reader.IsDBNull(1))
+                            {
+                                decimal totalMonitoringFees = reader.GetDecimal(1);
+                                totalMonitoringFeesByConsultant.Add(consultant, totalMonitoringFees);
+                            }
+                            else
+                            {
+                                // Handle null or empty value
+                                totalMonitoringFeesByConsultant.Add(consultant, 0m); // Or any other default value
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Output the result to the console
+            foreach (var item in totalMonitoringFeesByConsultant)
+            {
+                Console.WriteLine($"Consultant: {item.Key}, TotalMonitoringFees: {item.Value}");
+            }
+
+            ViewData["TotalMonitoringFeesByConsultant"] = totalMonitoringFeesByConsultant;
+            return View("Index");
         }
 
         public IActionResult Privacy()
@@ -52,10 +130,11 @@ namespace biVerifier.Controllers
         [HttpGet]
         public IActionResult AggregatedSalesConsultant()
         {
-            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
+            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\CRM Server\Documents\veriDB\VERIFIER2.accdb;Persist Security Info=False;";
+            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\Tafadzwag\Documents\DATABASE\VERIFIER2.accdb;Persist Security Info=False;";
 
             string query = @"
-            SELECT Consultant, SUM(GandTotal) AS TotalSales
+            SELECT Consultant, SUM(TotalMonitoringFees) AS TotalSales
             FROM CRM
             WHERE Status = 'CL'
             GROUP BY Consultant";
@@ -111,7 +190,8 @@ namespace biVerifier.Controllers
             // Your logic to query the database and get the counts
             // Assuming you're using ADO.NET with OleDbConnection and OleDbCommand
 
-            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
+            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\Tafadzwag\Documents\DATABASE\VERIFIER2.accdb;Persist Security Info=False;";
+            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
 
             string siteCountQuery = "SELECT COUNT(*) FROM Sites";
             string cancellationCountQuery = "SELECT COUNT(*) FROM Cancellations";
@@ -145,9 +225,12 @@ namespace biVerifier.Controllers
             return RedirectToAction("Index");
         }
 
+
+
         public IActionResult reasonForCancellation()
         {
-            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
+            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\Tafadzwag\Documents\DATABASE\VERIFIER2.accdb;Persist Security Info=False;";
+            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
 
             List<string> cancellationReasons = new List<string>();
             List<decimal> revenueLost = new List<decimal>();
@@ -205,7 +288,8 @@ namespace biVerifier.Controllers
 
         public IActionResult salesLeadSource()
         {
-            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
+            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\CRM Server\Documents\veriDB\VERIFIER2.accdb;Persist Security Info=False;";
+            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\Tafadzwag\Documents\DATABASE\VERIFIER2.accdb;Persist Security Info=False;";
 
             Dictionary<string, int> leadSourceCounts = new Dictionary<string, int>();
 
@@ -246,21 +330,25 @@ namespace biVerifier.Controllers
 
         public IActionResult getCurrentYearRevenue()
         {
-            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
+            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\Tafadzwag\Documents\DATABASE\VERIFIER2.accdb;Persist Security Info=False;";
+            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
 
             int currentYear = DateTime.Now.Year;
 
             decimal totalRevenue = 0;
 
-            string query = $"SELECT SUM(GandTotal) AS TotalRevenue FROM CRM WHERE LIVE_Year = {currentYear}";
-
             List<decimal> totalRevenueList = new List<decimal>();
+
+            string query = "SELECT SUM(TotalMonitoringFees) AS TotalRevenue FROM CRM WHERE liveyear = ?";
 
             using (OdbcConnection connection = new OdbcConnection(connectionString))
             using (OdbcCommand command = new OdbcCommand(query, connection))
             {
                 try
                 {
+                    // Add parameter to the command
+                    command.Parameters.AddWithValue("liveyear", currentYear);
+
                     // Open the database connection
                     connection.Open();
 
@@ -280,7 +368,6 @@ namespace biVerifier.Controllers
             // Pass the TotalRevenue to the Index view
             ViewData["TotalRevenue"] = totalRevenueList;
 
-
             // Return the view to render the TotalRevenue
             return View("Index");
         }
@@ -288,7 +375,8 @@ namespace biVerifier.Controllers
         [HttpGet]
         public IActionResult getSitesByRegion()
         {
-            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
+            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
+            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\Tafadzwag\Documents\DATABASE\VERIFIER2.accdb;Persist Security Info=False;";
 
             // Initialize a dictionary to store the count of sites per region
             Dictionary<string, int> sitesByRegion = new Dictionary<string, int>();
@@ -332,7 +420,8 @@ namespace biVerifier.Controllers
 
         public IActionResult getSalesByRegion()
         {
-            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
+            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\Tafadzwag\Documents\DATABASE\VERIFIER2.accdb;Persist Security Info=False;";
+            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
 
             List<string> provinces = new List<string>();
             List<int> clientCounts = new List<int>();
@@ -373,7 +462,8 @@ namespace biVerifier.Controllers
 
         public IActionResult clientCountGraphByLeadSource()
         {
-            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
+            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\Tafadzwag\Documents\DATABASE\VERIFIER2.accdb;Persist Security Info=False;";
+            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
 
             var leadSourceCounts = new Dictionary<string, int>();
 
@@ -418,7 +508,12 @@ namespace biVerifier.Controllers
         }
 
 
+
+
+
     }
+
+
 
 
 

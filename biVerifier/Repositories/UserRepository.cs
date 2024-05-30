@@ -46,7 +46,6 @@ namespace biVerifier.Repositories
                                 Surname = reader["Surname"].ToString(),
                                 UserPW = reader["UserPW"].ToString(),
                                 email = reader["email"].ToString(),
-                                JobTitle = reader["JobTitle"].ToString(),
                                 Security = reader["Security"].ToString(),
                                 Department = reader["Department"].ToString(),
                                 Status = reader["Status"].ToString(),

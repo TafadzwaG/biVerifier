@@ -11,15 +11,77 @@
 }
 
 <div class="custom-container" style="margin: 3rem">
+
+    <div class="row">
+        <div class="col-md-4">
+           <div class="row">
+              
+                <div class="col-xl-6 col-md-6 col-6">
+                    <div class="box">
+                        <div class="box-body text-center">
+                            <div class="bg-primary-light rounded10 p-20 mx-auto w-100 h-100">
+                                <img style="height: 40px" src="https://rhythm-admin-template.multipurposethemes.com/images/svg-icon/medical/icon-2.svg" class="" alt="">
+                            </div>
+                            <p class="text-fade mt-15 mb-5 text-capitalize fw-bold">TOTAL CANCELLATIONS (@DateTime.Now.Year)</p>
+                             <h3 class="mt-0">
+                                <span class="badge bg-secondary rounded-pill">
+                                    @cancellationCount
+                                </span>
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-md-6 col-6">
+                    <div class="box">
+                        <div class="box-body text-center">
+                            <div class="bg-primary-light rounded10 p-20 mx-auto w-100 h-100">
+                                <img style="height: 40px" src="https://rhythm-admin-template.multipurposethemes.com/images/svg-icon/medical/icon-2.svg" class="" alt="">
+                            </div>
+                            <p class="text-fade mt-15 mb-5 text-capitalize fw-bold"" >CURRENT REVENUE (@DateTime.Now.Year) </p>
+                            <h3 class="mt-0">
+                                <span class="badge bg-secondary rounded-pill">
+                                    @totalRevenueList[0].ToString("0.00")
+                                </span>
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                 @section ClientCountByMarketType {       
+                        
+                }
+                <div>
+
+                    </div>
+                    <div class="box">
+                    <div class="box-header">
+                        <h5 style="font-weight: bold">CLIENT COUNT BY MARKET TYPE</h5>
+                    </div>
+                    <div class="box-body">
+                            <div id="horizontalBarChart" style="height: 350px;"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     <div class="col-md-8">
         <div class="row">
             <div class="col-md-6">
-                <div class="box">
+                @* <div class="box">
                     <div class="box-header">
                         <h5 style="font-weight: bold">SALE BY PERSON</h5>
                     </div>
                     <div class="box-body">
                         <div id="barChart" style="height: 350px;"></div>
+                    </div>
+                </div> *@
+                 <div class="box">
+                    <div class="box-header">
+                        <h5 style="font-weight: bold">SALES BY CONSULTANT</h5>
+                    </div>
+                    <div class="box-body">
+                            <div id="pieChart2" style="height: 350px;"></div>
                     </div>
                 </div>
             </div>
@@ -35,10 +97,18 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-12">
-                <!-- Sales by Region Chart Section -->
-                @section SalesByRegionChart {
-                    <div class="box">
+            <div class="col-md-6">
+                <div class="box">
+                    <div class="box-header">
+                        <h5 style="font-weight: bold">CLIENT COUNT BY LEAD SOURCE</h5>
+                    </div>
+                <div class="box-body">
+                        <canvas id="clientCountByLeadSourceChartCanvas" style="height: 350px;"></canvas>
+                </div>
+                </div>
+            </div>
+             <div class="col-md-6">
+                <div class="box">
                         <div class="box-header">
                             <h5 style="font-weight: bold">SALES BY REGION</h5>
                         </div>
@@ -46,10 +116,12 @@
                             <div id="salesByRegionChart" style="height: 350px;"></div>
                         </div>
                     </div>
-                }
-
-
-                 @section ClientCountByLeadSourceChart {
+                       
+                   </div>
+            <div class="col-md-12">
+                <!-- Sales by Region Chart Section -->
+               @*  <div class="col-md-6">
+                     @section ClientCountByLeadSourceChart {
                     <div class="box">
                         <div class="box-header">
                             <h5 style="font-weight: bold">CLIENT COUNT BY LEAD SOURCE</h5>
@@ -59,16 +131,49 @@
                         </div>
                     </div>
                  }
+                </div> *@
+
             </div>
         </div>
+         <div class="row">
+              <div class="col-md-12">
+                   @* <div class="col-md-6">
+                          @section SalesByRegionChart {
+                    <div class="box">
+                        <div class="box-header">
+                            <h5 style="font-weight: bold">SALES BY REGION</h5>
+                        </div>
+                        <div class="box-body">
+                            <div id="salesByRegionChart" style="height: 350px;"></div>
+                        </div>
+                    </div>
+                }
+                       
+                   </div> *@
+                   <div class="col-md-6">
+                        @*  @section ConsultantTotalMonitoringFees {
+                            <div class="box">
+                            <div class="box-header">
+                                <h5 style="font-weight: bold">SALES BY CONSULTANT</h5>
+                            </div>
+                          <div class="box-body">
+                                 <div id="pieChart2" style="height: 350px;"></div>
+                            </div>
+                        </div>
+                        } *@
+                   </div>
+              </div>
+         </div>
     </div>
+    </div>
+    
 </div>
 
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        // Render the Bar Chart for Aggregated Sales Consultant
+        Render the Bar Chart for Aggregated Sales Consultant
         var consultantNames = [];
         var totalSalesData = [];
         @foreach (var salesData in Model)
@@ -175,30 +280,70 @@
 
 
         // Prepare data for the Client Count by Lead Source Chart
-    var leadSourceCounts = @Html.Raw(Json.Serialize(ViewData["LeadSourceCounts"]));
-    var leadSources = Object.keys(leadSourceCounts);
-    var clientCounts = Object.values(leadSourceCounts);
+        var leadSourceCounts = @Html.Raw(Json.Serialize(ViewData["LeadSourceCounts"]));
+        var leadSources = Object.keys(leadSourceCounts);
+        var clientCounts = Object.values(leadSourceCounts);
 
-    var ctx = document.getElementById('clientCountByLeadSourceChartCanvas').getContext('2d');
-    var clientCountByLeadSourceChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: leadSources,
-            datasets: [{
-                label: 'Client Count',
-                data: clientCounts,
-                backgroundColor: '#26A0FC',
-                borderColor: '#26A0FC',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
+        var ctx = document.getElementById('clientCountByLeadSourceChartCanvas').getContext('2d');
+        var clientCountByLeadSourceChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: leadSources,
+                datasets: [{
+                    label: 'Client Count',
+                    data: clientCounts,
+                    backgroundColor: '#26A0FC',
+                    borderColor: '#26A0FC',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
                 }
             }
-        }
-    });
+        });
+
+
+
+
+         var clientCountByMarket = @Html.Raw(Json.Serialize(ViewData["ClientCountByMarket"]));
+
+        var horizontalBarChartOptions = {
+            chart: {
+                type: 'bar',
+                height: 350,
+                horizontal: true // Set to true to make it horizontal
+            },
+            series: [{
+                data: Object.values(clientCountByMarket)
+            }],
+            xaxis: {
+                categories: Object.keys(clientCountByMarket)
+            },
+            colors: ['#3e82f7', '#04d672', '#fa8b0c', '#ec4a3f', '#9050c6'] // Add more colors if needed
+        };
+
+        var horizontalBarChart = new ApexCharts(document.getElementById('horizontalBarChart'), horizontalBarChartOptions);
+        horizontalBarChart.render();
+
+
+         
+        var totalMonitoringFeesByConsultant = @Html.Raw(Json.Serialize(ViewData["TotalMonitoringFeesByConsultant"]));
+
+        var pieChartOptions = {
+            chart: {
+                type: 'pie',
+                height: 350,
+            },
+            series: Object.values(totalMonitoringFeesByConsultant),
+            labels: Object.keys(totalMonitoringFeesByConsultant)
+        };
+
+        var pieChart = new ApexCharts(document.getElementById('pieChart2'), pieChartOptions);
+        pieChart.render();
+
     </script>
 }
