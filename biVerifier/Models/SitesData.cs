@@ -30,5 +30,7 @@ namespace biVerifier.Models
         public string? SMTP_Server_Port { get; set; }
         public string? Public_IP { get; set; }
         public string? Notes { get; set; }
+
+        public string? Installer {  get; set; }
     }
 }

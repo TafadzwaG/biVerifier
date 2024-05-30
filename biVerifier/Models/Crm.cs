@@ -32,5 +32,7 @@
 
         public string? Comments { get; set;}
 
+        public string? Sage { get; set;}
+
     }
 }

@@ -15,6 +15,10 @@
         public string? Lead_Month { get; set; }
         public string? Consultant { get; set; }
 
+        public string? OnceOffCost { get; set; }
+
+        public string? RecurringCost { get; set; }
+
 
     }
 }
