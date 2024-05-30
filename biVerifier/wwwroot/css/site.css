@@ -232,3 +232,11 @@ body {
     background-color: #258cfb; /* Change to the background color you prefer */
     border-radius: 10px;
 }
+
+.section-span {
+    display: inline-block;
+    max-width: 150px; /* Adjust the max width as needed */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

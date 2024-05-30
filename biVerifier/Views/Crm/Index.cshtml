@@ -37,6 +37,8 @@
     </script>
 }
 
+
+
 <div class="custom-container" style="margin-top: 4rem">
   
     <div class="row">
@@ -82,23 +84,27 @@
                                 {
                                     <tr class="hover-primary">
                                         <td>@crmData.ID</td>
-                                        <td>@crmData.Client</td>
+                                        <td><span class="section-span">@crmData.Client</span> </td>
                                         <td>@crmData.Contact_Person</td>
-                                        <td>@crmData.Email</td>
+                                        <td><span class="section-span">@crmData.Email</span>  </td>
                                         <td>@crmData.Contact_Number</td>
                                         <td>@crmData.No</td>
-                                        <td>@crmData.Street</td>
+                                        <td> <span class="section-span">@crmData.Street</span></td>
                                         <td>@crmData.Suburb</td>
                                         <td>@crmData.City</td>
                                         <td>@crmData.Province</td>
-                                        @if (!string.IsNullOrEmpty(crmData.liveyear))
-                                        {
-                                            <span class="btn btn-primary">@crmData.liveyear</span>
-                                        }
-                                        else
-                                        {
-                                            <span class="btn btn-secondary">N/A</span>
-                                        }
+                                        <td>
+
+                                            @if (!string.IsNullOrEmpty(crmData.liveyear))
+                                            {
+                                                <span class="btn btn-primary">@crmData.liveyear</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="btn btn-secondary">N/A</span>
+                                            }
+                                        </td>
+                                       
                                         <td>@crmData.Service</td>
                                       
                                     </tr>
