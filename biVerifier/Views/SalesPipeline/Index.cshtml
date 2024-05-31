@@ -39,13 +39,16 @@
 
                     <div class="col-md-6 mt-4">
                         <form asp-controller="SalesPipeline" asp-action="Search" method="get">
-                            <div class="input-group mb-3">
+                            <div class="form-floating mb-3">
                                 <input type="text" class="form-control" name="searchTerm" placeholder="Search by Client" />
-                                <div class="input-group-append">
-                                    <button class="btn btn-primary" type="submit">Search</button>
-                                </div>
+                                <label for="floatingSearch">Search by Client</label>
+
+                                
                             </div>
+                            <button class="btn btn-primary" type="submit">Search</button>
                         </form>
+
+                      
                     </div>
                     
                     <div class="table-responsive rounded card-table">
