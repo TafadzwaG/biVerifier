@@ -6,6 +6,20 @@
 }
 
 
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+    <script>
+        function exportToExcel() {
+            var table = document.getElementById('dataTable');
+            var ws = XLSX.utils.table_to_sheet(table);
+            var wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+            XLSX.writeFile(wb, 'TechCancels.xlsx');
+        }
+    </script>
+}
+
+
 
 <div class="custom-container" style="margin-top: 4rem">
     <div class="row">
@@ -18,11 +32,22 @@
                                 <h4 class="box-title" style="text-transform: uppercase; font-weight: bold;">SALES PIPELINE LIST</h4>
                             </div>
                             <div>
-                                <button class="btn btn-secondary">PRINT DATA</button>
-                                <button class="btn btn-primary">EXPORT TO EXCEL</button>
+                                <button class="btn btn-primary" onclick="exportToExcel()">EXPORT TO EXCEL</button>
                             </div>
                         </div>
                     </div>
+
+                    <div class="col-md-6 mt-4">
+                        <form asp-controller="SalesPipeline" asp-action="Search" method="get">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" name="searchTerm" placeholder="Search by Client" />
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" type="submit">Search</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    
                     <div class="table-responsive rounded card-table">
                         <table class="table table-striped table-hover">
                             <thead>
@@ -52,6 +77,41 @@
                                         <td>@cData?.Service</td>
                                         <td>@cData?.Consultant</td>
                                        
+                                    </tr>
+
+                                }
+
+                            </tbody>
+                        </table>
+
+                        <table id="dataTable" class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Client</th>
+                                    <th>Lead_Source</th>
+                                    <th>Contact_Person</th>
+                                    <th>Email</th>
+                                    <th>City</th>
+                                    <th>Service</th>
+                                    <th>Consultant</th>
+
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var cData in Model)
+                                {
+                                    <tr class="hover-primary">
+                                        <td>@cData?.ID</td>
+                                        <td>@cData?.Client</td>
+                                        <td>@cData?.Lead_Source</td>
+                                        <td>@cData?.Contact_Person</td>
+                                        <td>@cData?.Email</td>
+                                        <td>@cData?.City</td>
+                                        <td>@cData?.Service</td>
+                                        <td>@cData?.Consultant</td>
+
                                     </tr>
 
                                 }

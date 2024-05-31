@@ -59,6 +59,49 @@ namespace biVerifier.Controllers
 
         }
 
+        public IActionResult Search(string searchTerm)
+        {
+            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\Tafadzwag\Documents\DATABASE\VERIFIER2.accdb;Persist Security Info=False;";
+            string query = "SELECT * FROM Sales_Pipeline WHERE Client LIKE ?";
+            var salesPipelineList = new List<SalesPipeline>();
+
+            using (OdbcConnection connection = new OdbcConnection(connectionString))
+            using (OdbcCommand command = new OdbcCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@SearchTerm", "%" + searchTerm + "%");
+
+                try
+                {
+                    connection.Open();
+                    using (OdbcDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            SalesPipeline crmData = new SalesPipeline
+                            {
+                                ID = (int)reader["ID"],
+                                Client = reader["Client"].ToString(),
+                                Lead_Source = reader["LeadSource"].ToString(),
+                                Contact_Person = reader["Contact_Person"].ToString(),
+                                Email = reader["Email"].ToString(),
+                                City = reader["City"].ToString(),
+                                Service = reader["Service"].ToString(),
+                                Lead_Month = reader["leadmonth"].ToString(),
+                            };
+                            salesPipelineList.Add(crmData);
+                        }
+                    }
+                }
+                catch (OdbcException ex)
+                {
+                    Console.WriteLine("There was an error " + ex.Message);
+                }
+            }
+
+            return View("Index", salesPipelineList);
+        }
+
+
         public IActionResult FilterByDateRange(DateTime startDate, DateTime endDate)
         {
             string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\Tafadzwag\Documents\DATABASE\VERIFIER2.accdb;Persist Security Info=False;";

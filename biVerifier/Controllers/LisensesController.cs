@@ -67,5 +67,51 @@ namespace biVerifier.Controllers
 
             return View(licensesDataList);
         }
+
+
+        public IActionResult Search(string searchTerm)
+        {
+            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\Tafadzwag\Documents\DATABASE\VERIFIER2.accdb;Persist Security Info=False;";
+            string query = "SELECT * FROM Licenses WHERE Client LIKE ? OR Requestor LIKE ? OR ChangeDate LIKE ? OR ChangeCode LIKE ? OR CurrentAI LIKE ? OR NewAI LIKE ? OR LicensesNo LIKE ? OR Cost LIKE ? OR [Change Notes] LIKE ?";
+
+            var licensesDataList = new List<Licenses>();
+
+            using (OdbcConnection connection = new OdbcConnection(connectionString))
+            using (OdbcCommand command = new OdbcCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@SearchTerm", "%" + searchTerm + "%");
+
+                try
+                {
+                    connection.Open();
+                    using (OdbcDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var licencesData = new Licenses
+                            {
+                                Client = reader["Client"].ToString(),
+                                Requestor = reader["Requestor"].ToString(),
+                                ChangeDate = reader["ChangeDate"].ToString(),
+                                ChangeCode = reader["ChangeCode"].ToString(),
+                                CurrentAI = reader["CurrentAI"].ToString(),
+                                NewAI = reader["NewAI"].ToString(),
+                                LicensesNo = reader["LicensesNo"].ToString(),
+                                Cost = reader["Cost"].ToString(),
+                                ChangeNotes = reader["Change Notes"].ToString()
+                            };
+
+                            licensesDataList.Add(licencesData);
+                        }
+                    }
+                }
+                catch (OleDbException ex)
+                {
+                    Console.WriteLine("There was an error " + ex.Message);
+                }
+            }
+
+            return View("Index", licensesDataList);
+        }
     }
 }

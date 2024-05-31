@@ -1,24 +1,17 @@
 ﻿@model List<biVerifier.Models.TechCancel>
 
 @{
-    ViewData["Title"] = "TECH CANCEL";
-
+    ViewData["Title"] = "Tech Cancel";
 }
 
 @section Scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
     <script>
         function exportToExcel() {
-            // Get the table element
             var table = document.getElementById('dataTable');
-
-            // Convert the table to a worksheet
             var ws = XLSX.utils.table_to_sheet(table);
-
-            // Create a new workbook
             var wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-
             XLSX.writeFile(wb, 'TechCancelReport.xlsx');
         }
 
@@ -27,14 +20,9 @@
             table.style.display = 'none';
         }
 
-        // Call the hideTable function when the page loads
         window.onload = hideTable;
-
-
-
-
     </script>
- }
+}
 
 <div class="custom-container" style="margin-top: 4rem">
     <div class="row">
@@ -42,37 +30,42 @@
             <div class="box">
                 <div class="box-body">
                     <div class="">
-                        <div class="d-flex  align-items-center justify-content-between mb-20">
+                        <div class="d-flex align-items-center justify-content-between mb-20">
                             <div>
-                                <h4 class="box-title" style="text-transform: uppercase; font-weight: bold;">CANCELS</h4>
+                                <h4 class="box-title" style="text-transform: uppercase; font-weight: bold;">Cancels</h4>
                             </div>
                             <div>
-                                <button class="btn btn-primary" onclick="exportToExcel()">EXPORT TO EXCEL</button>
+                                <button class="btn btn-primary" onclick="exportToExcel()">Export to Excel</button>
                             </div>
                         </div>
+                    </div>
+                    <div class="mb-3 mt-4">
+                        <form method="get" asp-controller="TechCancel" asp-action="Index">
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="searchTerm" placeholder="Search by Client, Site ID, Date, or Tech Responsible" value="@ViewBag.SearchTerm" />
+                                <button class="btn btn-primary" type="submit">Search</button>
+                            </div>
+                        </form>
                     </div>
                     <div class="table-responsive rounded card-table">
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr>
                                     <th>Client</th>
-                                    <th>Site ID </th>
-                                    <th>Date </th>
+                                    <th>Site ID</th>
+                                    <th>Date</th>
                                     <th>Tech Responsibility</th>
                                     <th>Total Channels</th>
-                                    <th>Platform </th>
-                                    <th>Canvcel GSM</th>
+                                    <th>Platform</th>
+                                    <th>Cancel GSM</th>
                                     <th>Cancel DNS</th>
-                                    <th>Cancel LPR Licences</th>
-                                   
-
+                                    <th>Cancel LPR Licenses</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach (var cData in Model)
                                 {
                                     <tr class="hover-primary">
-
                                         <td>@cData?.Client</td>
                                         <td>@cData?.SiteID</td>
                                         <td>@cData?.Date</td>
@@ -81,7 +74,6 @@
                                                 @cData?.TechResponsible
                                             </span>
                                         </td>
-                                      
                                         <td>@cData?.Total_Channels</td>
                                         <td>
                                             <span class="badge bg-primary px-3 py-2">
@@ -93,34 +85,30 @@
                                         <td>@cData?.Cancel_LPR_Licenses</td>
                                     </tr>
                                 }
-
                             </tbody>
                         </table>
-                        
+
                         <table id="dataTable" class="table table-striped table-hover">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
                                     <th>Client</th>
-                                    <th>Site ID </th>
-                                    <th>Date </th>
+                                    <th>Site ID</th>
+                                    <th>Date</th>
                                     <th>Tech Responsibility</th>
                                     <th>Total Channels</th>
-                                    <th>Platform </th>
-                                    <th>Canvcel GSM</th>
+                                    <th>Platform</th>
+                                    <th>Cancel GSM</th>
                                     <th>Cancel DNS</th>
-                                    <th>Cancel LPR Licences</th>
-                                    <th>Cancel Video Analytics Licensest</th>
+                                    <th>Cancel LPR Licenses</th>
+                                    <th>Cancel Video Analytics Licenses</th>
                                     <th>Cancel Internet Connectivity</th>
                                     <th>Cancel Billing</th>
-
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach (var cData in Model)
                                 {
                                     <tr class="hover-primary">
-
                                         <td>@cData?.Client</td>
                                         <td>@cData?.SiteID</td>
                                         <td>@cData?.Date</td>
@@ -133,11 +121,8 @@
                                         <td>@cData?.Cancel_Video_Analytics_Licenses</td>
                                         <td>@cData?.Cancel_Internet_Connectivity</td>
                                         <td>@cData?.Cancel_Billing</td>
-
                                     </tr>
-
                                 }
-
                             </tbody>
                         </table>
                     </div>
@@ -146,3 +131,4 @@
         </div>
     </div>
 </div>
+
