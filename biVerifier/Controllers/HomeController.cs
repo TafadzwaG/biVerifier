@@ -33,6 +33,7 @@ namespace biVerifier.Controllers
             getSalesByRegion();
             clientCountGraphByLeadSource();
             //consultantTotalMonitoringFees();
+            ConsultantTotalMonitoringFees();
             clientCountByMarketType();
             return View();
         }
@@ -70,7 +71,47 @@ namespace biVerifier.Controllers
             return View("Index");
         }
 
-        public IActionResult consultantTotalMonitoringFees()
+        //public IActionResult consultantTotalMonitoringFees()
+        //{
+        //    Dictionary<string, decimal> totalMonitoringFeesByConsultant = new Dictionary<string, decimal>();
+
+        //    using (OdbcConnection connection = new OdbcConnection(connectionString))
+        //    {
+        //        connection.Open();
+
+        //        using (OdbcCommand command = new OdbcCommand("SELECT Consultant, SUM(TotalMonitoringFees) FROM CRM GROUP BY Consultant", connection))
+        //        {
+        //            using (OdbcDataReader reader = command.ExecuteReader())
+        //            {
+        //                while (reader.Read())
+        //                {
+        //                    string consultant = reader["Consultant"].ToString();
+        //                    if (!reader.IsDBNull(1))
+        //                    {
+        //                        decimal totalMonitoringFees = reader.GetDecimal(1);
+        //                        totalMonitoringFeesByConsultant.Add(consultant, totalMonitoringFees);
+        //                    }
+        //                    else
+        //                    {
+        //                        // Handle null or empty value
+        //                        totalMonitoringFeesByConsultant.Add(consultant, 0m); // Or any other default value
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+
+        //    // Output the result to the console
+        //    foreach (var item in totalMonitoringFeesByConsultant)
+        //    {
+        //        Console.WriteLine($"Consultant: {item.Key}, TotalMonitoringFees: {item.Value}");
+        //    }
+
+        //    ViewData["TotalMonitoringFeesByConsultant"] = totalMonitoringFeesByConsultant;
+        //    return View("Index");
+        //}
+
+        public IActionResult ConsultantTotalMonitoringFees()
         {
             Dictionary<string, decimal> totalMonitoringFeesByConsultant = new Dictionary<string, decimal>();
 
@@ -85,6 +126,13 @@ namespace biVerifier.Controllers
                         while (reader.Read())
                         {
                             string consultant = reader["Consultant"].ToString();
+
+                            if (totalMonitoringFeesByConsultant.ContainsKey(consultant))
+                            {
+                                // Handle duplicate consultant entry if necessary
+                                continue; // Skip this entry
+                            }
+
                             if (!reader.IsDBNull(1))
                             {
                                 decimal totalMonitoringFees = reader.GetDecimal(1);
@@ -100,15 +148,13 @@ namespace biVerifier.Controllers
                 }
             }
 
-            // Output the result to the console
-            foreach (var item in totalMonitoringFeesByConsultant)
-            {
-                Console.WriteLine($"Consultant: {item.Key}, TotalMonitoringFees: {item.Value}");
-            }
-
+            // Store the dictionary in ViewData
             ViewData["TotalMonitoringFeesByConsultant"] = totalMonitoringFeesByConsultant;
+
             return View("Index");
         }
+
+
 
         public IActionResult Privacy()
         {

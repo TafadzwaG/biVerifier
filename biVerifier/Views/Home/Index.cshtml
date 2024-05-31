@@ -7,7 +7,12 @@
     List<string> cancellationReasons = ViewData["CancellationReasons"] as List<string>;
     List<decimal> revenueLost = ViewData["RevenueLost"] as List<decimal>;
     Dictionary<string, int> leadSourceCounts = ViewData["LeadSourceCounts"] as Dictionary<string, int>;
-    List<decimal> totalRevenueList = ViewData["TotalRevenue"] as List<decimal>;
+    List<decimal> totalRevenueList = ViewData["TotalRevenue"] as List<decimal>; 
+
+
+    var totalMonitoringFeesByConsultant = ViewData["TotalMonitoringFeesByConsultant"] as Dictionary<string, decimal>;
+    var consultantNames = totalMonitoringFeesByConsultant.Keys.ToList();
+    var totalMonitoringFees = totalMonitoringFeesByConsultant.Values.ToList();
 }
 
 <div class="custom-container" style="margin: 3rem">
@@ -49,19 +54,18 @@
             </div>
             <div class="row">
                  @section ClientCountByMarketType {       
-                        
-                }
-                <div>
-
+                   
+                }  
+                 <div>
+                        <div class="box">
+                            <div class="box-header">
+                                <h5 style="font-weight: bold">CLIENT COUNT BY MARKET TYPE</h5>
+                            </div>
+                            <div class="box-body">
+                                    <div id="horizontalBarChart" style="height: 350px;"></div>
+                            </div>
+                        </div> 
                     </div>
-                    <div class="box">
-                    <div class="box-header">
-                        <h5 style="font-weight: bold">CLIENT COUNT BY MARKET TYPE</h5>
-                    </div>
-                    <div class="box-body">
-                            <div id="horizontalBarChart" style="height: 350px;"></div>
-                    </div>
-                </div>
             </div>
 
         </div>
@@ -173,7 +177,7 @@
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        Render the Bar Chart for Aggregated Sales Consultant
+        // Render the Bar Chart for Aggregated Sales Consultant
         var consultantNames = [];
         var totalSalesData = [];
         @foreach (var salesData in Model)
@@ -331,15 +335,29 @@
 
 
          
-        var totalMonitoringFeesByConsultant = @Html.Raw(Json.Serialize(ViewData["TotalMonitoringFeesByConsultant"]));
+        // var totalMonitoringFeesByConsultant = @Html.Raw(Json.Serialize(ViewData["TotalMonitoringFeesByConsultant"]));
+
+        // var pieChartOptions = {
+        //     chart: {
+        //         type: 'pie',
+        //         height: 350,
+        //     },
+        //     series: Object.values(totalMonitoringFeesByConsultant),
+        //     labels: Object.keys(totalMonitoringFeesByConsultant)
+        // };
+
+        // var pieChart = new ApexCharts(document.getElementById('pieChart2'), pieChartOptions);
+        // pieChart.render();
+         var consultantNames = @Html.Raw(Json.Serialize(consultantNames));
+        var totalSalesData = @Html.Raw(Json.Serialize(totalMonitoringFees));
 
         var pieChartOptions = {
             chart: {
                 type: 'pie',
-                height: 350,
+                height: 350
             },
-            series: Object.values(totalMonitoringFeesByConsultant),
-            labels: Object.keys(totalMonitoringFeesByConsultant)
+            series: totalSalesData,
+            labels: consultantNames
         };
 
         var pieChart = new ApexCharts(document.getElementById('pieChart2'), pieChartOptions);
