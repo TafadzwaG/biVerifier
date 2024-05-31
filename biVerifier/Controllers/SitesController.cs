@@ -1,19 +1,35 @@
 ﻿using biVerifier.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Data.Common;
 using System.Data.Odbc;
-using System.Data.OleDb;
+using System.Collections.Generic;
 
 namespace biVerifier.Controllers
 {
     public class SitesController : Controller
     {
-        public IActionResult Index()
-        {
-            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
-            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
+        private readonly string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\Tafadzwag\Documents\DATABASE\VERIFIER2.accdb;Persist Security Info=False;";
 
+        public IActionResult Index(string searchTerm = null)
+        {
+            var sitesDataList = string.IsNullOrEmpty(searchTerm) ? GetAllSitesData() : SearchSitesData(searchTerm);
+            ViewBag.SearchTerm = searchTerm;
+            return View(sitesDataList);
+        }
+
+        private List<SitesData> GetAllSitesData()
+        {
             string query = "SELECT * FROM Sites";
+            return ExecuteQuery(query);
+        }
+
+        private List<SitesData> SearchSitesData(string searchTerm)
+        {
+            string query = $"SELECT * FROM Sites WHERE Client LIKE '%{searchTerm}%' OR City LIKE '%{searchTerm}%'";
+            return ExecuteQuery(query);
+        }
+
+        private List<SitesData> ExecuteQuery(string query)
+        {
             var sitesDataList = new List<SitesData>();
 
             using (OdbcConnection connection = new OdbcConnection(connectionString))
@@ -26,33 +42,35 @@ namespace biVerifier.Controllers
                     {
                         while (reader.Read())
                         {
-                            var cData = new SitesData();
-                            cData.SiteID = reader["SiteID"].ToString();
-                            cData.Client = reader["Client"].ToString();
-                            cData.Contact_Person = reader["Contact_Person"].ToString();
-                            cData.EmailAdd = reader["EmailAdd"].ToString();
-                            cData.ContactNum = reader["ContactNum"].ToString();
-                            cData.Num = reader["Num"].ToString();
-                            cData.Street = reader["Street"].ToString();
-                            cData.Suburb = reader["Suburb"].ToString();
-                            cData.City = reader["City"].ToString();
-                            cData.Region = reader["Region"].ToString();
-                            cData.DNS_IP = reader["DNS _ IP"].ToString();
-                            cData.IPv4 = reader["IPv4"].ToString();
-                            cData.Server_Port = reader["Server Port"].ToString();
-                            cData.HTTP_Port = reader["HTTP Port"].ToString();
-                            cData.RTSP_Port = reader["RTSP Port"].ToString();
-                            cData.Username = reader["Username"].ToString();
-                            cData.Password = reader["Password"].ToString();
-                            cData.No_Channels = reader["No Channels"].ToString();
-                            cData.No_Channels_On_Analytics = reader["No Channels on analytics"].ToString();
-                            cData.Monitoring_Platform = reader["Monitoring Platform"].ToString();
-                            cData.GSM_Radio = reader["GSM Radio"].ToString();
-                            cData.Alarm_Inputs = reader["Alarm Inputs"].ToString();
-                            cData.Audio = reader["Audio"].ToString();
-                            cData.SMTP_Server_Port = reader["SMTP Server Port"].ToString();
-                            cData.Public_IP = reader["Public IP"].ToString();
-                            cData.Notes = reader["Notes"].ToString();
+                            var cData = new SitesData
+                            {
+                                SiteID = reader["SiteID"].ToString(),
+                                Client = reader["Client"].ToString(),
+                                Contact_Person = reader["Contact_Person"].ToString(),
+                                EmailAdd = reader["EmailAdd"].ToString(),
+                                ContactNum = reader["ContactNum"].ToString(),
+                                Num = reader["Num"].ToString(),
+                                Street = reader["Street"].ToString(),
+                                Suburb = reader["Suburb"].ToString(),
+                                City = reader["City"].ToString(),
+                                Region = reader["Region"].ToString(),
+                                DNS_IP = reader["DNS _ IP"].ToString(),
+                                IPv4 = reader["IPv4"].ToString(),
+                                Server_Port = reader["Server Port"].ToString(),
+                                HTTP_Port = reader["HTTP Port"].ToString(),
+                                RTSP_Port = reader["RTSP Port"].ToString(),
+                                Username = reader["Username"].ToString(),
+                                Password = reader["Password"].ToString(),
+                                No_Channels = reader["No Channels"].ToString(),
+                                No_Channels_On_Analytics = reader["No Channels on analytics"].ToString(),
+                                Monitoring_Platform = reader["Monitoring Platform"].ToString(),
+                                GSM_Radio = reader["GSM Radio"].ToString(),
+                                Alarm_Inputs = reader["Alarm Inputs"].ToString(),
+                                Audio = reader["Audio"].ToString(),
+                                SMTP_Server_Port = reader["SMTP Server Port"].ToString(),
+                                Public_IP = reader["Public IP"].ToString(),
+                                Notes = reader["Notes"].ToString()
+                            };
                             sitesDataList.Add(cData);
                         }
                     }
@@ -63,8 +81,7 @@ namespace biVerifier.Controllers
                 }
             }
 
-            return View(sitesDataList);
+            return sitesDataList;
         }
-
     }
 }

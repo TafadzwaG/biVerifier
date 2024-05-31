@@ -47,12 +47,15 @@
                         </div>
                     </div>
                     <div class="mb-3">
-                        <form method="get" action="@Url.Action("SearchIndex")">
-                            <div class="input-group">
-                                <input type="text" name="searchString" class="form-control" placeholder="Search..." value="@ViewData["searchString"]">
-                                <button type="submit" class="btn btn-primary">Search</button>
-                            </div>
-                        </form>
+                        <div class="col-md-6">
+                            <form method="get" action="@Url.Action("SearchIndex")">
+                                <div class="form-floating mb-3">
+                                    <input type="text" name="searchString" class="form-control" id="floatingSearch" placeholder="Search by Client, Contact Person or Email" value="@ViewData["searchString"]">
+                                    <label for="floatingSearch">Search by Client, Contact Person or Email</label>
+                                </div>
+                                <button type="submit" class="btn btn-primary" style="text-transform: uppercase">Search filter</button>
+                            </form>
+                        </div>
                     </div>
                     <div class="table-responsive rounded card-table">
                         <table class="table table-striped table-hover">
