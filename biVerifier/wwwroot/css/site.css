@@ -232,12 +232,12 @@ body {
     background-color: #258cfb; /* Change to the background color you prefer */
     border-radius: 10px;
 }
-    .nav-link.active {
-        color: #fff !important; /* Change to the active color you prefer */
-        background-color: #0056b3; /* Change to the active background color you prefer */
-        border-radius: 10px;
-        font-weight: bold; /* Optional: Makes the active link bold */
-    }
+.nav-link.active {
+    color: #fff !important; /* Change to the active color you prefer */
+    background-color: #0056b3; /* Change to the active background color you prefer */
+    border-radius: 10px;
+    font-weight: bold; /* Optional: Makes the active link bold */
+}
 .section-span {
     display: inline-block;
     max-width: 150px; /* Adjust the max width as needed */
