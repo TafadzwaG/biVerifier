@@ -14,12 +14,9 @@
           integrity="sha512-YTuMx+CIxXa1l+j5aDPm98KFbVcYFNhlr2Auha3pwjHCF1lLbY9/ITQQlsUzdM1scW45kHC5KNib4mNa1IFvJg=="
           crossorigin="anonymous"
           referrerpolicy="no-referrer" />
+  
 
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.css"
-          integrity="sha512-YTuMx+CIxXa1l+j5aDPm98KFbVcYFNhlr2Auha3pwjHCF1lLbY9/ITQQlsUzdM1scW45kHC5KNib4mNa1IFvJg=="
-          crossorigin="anonymous"
-          referrerpolicy="no-referrer" />
+   
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
@@ -30,7 +27,7 @@
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-light border-bottom box-shadow mb-3" style="height: 6rem" >
             <div class="container-fluid" style="margin-left: 3rem; margin-right: 3rem">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                    <img style="height: 30px" src="~/images/logo.jpg" alt="biVerifier Logo" class="img-fluid">
+                    <img style="height: 40px" src="~/images/logo.jpg" alt="biVerifier Logo" class="img-fluid">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -53,14 +50,18 @@
                         <li class="nav-item">
                             <a class="nav-link nav-text @((ViewContext.RouteData.Values["controller"]?.ToString() == "TechCancel" && ViewContext.RouteData.Values["action"]?.ToString() == "Index") ? "active" : "")" asp-area="" asp-controller="TechCancel" asp-action="Index">TechCancel</a>
                         </li>
-                        <li class="nav-item">
+                       @*  <li class="nav-item">
                             <a class="nav-link nav-text @((ViewContext.RouteData.Values["controller"]?.ToString() == "Lisenses" && ViewContext.RouteData.Values["action"]?.ToString() == "Index") ? "active" : "")" asp-area="" asp-controller="Lisenses" asp-action="Index">Licenses</a>
+                        </li> *@
+                        <li class="nav-item">
+                            <a class="nav-link nav-text @((ViewContext.RouteData.Values["controller"]?.ToString() == "Licences" && ViewContext.RouteData.Values["action"]?.ToString() == "Index") ? "active" : "")" asp-area="" asp-controller="Licences" asp-action="Index">Licences</a>
                         </li>
+
                         <li class="nav-item">
                             <a class="nav-link nav-text @((ViewContext.RouteData.Values["controller"]?.ToString() == "SalesPipeline" && ViewContext.RouteData.Values["action"]?.ToString() == "Index") ? "active" : "")" asp-area="" asp-controller="SalesPipeline" asp-action="Index">Sales Pipeline</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link nav-text @((ViewContext.RouteData.Values["controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["action"]?.ToString() == "Reports") ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Reports">Generate Reports</a>
+                            <a class="nav-link nav-text @((ViewContext.RouteData.Values["controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["action"]?.ToString() == "Reports") ? "active" : "")" asp-area="" asp-controller="Home" asp-action="Reports"><i class="fa fa-bar-chart" aria-hidden="true"></i>  Generate Reports</a>
                         </li>
                     </ul>
                     <div style="display: flex; align-items: center; justify-content: center;">
@@ -70,7 +71,9 @@
                                 <li class="nav-item">
                                     <form id="logoutForm" asp-controller="Account" asp-action="Logout" method="post" class="d-flex" style="display: flex; align-items: center; justify-content: center;">
                                         <span style="margin-right: 10px;" class="nav-text">Welcome, @User.Identity.Name </span>
-                                        <button type="submit" class="nav-link btn btn-primary" style="color: #fff; text-transform: uppercase; font-weight: 400">Logout</button>
+                                        <button type="submit" class="nav-link btn btn-primary" style="color: #fff; text-transform: uppercase; font-weight: 400">
+                                            <i class="fa fa-sign-out" aria-hidden="true"></i> 
+                                            Logout</button>
                                     </form>
                                 </li>
                             }

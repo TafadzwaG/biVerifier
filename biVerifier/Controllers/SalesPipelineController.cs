@@ -14,7 +14,7 @@ namespace biVerifier.Controllers
         {
 
             string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
-            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
+            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\CRM Server\Documents\veriDB\VERIFIER2.accdb;Persist Security Info=False;";
 
             // SQL query to execute
 
@@ -36,7 +36,7 @@ namespace biVerifier.Controllers
                         {
                             SalesPipeline crmData = new SalesPipeline
                             {
-                                ID = (int)reader["ID"],
+                                QuoteNum = (int)reader["QuoteNum"],
                                 Client = reader["Client"].ToString(),
                                 Lead_Source = reader["LeadSource"].ToString(),
                                 Contact_Person = reader["Contact_Person"].ToString(),
@@ -44,7 +44,16 @@ namespace biVerifier.Controllers
                                 City = reader["City"].ToString(),
                                 Service = reader["Service"].ToString(),
                                 Lead_Month = reader["leadmonth"].ToString(),
+                                Consultant = reader["Consultant"].ToString(),
+                                OnceOffCost = reader["OnceOffCost"].ToString(),
+                                RecurringCost = reader["RecurringCost"].ToString(),
+                                Probability = reader["Probability"].ToString(),
+                                Market = reader["Market"].ToString()
+
+
                             };
+
+
                             salesPipelineList.Add(crmData);
                         }
                     }
@@ -62,6 +71,7 @@ namespace biVerifier.Controllers
         public IActionResult Search(string searchTerm)
         {
             string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
+            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\CRM Server\Documents\veriDB\VERIFIER2.accdb;Persist Security Info=False;";
             string query = "SELECT * FROM Sales_Pipeline WHERE Client LIKE ?";
             var salesPipelineList = new List<SalesPipeline>();
 
@@ -79,7 +89,7 @@ namespace biVerifier.Controllers
                         {
                             SalesPipeline crmData = new SalesPipeline
                             {
-                                ID = (int)reader["ID"],
+                                QuoteNum = (int)reader["QuoteNum"],
                                 Client = reader["Client"].ToString(),
                                 Lead_Source = reader["LeadSource"].ToString(),
                                 Contact_Person = reader["Contact_Person"].ToString(),
@@ -87,6 +97,12 @@ namespace biVerifier.Controllers
                                 City = reader["City"].ToString(),
                                 Service = reader["Service"].ToString(),
                                 Lead_Month = reader["leadmonth"].ToString(),
+            
+                                Consultant = reader["Consultant"].ToString(),
+                                OnceOffCost = reader["OnceOffCost"].ToString(),
+                                RecurringCost = reader["RecurringCost"].ToString(),
+                                Probability = reader["Probability"].ToString(),
+                                Market = reader["Market"].ToString()
                             };
                             salesPipelineList.Add(crmData);
                         }
@@ -105,9 +121,9 @@ namespace biVerifier.Controllers
         public IActionResult FilterByDateRange(DateTime startDate, DateTime endDate)
         {
             string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
-            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
+            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\CRM Server\Documents\veriDB\VERIFIER2.accdb;Persist Security Info=False;"; ;
 
-            string query = "SELECT * FROM Sales_Pipeline WHERE Enquiry_Date BETWEEN ? AND ?";
+            string query = "SELECT * FROM Sales_Pipeline WHERE leadmonth BETWEEN ? AND ?";
 
             var salesPipelineList = new List<SalesPipeline>();
 
@@ -126,7 +142,7 @@ namespace biVerifier.Controllers
                         {
                             SalesPipeline crmData = new SalesPipeline
                             {
-                                ID = (int)reader["ID"],
+                                QuoteNum = (int)reader["QuoteNum"],
                                 Client = reader["Client"].ToString(),
                                 Lead_Source = reader["LeadSource"].ToString(),
                                 Contact_Person = reader["Contact_Person"].ToString(),
@@ -134,6 +150,12 @@ namespace biVerifier.Controllers
                                 City = reader["City"].ToString(),
                                 Service = reader["Service"].ToString(),
                                 Lead_Month = reader["leadmonth"].ToString(),
+                               
+                                Consultant = reader["Consultant"].ToString(),
+                                OnceOffCost = reader["OnceOffCost"].ToString(),
+                                RecurringCost = reader["RecurringCost"].ToString(),
+                                Probability = reader["Probability"].ToString(),
+                                Market = reader["Market"].ToString()
                             };
                             salesPipelineList.Add(crmData);
                         }
@@ -152,9 +174,9 @@ namespace biVerifier.Controllers
         public IActionResult FilterBySalesPerson(string salesPerson)
         {
             string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
-            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
+            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\CRM Server\Documents\veriDB\VERIFIER2.accdb;Persist Security Info=False;";
 
-            string query = "SELECT * FROM Sales_Pipeline WHERE Contact_Person = ?";
+            string query = "SELECT * FROM Sales_Pipeline WHERE Consultant = ?";
 
             var salesPipelineList = new List<SalesPipeline>();
 
@@ -172,7 +194,7 @@ namespace biVerifier.Controllers
                         {
                             SalesPipeline crmData = new SalesPipeline
                             {
-                                ID = (int)reader["ID"],
+                                QuoteNum = (int)reader["QuoteNum"],
                                 Client = reader["Client"].ToString(),
                                 Lead_Source = reader["LeadSource"].ToString(),
                                 Contact_Person = reader["Contact_Person"].ToString(),
@@ -180,6 +202,12 @@ namespace biVerifier.Controllers
                                 City = reader["City"].ToString(),
                                 Service = reader["Service"].ToString(),
                                 Lead_Month = reader["leadmonth"].ToString(),
+                                Consultant = reader["Consultant"].ToString(),
+                                OnceOffCost = reader["OnceOffCost"].ToString(),
+                                RecurringCost = reader["RecurringCost"].ToString(),
+                                Probability = reader["Probability"].ToString(),
+                                Market = reader["Market"].ToString()
+
                             };
                             salesPipelineList.Add(crmData);
                         }
@@ -199,7 +227,7 @@ namespace biVerifier.Controllers
         public IActionResult FilterByProvince(string province)
         {
             string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
-            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
+            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\CRM Server\Documents\veriDB\VERIFIER2.accdb;Persist Security Info=False;";
 
             string query = "SELECT * FROM Sales_Pipeline WHERE City = ?";
 
@@ -219,7 +247,7 @@ namespace biVerifier.Controllers
                         {
                             SalesPipeline crmData = new SalesPipeline
                             {
-                                ID = (int)reader["ID"],
+                                QuoteNum = (int)reader["QuoteNum"],
                                 Client = reader["Client"].ToString(),
                                 Lead_Source = reader["LeadSource"].ToString(),
                                 Contact_Person = reader["Contact_Person"].ToString(),
@@ -227,6 +255,11 @@ namespace biVerifier.Controllers
                                 City = reader["City"].ToString(),
                                 Service = reader["Service"].ToString(),
                                 Lead_Month = reader["leadmonth"].ToString(),
+                                Consultant = reader["Consultant"].ToString(),
+                                OnceOffCost = reader["OnceOffCost"].ToString(),
+                                RecurringCost = reader["RecurringCost"].ToString(),
+                                Probability = reader["Probability"].ToString(),
+                                Market = reader["Market"].ToString(),
                             };
                             salesPipelineList.Add(crmData);
                         }

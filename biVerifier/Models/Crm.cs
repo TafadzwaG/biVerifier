@@ -16,7 +16,6 @@
         public string? LeadSource { get; set;}
         public string? Service { get; set;}
         public string? Market { get; set;}
-        public string? Category { get; set;}
         public string? Consultant { get; set;}
         public string? Branch { get; set;}
         public string? Status { get; set;}

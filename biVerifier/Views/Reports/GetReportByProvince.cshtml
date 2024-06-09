@@ -86,7 +86,7 @@
                             </div>
                             <div>
                                 <button class="btn btn-primary" onclick="exportToExcel()">
-                                    <i class="far fa-file-excel"></i> EXPORT TO EXCEL
+                                    <i class="fa fa-file-excel-o" aria-hidden="true"></i> EXPORT TO EXCEL
                                 </button>
                             </div>
                         </div>
@@ -105,7 +105,6 @@
                                     <th>Suburb</th>
                                     <th>City</th>
                                     <th>Province</th>
-                                    <th>Lead Source</th>
                                     <th>Service</th>
 
                                 </tr>
@@ -128,7 +127,6 @@
                                             <span class="badge bg-primary">@crmData.City</span>
                                         </td>
                                         <td>@crmData.Province</td>
-                                        <td>@crmData.LeadSource</td>
                                         <td>@crmData.Service</td>
                                     </tr>
                                 }
@@ -151,7 +149,6 @@
                                     <th>Lead Source</th>
                                     <th>Service</th>
                                     <th>Market</th>
-                                    <th>Category</th>
                                     <th>Consultant</th>
                                     <th>Branch</th>
                                     <th>Status</th>
@@ -164,6 +161,8 @@
                                     <th>Once-off Setup Costs</th>
                                     <th>Install Comm</th>
                                     <th>Managed Services Fees</th>
+                                    <th>Comments</th>
+                                    <th>Sage</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -183,7 +182,6 @@
                                         <td>@crmData.LeadSource</td>
                                         <td>@crmData.Service</td>
                                         <td>@crmData.Market</td>
-                                        <td>@crmData.Category</td>
                                         <td>@crmData.Consultant</td>
                                         <td>@crmData.Branch</td>
                                         <td>@crmData.Status</td>
@@ -196,6 +194,9 @@
                                         <td>@crmData.Onceoffsetupcosts</td>
                                         <td>@crmData.Install_Comm</td>
                                         <td>@crmData.ManagedServicesFees</td>
+                                        <td>@crmData?.Comments</td>
+                                        <td>@crmData?.Sage</td>
+
                                     </tr>
                                 }
                             </tbody>

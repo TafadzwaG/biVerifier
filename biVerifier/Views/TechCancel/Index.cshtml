@@ -7,6 +7,14 @@
 @section Scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
     <script>
+
+        function resetSearchFilter() {
+
+            document.getElementById('searchTerm').value = '';
+
+            window.location.href = '@Url.Action("Index", "TechCancel")';
+        }
+
         function exportToExcel() {
             var table = document.getElementById('dataTable');
             var ws = XLSX.utils.table_to_sheet(table);
@@ -35,7 +43,10 @@
                                 <h4 class="box-title" style="text-transform: uppercase; font-weight: bold;">Cancels</h4>
                             </div>
                             <div>
-                                <button class="btn btn-primary" onclick="exportToExcel()">Export to Excel</button>
+                                <button class="btn btn-primary" onclick="exportToExcel()">
+                                    <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+                                    EXPORT TO EXCEL
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -43,10 +54,15 @@
                         <div class="col-md-6">
                             <form method="get" asp-controller="TechCancel" asp-action="Index">
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" name="searchTerm" placeholder="Search by Client, Site ID, Date, or Tech Responsible" value="@ViewBag.SearchTerm" />
+                                    <input type="text" class="form-control" name="searchTerm" id="searchTerm" placeholder="Search by Client, Site ID, Date, or Tech Responsible" value="@ViewBag.SearchTerm" />
                                     <label for="floatingSearch">Search by Client, Site ID, Date, or Tech Responsible</label>
                                 </div>
-                                <button class="btn btn-primary" type="submit">Search</button>
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fa fa-filter" aria-hidden="true"></i>
+                                    SEARCH FILTER</button>
+                                <button type="button" class="btn btn-outline-secondary" onclick="resetSearchFilter()">
+                                    <i class="fa fa-refresh" aria-hidden="true"></i> RESET FILTER
+                                </button>
 
                             </form>
                         </div>

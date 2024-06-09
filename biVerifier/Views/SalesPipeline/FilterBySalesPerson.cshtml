@@ -4,6 +4,33 @@
     ViewData["Title"] = "REPORT BY SALES PERSON";
 }
 
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+    <script>
+
+      
+
+        function exportToExcel() {
+            // Get the table element
+            var table = document.getElementById('dataTable');
+            // Convert the table to a worksheet
+            var ws = XLSX.utils.table_to_sheet(table);
+            // Create a new workbook
+            var wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+            XLSX.writeFile(wb, 'ReportBySalesPerson.xlsx');
+        }
+
+        function hideTable() {
+            var table = document.getElementById('dataTable');
+            table.style.display = 'none';
+        }
+
+        // Call the hideTable function when the page loads
+        window.onload = hideTable;
+    </script>
+}
+
 <div class="container" style="margin: 3rem">
     <div class="box">
         <div class="box-body">
@@ -17,8 +44,12 @@
                                 <div class="form-floating">
                                     <select class="form-control" id="salesPersonSelect" name="salesperson">
                                         <option value="">Select Sales Person</option>
-                                        <option value="Natalie Zingoni">Natalie Zingoni</option>
-                                        <option value="Tineyi Tinevimbo">Tineyi Tinevimbo</option>
+                                        <option value="Kate">Kate</option>
+                                        <option value="Mike">Mike</option>
+                                        <option value="Jean Meyer">Jean Meyer</option>
+                                        <option value="Kate Vroom">Kate Vroom</option>
+                                        <option value="Ryno Schutte">Ryno Schutte</option>
+
                                       
 
                                     </select>
@@ -50,7 +81,7 @@
                             </div>
                             <div>
                                 <button class="btn btn-primary" onclick="exportToExcel()">
-                                    <i class="far fa-file-excel"></i> EXPORT TO EXCEL
+                                    <i class="fa fa-file-excel-o" aria-hidden="true"></i> EXPORT TO EXCEL
                                 </button>
                             </div>
                         </div>
@@ -67,13 +98,67 @@
                                     <th>City</th>
                                     <th>Service</th>
                                     <th>Consultant</th>
+                                    <th>Market</th>
+
+                                   
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach (var item in Model)
                                 {
                                     <tr>
-                                        <td>@item.ID</td>
+                                        <td>@item.QuoteNum</td>
+                                        <td>@item.Client</td>
+                                        <td>@item.Lead_Source</td>
+                                        <td>@item.Contact_Person</td>
+                                        <td>@item.Email</td>
+                                        <td>
+                                            <span class="badge bg-primary px-3 py-2">
+                                                @item.City
+                                            </span>
+                                        </td>
+                                        <td>@item.Service</td>
+                                        <td>@item.Consultant</td>
+ 
+                                        <td>@item?.Market</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div id="dataTable" class="table-responsive rounded card-table">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Client</th>
+                                    <th>Lead Source</th>
+                                    <th>Contact Person</th>
+                                    <th>Email</th>
+                                    <th>City</th>
+                                    <th>Service</th>
+                                    <th>Consultant</th>
+                                    <th>
+                                        OnceOffCost
+                                    </th>
+                                    <th>
+                                        RecurringCost
+                                    </th>
+                                    <th>
+                                        Probability
+                                    </th>
+                                    <th>
+                                        Market
+                                    </th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@item.QuoteNum</td>
                                         <td>@item.Client</td>
                                         <td>@item.Lead_Source</td>
                                         <td>@item.Contact_Person</td>
@@ -81,13 +166,16 @@
                                         <td>@item.City</td>
                                         <td>@item.Service</td>
                                         <td>@item.Consultant</td>
+                                        <td>@item?.OnceOffCost</td>
+                                        <td>@item?.RecurringCost</td>
+                                        <td>@item?.Probability</td>
+                                        <td>@item?.Market</td>
                                     </tr>
                                 }
                             </tbody>
                         </table>
-
-
                     </div>
+
                 </div>
             </div>
         </div>

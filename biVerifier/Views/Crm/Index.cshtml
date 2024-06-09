@@ -7,6 +7,11 @@
 @section Scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
     <script>
+
+        function resetSearchFilter(){
+            window.location.href = '@Url.Action("Index", "Crm")';
+        }
+
         function exportToExcel() {
             // Get the table element
             var table = document.getElementById('dataTable');
@@ -41,8 +46,9 @@
                             </div>
                             <div>
                                 <button class="btn btn-primary" onclick="exportToExcel()">
-                                    <i class="far fa-file-excel"></i> EXPORT TO EXCEL
+                                    <i class="fa fa-file-excel-o" aria-hidden="true"></i>  EXPORT TO EXCEL
                                 </button>
+                               
                             </div>
                         </div>
                     </div>
@@ -53,7 +59,12 @@
                                     <input type="text" name="searchString" class="form-control" id="floatingSearch" placeholder="Search by Client, Contact Person or Email" value="@ViewData["searchString"]">
                                     <label for="floatingSearch">Search by Client, Contact Person or Email</label>
                                 </div>
-                                <button type="submit" class="btn btn-primary" style="text-transform: uppercase">Search filter</button>
+                                <button type="submit" class="btn btn-primary" style="text-transform: uppercase">
+                                    <i class="fa fa-filter" aria-hidden="true"></i>
+                                    Search filter</button>
+                                <button type="button" class="btn btn-outline-secondary" onclick="resetSearchFilter()">
+                                    <i class="fa fa-refresh" aria-hidden="true"></i> RESET FILTER
+                                </button>
                             </form>
                         </div>
                     </div>
@@ -88,15 +99,24 @@
                                         <td><span class="section-span">@crmData.Street</span></td>
                                         <td>@crmData.Suburb</td>
                                         <td>@crmData.City</td>
-                                        <td>@crmData.Province</td>
                                         <td>
-                                            @if (!string.IsNullOrEmpty(crmData.liveyear))
+                                            @if (!string.IsNullOrEmpty(crmData.Province))
                                             {
-                                                <span class="btn btn-primary">@crmData.liveyear</span>
+                                                @crmData.Province
                                             }
                                             else
                                             {
-                                                <span class="btn btn-secondary">N/A</span>
+                                                <span class="badge bg-secondary px-3 py-2">N/A</span>
+                                            }
+                                           </td>
+                                        <td>
+                                            @if (!string.IsNullOrEmpty(crmData.liveyear))
+                                            {
+                                                <span class="badge bg-primary px-3 py-2">@crmData.liveyear</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-secondary px-3 py-2">N/A</span>
                                             }
                                         </td>
                                         <td>@crmData.Service</td>
@@ -121,7 +141,6 @@
                                     <th>Lead Source</th>
                                     <th>Service</th>
                                     <th>Market</th>
-                                    <th>Category</th>
                                     <th>Consultant</th>
                                     <th>Branch</th>
                                     <th>Status</th>
@@ -134,6 +153,8 @@
                                     <th>Once-off Setup Costs</th>
                                     <th>Install Comm</th>
                                     <th>Managed Services Fees</th>
+                                    <th>Comments</th>
+                                    <th>Sage</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -153,7 +174,6 @@
                                         <td>@crmData.LeadSource</td>
                                         <td>@crmData.Service</td>
                                         <td>@crmData.Market</td>
-                                        <td>@crmData.Category</td>
                                         <td>@crmData.Consultant</td>
                                         <td>@crmData.Branch</td>
                                         <td>@crmData.Status</td>
@@ -166,6 +186,8 @@
                                         <td>@crmData.Onceoffsetupcosts</td>
                                         <td>@crmData.Install_Comm</td>
                                         <td>@crmData.ManagedServicesFees</td>
+                                        <td>@crmData.Comments</td>
+                                        <td>@crmData.Sage</td>
                                     </tr>
                                 }
                             </tbody>

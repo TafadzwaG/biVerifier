@@ -224,24 +224,36 @@ body {
     font-size: 20px;
     text-transform: uppercase;
     transition: color 0.3s ease, background-color 0.3s ease;
-    border-radius: 10px;
+    border-radius: 5px;
+    background-color:aliceblue;
+        margin: 5px;
 }
 
-.nav-link:hover {
-    color: #fff !important; /* Change to the color you prefer */
-    background-color: #258cfb; /* Change to the background color you prefer */
-    border-radius: 10px;
-}
-.nav-link.active {
-    color: #fff !important; /* Change to the active color you prefer */
-    background-color: #0056b3; /* Change to the active background color you prefer */
-    border-radius: 10px;
-    font-weight: bold; /* Optional: Makes the active link bold */
-}
+    .nav-link:hover {
+        color: #fff !important; /* Change to the color you prefer */
+        background-color: #A61D25; /* Change to the background color you prefer */
+        border-radius: 5px;
+    }
+    .nav-link.active {
+        color: #fff !important; /* Change to the active color you prefer */
+        background-color: #A61D25; /* Change to the active background color you prefer */
+        border-radius: 5px;
+        font-weight: bold; /* Optional: Makes the active link bold */
+    }
 .section-span {
     display: inline-block;
     max-width: 150px; /* Adjust the max width as needed */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+
+.btn-primary {
+    background-color: #A61D25 !important;
+    border: 1px solid #A61D25 !important
+}
+
+.bg-primary {
+    background-color: #A61D25 !important;
 }

@@ -7,6 +7,13 @@
 @section Scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
     <script>
+
+
+        function resetSearchFilter(){
+            document.getElementById('floatingSearch').value = '';
+
+            window.location.href = '@Url.Action("Index", "Cancellations")';
+        }
         function exportToExcel() {
             var table = document.getElementById('dataTable');
             var ws = XLSX.utils.table_to_sheet(table);
@@ -47,7 +54,13 @@
                                     <label for="floatingSearch">Search by Client, Contact Person or Email</label>
                                    
                                 </div>
-                                <button class="btn btn-primary" type="submit">Search</button>
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fa fa-filter" aria-hidden="true"></i>
+                                    SEARCH FILTER
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary" onclick="resetSearchFilter()">
+                                    <i class="fa fa-refresh" aria-hidden="true"></i> RESET FILTER
+                                </button>
                             </form>
 
                          

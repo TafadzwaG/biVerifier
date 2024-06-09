@@ -28,7 +28,7 @@ namespace biVerifier.Controllers
 
 
             string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
-            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
+            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\CRM Server\Documents\veriDB\VERIFIER2.accdb;Persist Security Info=False;";
 
             string query = @"
               SELECT *
@@ -73,7 +73,7 @@ namespace biVerifier.Controllers
                             LeadSource = reader["LeadSource"].ToString(),
                             Service = reader["Service"].ToString(),
                             Market = reader["Market"].ToString(),
-                            Category = reader["Category"].ToString(),
+                  
                             Consultant = reader["Consultant"].ToString(),
                             Branch = reader["Branch"].ToString(),
                             Status = reader["Status"].ToString(),
@@ -86,9 +86,11 @@ namespace biVerifier.Controllers
                             Onceoffsetupcosts = reader["Onceoffsetupcosts"].ToString(),
                             Install_Comm = reader["Install_Comm"].ToString(),
                             ManagedServicesFees = reader["ManagedServicesFees"].ToString(),
+                                Comments = reader["Comments"].ToString(),
+                                Sage = reader["Comments"].ToString(),
 
 
-                        };
+                            };
                             filteredData.Add(crmData);
                         }
                     }
@@ -115,7 +117,7 @@ namespace biVerifier.Controllers
         public IActionResult FilterByBusinessType(string businessType)
         {
             string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
-            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
+            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\CRM Server\Documents\veriDB\VERIFIER2.accdb;Persist Security Info=False;";
 
             // SQL query to execute
             string query = "SELECT * FROM CRM";
@@ -163,7 +165,7 @@ namespace biVerifier.Controllers
                                 LeadSource = reader["LeadSource"].ToString(),
                                 Service = reader["Service"].ToString(),
                                 Market = reader["Market"].ToString(),
-                                Category = reader["Category"].ToString(),
+                                
                                 Consultant = reader["Consultant"].ToString(),
                                 Branch = reader["Branch"].ToString(),
                                 Status = reader["Status"].ToString(),
@@ -176,6 +178,8 @@ namespace biVerifier.Controllers
                                 Onceoffsetupcosts = reader["Onceoffsetupcosts"].ToString(),
                                 Install_Comm = reader["Install_Comm"].ToString(),
                                 ManagedServicesFees = reader["ManagedServicesFees"].ToString(),
+                                Comments = reader["Comments"].ToString(),
+                                Sage = reader["Sage"].ToString(),
                             };
                             filteredData.Add(crmData);
                         }
@@ -203,7 +207,7 @@ namespace biVerifier.Controllers
             Console.WriteLine("EndDate" + endDate);
 
             string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
-            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
+            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\CRM Server\Documents\veriDB\VERIFIER2.accdb;Persist Security Info=False;";
 
             string query = @"
             SELECT *
@@ -260,7 +264,7 @@ namespace biVerifier.Controllers
                                 LeadSource = reader["LeadSource"].ToString(),
                                 Service = reader["Service"].ToString(),
                                 Market = reader["Market"].ToString(),
-                                Category = reader["Category"].ToString(),
+                                
                                 Consultant = reader["Consultant"].ToString(),
                                 Branch = reader["Branch"].ToString(),
                                 Status = reader["Status"].ToString(),
@@ -273,6 +277,8 @@ namespace biVerifier.Controllers
                                 Onceoffsetupcosts = reader["Onceoffsetupcosts"].ToString(),
                                 Install_Comm = reader["Install_Comm"].ToString(),
                                 ManagedServicesFees = reader["ManagedServicesFees"].ToString(),
+                                Comments = reader["Comments"].ToString(),
+                                Sage = reader["Sage"].ToString(),
                             };
                             filteredData.Add(crmData);
                         }
@@ -326,7 +332,7 @@ namespace biVerifier.Controllers
             // Assuming you're using ADO.NET with OleDbConnection and OleDbCommand
 
             string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
-            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
+            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\CRM Server\Documents\veriDB\VERIFIER2.accdb;Persist Security Info=False;";
 
             string siteCountQuery = "SELECT COUNT(*) FROM Sites";
             string cancellationCountQuery = "SELECT COUNT(*) FROM Cancellations";
@@ -359,8 +365,10 @@ namespace biVerifier.Controllers
 
         private List<CRMData> RetrieveUniqueRegionsFromDatabase()
         {
-            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
+
             string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
+            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\CRM Server\Documents\veriDB\VERIFIER2.accdb;Persist Security Info=False;";
+
             string query = "SELECT DISTINCT Region FROM CRM";
 
             List<CRMData> uniqueRegions = new List<CRMData>();
@@ -394,7 +402,7 @@ namespace biVerifier.Controllers
         private List<Crm> RetrieveDataByRegion(string region)
         {
             string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
-            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
+            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\CRM Server\Documents\veriDB\VERIFIER2.accdb;Persist Security Info=False;";
 
             string query = "SELECT * FROM CRM WHERE Province = ?"; // Using "?" for parameter placeholder
 
@@ -429,7 +437,7 @@ namespace biVerifier.Controllers
                                 LeadSource = reader["LeadSource"].ToString(),
                                 Service = reader["Service"].ToString(),
                                 Market = reader["Market"].ToString(),
-                                Category = reader["Category"].ToString(),
+                               
                                 Consultant = reader["Consultant"].ToString(),
                                 Branch = reader["Branch"].ToString(),
                                 Status = reader["Status"].ToString(),
@@ -442,7 +450,12 @@ namespace biVerifier.Controllers
                                 Onceoffsetupcosts = reader["Onceoffsetupcosts"].ToString(),
                                 Install_Comm = reader["Install_Comm"].ToString(),
                                 ManagedServicesFees = reader["ManagedServicesFees"].ToString(),
+                                Comments = reader["Comments"].ToString(),
+                                Sage = reader["Sage"].ToString(),
+
                             };
+
+
                             dataList.Add(crmData);
                         }
                     }
@@ -467,7 +480,7 @@ namespace biVerifier.Controllers
 
             // Connection string for Microsoft Access
             string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
-            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
+            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\CRM Server\Documents\veriDB\VERIFIER2.accdb;Persist Security Info=False;";
 
             // SQL query to filter cancellations by date range
             string query = $"SELECT * FROM Cancellations WHERE [Cancellation End Date] BETWEEN #{startDateString}# AND #{endDateString}#";
@@ -537,7 +550,7 @@ namespace biVerifier.Controllers
         {
             Console.WriteLine("Cancellation" + " " + reason);
             string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
-            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
+            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\CRM Server\Documents\veriDB\VERIFIER2.accdb;Persist Security Info=False;";
 
             // SQL query to execute
             string query = "SELECT * FROM Cancellations";
@@ -627,7 +640,7 @@ namespace biVerifier.Controllers
             }
 
             string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
-            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
+            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\CRM Server\Documents\veriDB\VERIFIER2.accdb;Persist Security Info=False;";
 
             string query;
             var techCancelDataList = new List<TechCancel>();
@@ -693,7 +706,7 @@ namespace biVerifier.Controllers
             }
 
             string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
-            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
+            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\CRM Server\Documents\veriDB\VERIFIER2.accdb;Persist Security Info=False;";
 
             string query = "SELECT * FROM TechCancel WHERE TechResponsible = ?";
             var techCancelDataList = new List<TechCancel>();
@@ -746,7 +759,7 @@ namespace biVerifier.Controllers
             string startDateString = startDate.ToString("dd.MM.yyyy");
             string endDateString = endDate.ToString("dd.MM.yyyy");
 
-            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
+            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\CRM Server\Documents\veriDB\VERIFIER2.accdb;Persist Security Info=False;";
             string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
 
             var techCancelDataList = new List<TechCancel>();

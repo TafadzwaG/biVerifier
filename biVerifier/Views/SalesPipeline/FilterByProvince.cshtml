@@ -1,7 +1,34 @@
 ﻿@model List<biVerifier.Models.SalesPipeline>
 
 @{
-    ViewData["Title"] = "Report By Province";
+    ViewData["Title"] = "Report By City/Province";
+}
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+    <script>
+
+
+
+        function exportToExcel() {
+            // Get the table element
+            var table = document.getElementById('dataTable');
+            // Convert the table to a worksheet
+            var ws = XLSX.utils.table_to_sheet(table);
+            // Create a new workbook
+            var wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+            XLSX.writeFile(wb, 'ReportByCity(Province).xlsx');
+        }
+
+        function hideTable() {
+            var table = document.getElementById('dataTable');
+            table.style.display = 'none';
+        }
+
+        // Call the hideTable function when the page loads
+        window.onload = hideTable;
+    </script>
 }
 
 
@@ -18,11 +45,12 @@
                                 <div class="form-floating">
                                     <select class="form-control" id="provinceSelect" name="province">
                                         <option value="">Select Province</option>
-                                        <option value="Capetown">Capetown</option>
+                                        <option value="Cape Town">Cape Town</option>
                                         <option value="Guateng">Guateng</option>
-
+                                        <option value="East London">East London</option>
+                                        <option value="Benoni">Benoni</option>
                                     </select>
-                                    <label for="technicianSelect">REPORT BY PROVINCE</label>
+                                    <label for="technicianSelect">REPORT BY CITY/PROVINCE</label>
                                 </div>
                             </div>
                             <div class="col-md-6 d-flex justify-content-start align-items-center">
@@ -50,7 +78,7 @@
                             </div>
                             <div>
                                 <button class="btn btn-primary" onclick="exportToExcel()">
-                                    <i class="far fa-file-excel"></i> EXPORT TO EXCEL
+                                    <i class="fa fa-file-excel-o" aria-hidden="true"></i> EXPORT TO EXCEL
                                 </button>
                             </div>
                         </div>
@@ -59,7 +87,7 @@
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
+                                    <th>QuoteNum</th>
                                     <th>Client</th>
                                     <th>Lead Source</th>
                                     <th>Contact Person</th>
@@ -67,13 +95,61 @@
                                     <th>City</th>
                                     <th>Service</th>
                                     <th>Consultant</th>
+                                    <th>Market</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach (var item in Model)
                                 {
                                     <tr>
-                                        <td>@item.ID</td>
+                                        <td>@item.QuoteNum</td>
+                                        <td>@item.Client</td>
+                                        <td>@item.Lead_Source</td>
+                                        <td>@item.Contact_Person</td>
+                                        <td>@item.Email</td>
+                                        <td>
+                                            <span class="badge bg-primary px-3 py-2">
+                                                @item.City
+                                            </span>
+                                        </td>
+                                        <td>@item.Service</td>
+                                        <td>@item.Consultant</td>
+                                        <td>@item?.Market</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div id="dataTable" class="table-responsive rounded card-table">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>QuoteNum</th>
+                                    <th>Client</th>
+                                    <th>Lead Source</th>
+                                    <th>Contact Person</th>
+                                    <th>Email</th>
+                                    <th>City</th>
+                                    <th>Service</th>
+                                    <th>Consultant</th>
+                                    <th>
+                                        OnceOffCost
+                                    </th>
+                                    <th>
+                                        RecurringCost
+                                    </th>
+                                    <th>
+                                        Probability
+                                    </th>
+                                    <th>Market</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@item.QuoteNum</td>
                                         <td>@item.Client</td>
                                         <td>@item.Lead_Source</td>
                                         <td>@item.Contact_Person</td>
@@ -81,13 +157,17 @@
                                         <td>@item.City</td>
                                         <td>@item.Service</td>
                                         <td>@item.Consultant</td>
+                                        <td>@item?.OnceOffCost</td>
+                                        <td>@item?.RecurringCost</td>
+                                        <td>@item?.Probability</td>
+                                        <td>@item?.Market</td>
                                     </tr>
                                 }
                             </tbody>
                         </table>
-
-
                     </div>
+
+
                 </div>
             </div>
         </div>

@@ -2,7 +2,7 @@
 {
     public class SalesPipeline
     {
-        public int ID { get; set; }
+        public int QuoteNum { get; set; }
         public string? Client { get; set; }
         public string? Lead_Source { get; set; }
 
@@ -18,6 +18,10 @@
         public string? OnceOffCost { get; set; }
 
         public string? RecurringCost { get; set; }
+
+        public string? Probability { get; set; }
+
+        public string? Market { get; set; }
 
 
     }

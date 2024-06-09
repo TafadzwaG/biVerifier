@@ -13,7 +13,7 @@ namespace biVerifier.Controllers
         {
 
             string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
-            
+            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\CRM Server\Documents\veriDB\VERIFIER2.accdb;Persist Security Info=False;";
 
             string query = "SELECT * FROM CRM";
 
@@ -45,7 +45,6 @@ namespace biVerifier.Controllers
                             crmData.LeadSource = reader["LeadSource"].ToString();
                             crmData.Service = reader["Service"].ToString();
                             crmData.Market = reader["Market"].ToString();
-                            crmData.Category = reader["Category"].ToString();
                             crmData.Consultant = reader["Consultant"].ToString();
                             crmData.Branch = reader["Branch"].ToString();
                             crmData.Status = reader["Status"].ToString();
@@ -58,6 +57,8 @@ namespace biVerifier.Controllers
                             crmData.Onceoffsetupcosts = reader["Onceoffsetupcosts"].ToString();
                             crmData.Install_Comm = reader["Install_Comm"].ToString();
                             crmData.ManagedServicesFees = reader["ManagedServicesFees"].ToString();
+                            crmData.Comments = reader["Comments"].ToString();
+                            crmData.Sage = reader["Sage"].ToString();
 
                             // Assign other properties as needed
                             crmDataList.Add(crmData);
@@ -75,8 +76,10 @@ namespace biVerifier.Controllers
 
         public IActionResult SearchIndex(string searchString)
         {
-            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\Tafadzwag\Documents\DATABASE\VERIFIER2.accdb;Persist Security Info=False;";
+            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
+            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\CRM Server\Documents\veriDB\VERIFIER2.accdb;Persist Security Info=False;";
             string query = "SELECT * FROM CRM";
+
 
             if (!string.IsNullOrEmpty(searchString))
             {
@@ -117,7 +120,7 @@ namespace biVerifier.Controllers
                                 LeadSource = reader["LeadSource"].ToString(),
                                 Service = reader["Service"].ToString(),
                                 Market = reader["Market"].ToString(),
-                                Category = reader["Category"].ToString(),
+                               
                                 Consultant = reader["Consultant"].ToString(),
                                 Branch = reader["Branch"].ToString(),
                                 Status = reader["Status"].ToString(),
@@ -129,7 +132,10 @@ namespace biVerifier.Controllers
                                 TotalMonitoringFees = reader["TotalMonitoringFees"].ToString(),
                                 Onceoffsetupcosts = reader["Onceoffsetupcosts"].ToString(),
                                 Install_Comm = reader["Install_Comm"].ToString(),
-                                ManagedServicesFees = reader["ManagedServicesFees"].ToString()
+                                ManagedServicesFees = reader["ManagedServicesFees"].ToString(),
+                                Comments = reader["Comments"].ToString(),
+                                Sage = reader["Sage"].ToString(),
+
                             };
                             crmDataList.Add(crmData);
                         }
@@ -148,7 +154,7 @@ namespace biVerifier.Controllers
         {
 
             string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\Tafadzwag\Documents\DATABASE\VERIFIER2.accdb;Persist Security Info=False;";
-            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
+            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\CRM Server\Documents\veriDB\VERIFIER2.accdb;Persist Security Info=False;";
 
             // SQL query to execute
 
@@ -190,7 +196,7 @@ namespace biVerifier.Controllers
         public IActionResult FilterByProvince()
         {
             string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\Tafadzwag\Documents\DATABASE\VERIFIER2.accdb;Persist Security Info=False;";
-            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER1.accdb;Persist Security Info=False;";
+            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\CRM Server\Documents\veriDB\VERIFIER2.accdb;Persist Security Info=False;";
 
             string query = "SELECT * FROM CRM WHERE Region = 'GP'";
 

@@ -1,12 +1,20 @@
 ﻿@model List<biVerifier.Models.SitesData>
 
 @{
-    ViewData["Title"] = "SITES DATA";
+    ViewData["Title"] = "Technical Sites";
 }
 
 @section Scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
     <script>
+
+         function resetSearchFilter(){
+            document.getElementById('floatingSearch').value = '';
+
+            // Redirect to the desired route
+            window.location.href = '@Url.Action("Index", "Sites")';
+        }
+
         function exportToExcel() {
             // Get the table element
             var table = document.getElementById('dataTable');
@@ -43,7 +51,9 @@
                                 <h4 class="box-title" style="text-transform: uppercase; font-weight: bold;">OVERVIEW OF ALL SITES(TECHNICALS)</h4>
                             </div>
                             <div>
-                                <button class="btn btn-primary" onclick="exportToExcel()">EXPORT TO EXCEL</button>
+                                <button class="btn btn-primary" onclick="exportToExcel()">
+                                    <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+                                    EXPORT TO EXCEL</button>
                             </div>
                         </div>
                     </div>
@@ -54,7 +64,12 @@
                                     <input type="text" name="searchTerm" id="floatingSearch" class="form-control" placeholder="Search by Client or City" value="@ViewBag.SearchTerm">
                                     <label for="floatingSearch">Search by Client or City</label>
                                 </div>
-                                <button type="submit" class="btn btn-primary">Search</button>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fa fa-filter" aria-hidden="true"></i>
+                                    Search filter</button>
+                                <button type="button"  class="btn btn-outline-secondary" onclick="resetSearchFilter()">
+                                    <i class="fa fa-refresh" aria-hidden="true"></i> RESET FILTER
+                                </button>
                             </form>
                         </div>
                         
@@ -83,7 +98,11 @@
                                         <td>@cData?.Num</td>
                                         <td>@cData?.Street</td>
                                         <td>@cData?.Suburb</td>
-                                        <td>@cData?.City</td>
+                                        <td>
+                                            <span class="badge bg-primary px-3 py-2">
+                                                @cData?.City
+                                            </span>
+                                         </td>
                                         <td>@cData?.Region</td>
                                     </tr>
                                 }
