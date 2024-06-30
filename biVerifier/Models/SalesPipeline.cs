@@ -23,6 +23,8 @@
 
         public string? Market { get; set; }
 
+        public string? SageQuote { get; set; }
+
 
     }
 }

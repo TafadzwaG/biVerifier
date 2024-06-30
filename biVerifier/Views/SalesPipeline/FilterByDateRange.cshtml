@@ -144,20 +144,22 @@
                                             <td>RecurringCost</td>
                                             <td>Probability</td>
                                             <td>Market</td>
+                                            <td>SageQuote</td>
+                                            
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach (var item in Model)
                                         {
                                             <tr>
-                                                <td>@item.QuoteNum</td>
-                                                <td>@item.Client</td>
-                                                <td>@item.Lead_Source</td>
-                                                <td>@item.Contact_Person</td>
-                                                <td>@item.Email</td>
+                                                <td>@item?.QuoteNum</td>
+                                                <td>@item?.Client</td>
+                                                <td>@item?.Lead_Source</td>
+                                                <td>@item?.Contact_Person</td>
+                                                <td>@item?.Email</td>
                                                 <td>
                                                     <span class="badge bg-primary px-3 py-2">
-                                                        @item.City
+                                                        @item?.City
                                                     </span>
                                                   </td>
                                                 <td>@item.Service</td>
@@ -166,6 +168,8 @@
                                                 <td>@item?.RecurringCost</td>
                                                 <td>@item?.Probability</td>
                                                 <td>@item?.Market</td>
+                                                <td>@item?.SageQuote</td>
+                                                
                                             </tr>
                                         }
                                     </tbody>

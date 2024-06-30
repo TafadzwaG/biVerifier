@@ -78,32 +78,30 @@
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr>
+                                    <th>Client</th>
                                     <th>Site</th>
-                                    <th>Client ID</th>
-                                    <th>Contact Person</th>
-                                    <th>Number</th>
-                                    <th>Street</th>
                                     <th>Suburb</th>
                                     <th>City</th>
-                                    <th>Region</th>
+                                    <th>Number Of Channels</th>
+                                    <th>Service</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach (var cData in Model)
                                 {
                                     <tr class="hover-primary">
-                                        <td>@cData?.SiteID</td>
                                         <td>@cData?.Client</td>
-                                        <td>@cData?.Contact_Person</td>
-                                        <td>@cData?.Num</td>
-                                        <td>@cData?.Street</td>
+                                        <td>@cData?.SiteID</td>
                                         <td>@cData?.Suburb</td>
                                         <td>
                                             <span class="badge bg-primary px-3 py-2">
                                                 @cData?.City
                                             </span>
-                                         </td>
-                                        <td>@cData?.Region</td>
+                                        </td>
+                                       
+                                        <td>@cData?.No_Channels</td>
+                                        <td>@cData?.Server_Port</td>
+                                       
                                     </tr>
                                 }
                             </tbody>

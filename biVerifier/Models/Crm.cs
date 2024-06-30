@@ -19,7 +19,7 @@
         public string? Consultant { get; set;}
         public string? Branch { get; set;}
         public string? Status { get; set;}
-        public string? Probability { get; set;}
+        //public string? Probability { get; set;}
         public string? leadyear { get; set;}
         public string? leadmonth { get; set;}
         public string? liveyear { get; set;}
@@ -32,6 +32,8 @@
         public string? Comments { get; set;}
 
         public string? Sage { get; set;}
+
+        public string? VCC_Code { get; set;}
 
     }
 }

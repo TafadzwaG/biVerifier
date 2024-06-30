@@ -13,8 +13,8 @@ namespace biVerifier.Controllers
         public IActionResult Index()
         {
 
-            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
-            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\CRM Server\Documents\veriDB\VERIFIER2.accdb;Persist Security Info=False;";
+            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
+            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\CRM Server\Documents\veriDB\VERIFIER2.accdb;Persist Security Info=False;";
 
             // SQL query to execute
 
@@ -48,7 +48,8 @@ namespace biVerifier.Controllers
                                 OnceOffCost = reader["OnceOffCost"].ToString(),
                                 RecurringCost = reader["RecurringCost"].ToString(),
                                 Probability = reader["Probability"].ToString(),
-                                Market = reader["Market"].ToString()
+                                Market = reader["Market"].ToString(),
+                                SageQuote = reader["SageQuote"].ToString()
 
 
                             };
@@ -70,8 +71,8 @@ namespace biVerifier.Controllers
 
         public IActionResult Search(string searchTerm)
         {
-            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
-            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\CRM Server\Documents\veriDB\VERIFIER2.accdb;Persist Security Info=False;";
+            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
+            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\CRM Server\Documents\veriDB\VERIFIER2.accdb;Persist Security Info=False;";
             string query = "SELECT * FROM Sales_Pipeline WHERE Client LIKE ?";
             var salesPipelineList = new List<SalesPipeline>();
 
@@ -102,7 +103,8 @@ namespace biVerifier.Controllers
                                 OnceOffCost = reader["OnceOffCost"].ToString(),
                                 RecurringCost = reader["RecurringCost"].ToString(),
                                 Probability = reader["Probability"].ToString(),
-                                Market = reader["Market"].ToString()
+                                Market = reader["Market"].ToString(),
+                                 SageQuote = reader["SageQuote"].ToString()
                             };
                             salesPipelineList.Add(crmData);
                         }
@@ -120,8 +122,8 @@ namespace biVerifier.Controllers
 
         public IActionResult FilterByDateRange(DateTime startDate, DateTime endDate)
         {
-            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
-            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\CRM Server\Documents\veriDB\VERIFIER2.accdb;Persist Security Info=False;"; ;
+            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
+            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\CRM Server\Documents\veriDB\VERIFIER2.accdb;Persist Security Info=False;"; 
 
             string query = "SELECT * FROM Sales_Pipeline WHERE leadmonth BETWEEN ? AND ?";
 
@@ -155,7 +157,8 @@ namespace biVerifier.Controllers
                                 OnceOffCost = reader["OnceOffCost"].ToString(),
                                 RecurringCost = reader["RecurringCost"].ToString(),
                                 Probability = reader["Probability"].ToString(),
-                                Market = reader["Market"].ToString()
+                                Market = reader["Market"].ToString(),
+                                SageQuote = reader["SageQuote"].ToString()
                             };
                             salesPipelineList.Add(crmData);
                         }
@@ -173,8 +176,8 @@ namespace biVerifier.Controllers
 
         public IActionResult FilterBySalesPerson(string salesPerson)
         {
-            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
-            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\CRM Server\Documents\veriDB\VERIFIER2.accdb;Persist Security Info=False;";
+            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
+            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\CRM Server\Documents\veriDB\VERIFIER2.accdb;Persist Security Info=False;";
 
             string query = "SELECT * FROM Sales_Pipeline WHERE Consultant = ?";
 
@@ -206,7 +209,8 @@ namespace biVerifier.Controllers
                                 OnceOffCost = reader["OnceOffCost"].ToString(),
                                 RecurringCost = reader["RecurringCost"].ToString(),
                                 Probability = reader["Probability"].ToString(),
-                                Market = reader["Market"].ToString()
+                                Market = reader["Market"].ToString(),
+                                SageQuote = reader["SageQuote"].ToString()
 
                             };
                             salesPipelineList.Add(crmData);
@@ -226,8 +230,8 @@ namespace biVerifier.Controllers
 
         public IActionResult FilterByProvince(string province)
         {
-            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
-            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\CRM Server\Documents\veriDB\VERIFIER2.accdb;Persist Security Info=False;";
+            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
+            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\CRM Server\Documents\veriDB\VERIFIER2.accdb;Persist Security Info=False;";
 
             string query = "SELECT * FROM Sales_Pipeline WHERE City = ?";
 
@@ -260,6 +264,7 @@ namespace biVerifier.Controllers
                                 RecurringCost = reader["RecurringCost"].ToString(),
                                 Probability = reader["Probability"].ToString(),
                                 Market = reader["Market"].ToString(),
+                                SageQuote = reader["SageQuote"].ToString()
                             };
                             salesPipelineList.Add(crmData);
                         }
