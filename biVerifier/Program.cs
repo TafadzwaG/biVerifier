@@ -28,6 +28,7 @@ namespace biVerifier
                 });
 
             var app = builder.Build();
+            builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())

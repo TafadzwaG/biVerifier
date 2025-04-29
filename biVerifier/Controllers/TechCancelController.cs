@@ -1,5 +1,7 @@
 ﻿using biVerifier.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
 using System.Data.Odbc;
 
 namespace biVerifier.Controllers
@@ -7,28 +9,37 @@ namespace biVerifier.Controllers
     [Route("[controller]")]
     public class TechCancelController : Controller
     {
+        private readonly string _connectionString;
+
+        public TechCancelController(IConfiguration configuration)
+        {
+            _connectionString = configuration.GetConnectionString("CrmDb");
+        }
+
         [HttpGet]
         public IActionResult Index(string searchTerm)
         {
-            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
-            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\CRM Server\Documents\veriDB\VERIFIER2.accdb;Persist Security Info=False;";
             string query = "SELECT * FROM TechCancel";
+            var parameters = new List<OdbcParameter>();
+
             if (!string.IsNullOrEmpty(searchTerm))
             {
                 query += " WHERE Client LIKE ? OR SiteID LIKE ? OR Date LIKE ? OR TechResponsible LIKE ?";
+                string searchPattern = $"%{searchTerm}%";
+                parameters.Add(new OdbcParameter("Client", searchPattern));
+                parameters.Add(new OdbcParameter("SiteID", searchPattern));
+                parameters.Add(new OdbcParameter("Date", searchPattern));
+                parameters.Add(new OdbcParameter("TechResponsible", searchPattern));
             }
 
             var techCancelDataList = new List<TechCancel>();
 
-            using (OdbcConnection connection = new OdbcConnection(connectionString))
+            using (OdbcConnection connection = new OdbcConnection(_connectionString))
             using (OdbcCommand command = new OdbcCommand(query, connection))
             {
-                if (!string.IsNullOrEmpty(searchTerm))
+                foreach (var param in parameters)
                 {
-                    command.Parameters.AddWithValue("@Client", "%" + searchTerm + "%");
-                    command.Parameters.AddWithValue("@SiteID", "%" + searchTerm + "%");
-                    command.Parameters.AddWithValue("@Date", "%" + searchTerm + "%");
-                    command.Parameters.AddWithValue("@TechResponsible", "%" + searchTerm + "%");
+                    command.Parameters.Add(param);
                 }
 
                 try
@@ -59,7 +70,7 @@ namespace biVerifier.Controllers
                 }
                 catch (OdbcException ex)
                 {
-                    Console.WriteLine("There was an error " + ex.Message);
+                    Console.WriteLine("There was an error: " + ex.Message);
                 }
             }
 

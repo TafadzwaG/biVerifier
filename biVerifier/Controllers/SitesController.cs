@@ -1,5 +1,6 @@
 ﻿using biVerifier.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System.Data.Odbc;
 using System.Collections.Generic;
 
@@ -7,11 +8,19 @@ namespace biVerifier.Controllers
 {
     public class SitesController : Controller
     {
-        //private readonly string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
-        private readonly string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\CRM Server\Documents\veriDB\VERIFIER2.accdb;Persist Security Info=False;";
+        private readonly string _connectionString;
+
+        public SitesController(IConfiguration configuration)
+        {
+            _connectionString = configuration.GetConnectionString("CrmDb");
+        }
+
         public IActionResult Index(string searchTerm = null)
         {
-            var sitesDataList = string.IsNullOrEmpty(searchTerm) ? GetAllSitesData() : SearchSitesData(searchTerm);
+            var sitesDataList = string.IsNullOrEmpty(searchTerm)
+                ? GetAllSitesData()
+                : SearchSitesData(searchTerm);
+
             ViewBag.SearchTerm = searchTerm;
             return View(sitesDataList);
         }
@@ -24,21 +33,31 @@ namespace biVerifier.Controllers
 
         private List<SitesData> SearchSitesData(string searchTerm)
         {
-            string query = $"SELECT * FROM Sites WHERE Client LIKE '%{searchTerm}%' OR City LIKE '%{searchTerm}%'";
-            return ExecuteQuery(query);
+            // Parameterized query to avoid SQL injection
+            string query = "SELECT * FROM Sites WHERE Client LIKE ? OR City LIKE ?";
+            var parameters = new[] { $"%{searchTerm}%", $"%{searchTerm}%" };
+            return ExecuteQuery(query, parameters);
         }
 
-        private List<SitesData> ExecuteQuery(string query)
+        private List<SitesData> ExecuteQuery(string query, object[] parameters = null)
         {
             var sitesDataList = new List<SitesData>();
 
-            using (OdbcConnection connection = new OdbcConnection(connectionString))
-            using (OdbcCommand command = new OdbcCommand(query, connection))
+            using (var connection = new OdbcConnection(_connectionString))
+            using (var command = new OdbcCommand(query, connection))
             {
+                if (parameters != null)
+                {
+                    foreach (var param in parameters)
+                    {
+                        command.Parameters.AddWithValue("?", param);
+                    }
+                }
+
                 try
                 {
                     connection.Open();
-                    using (OdbcDataReader reader = command.ExecuteReader())
+                    using (var reader = command.ExecuteReader())
                     {
                         while (reader.Read())
                         {
@@ -77,7 +96,7 @@ namespace biVerifier.Controllers
                 }
                 catch (OdbcException ex)
                 {
-                    Console.WriteLine("There was an error " + ex.Message);
+                    Console.WriteLine("There was an error: " + ex.Message);
                 }
             }
 

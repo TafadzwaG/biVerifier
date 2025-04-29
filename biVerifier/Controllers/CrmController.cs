@@ -1,28 +1,26 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Data.OleDb;
 using biVerifier.Models;
 using System.Data.Odbc;
-
+using Microsoft.Extensions.Configuration;
 
 namespace biVerifier.Controllers
 {
     public class CrmController : Controller
     {
+        private readonly string _connectionString;
+
+        public CrmController(IConfiguration configuration)
+        {
+            _connectionString = configuration.GetConnectionString("CrmDb");
+        }
 
         public IActionResult Index()
         {
-
-            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
-            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\CRM Server\Documents\veriDB\VERIFIER2.accdb;Persist Security Info=False;";
-
             string query = "SELECT * FROM CRM";
-
-
             var crmDataList = new List<Crm>();
 
-            using (OdbcConnection connection = new OdbcConnection(connectionString))
+            using (OdbcConnection connection = new OdbcConnection(_connectionString))
             using (OdbcCommand command = new OdbcCommand(query, connection))
-
             {
                 try
                 {
@@ -48,7 +46,6 @@ namespace biVerifier.Controllers
                             crmData.Consultant = reader["Consultant"].ToString();
                             crmData.Branch = reader["Branch"].ToString();
                             crmData.Status = reader["Status"].ToString();
-                            //crmData.Probability = reader["Probability"].ToString();
                             crmData.leadyear = reader["leadyear"].ToString();
                             crmData.leadmonth = reader["leadmonth"].ToString();
                             crmData.liveyear = reader["liveyear"].ToString();
@@ -60,12 +57,11 @@ namespace biVerifier.Controllers
                             crmData.Comments = reader["Comments"].ToString();
                             crmData.Sage = reader["Sage"].ToString();
                             crmData.VCC_Code = reader["VCC_Code"].ToString();
-                            // Assign other properties as needed
                             crmDataList.Add(crmData);
                         }
                     }
                 }
-                catch (OleDbException ex)
+                catch (OdbcException ex)
                 {
                     Console.WriteLine("There was an error " + ex.Message);
                 }
@@ -76,11 +72,7 @@ namespace biVerifier.Controllers
 
         public IActionResult SearchIndex(string searchString)
         {
-            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
-            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\CRM Server\Documents\veriDB\VERIFIER2.accdb;Persist Security Info=False;";
             string query = "SELECT * FROM CRM";
-
-
             if (!string.IsNullOrEmpty(searchString))
             {
                 query += " WHERE Client LIKE ? OR Contact_Person LIKE ? OR Email LIKE ?";
@@ -88,7 +80,7 @@ namespace biVerifier.Controllers
 
             var crmDataList = new List<Crm>();
 
-            using (OdbcConnection connection = new OdbcConnection(connectionString))
+            using (OdbcConnection connection = new OdbcConnection(_connectionString))
             using (OdbcCommand command = new OdbcCommand(query, connection))
             {
                 if (!string.IsNullOrEmpty(searchString))
@@ -120,11 +112,9 @@ namespace biVerifier.Controllers
                                 LeadSource = reader["LeadSource"].ToString(),
                                 Service = reader["Service"].ToString(),
                                 Market = reader["Market"].ToString(),
-                               
                                 Consultant = reader["Consultant"].ToString(),
                                 Branch = reader["Branch"].ToString(),
                                 Status = reader["Status"].ToString(),
-                                //Probability = reader["Probability"].ToString(),
                                 leadyear = reader["leadyear"].ToString(),
                                 leadmonth = reader["leadmonth"].ToString(),
                                 liveyear = reader["liveyear"].ToString(),
@@ -136,7 +126,6 @@ namespace biVerifier.Controllers
                                 Comments = reader["Comments"].ToString(),
                                 Sage = reader["Sage"].ToString(),
                                 VCC_Code = reader["VCC_Code"].ToString()
-
                             };
                             crmDataList.Add(crmData);
                         }
@@ -153,21 +142,11 @@ namespace biVerifier.Controllers
 
         public IActionResult RetrieveCrmData()
         {
-
-            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
-            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\CRM Server\Documents\veriDB\VERIFIER2.accdb;Persist Security Info=False;";
-
-            // SQL query to execute
-
-
             string query = "SELECT * FROM CRM";
-
-
             var crmDataList = new List<CRMData>();
 
-            using (OdbcConnection connection = new OdbcConnection(connectionString))
+            using (OdbcConnection connection = new OdbcConnection(_connectionString))
             using (OdbcCommand command = new OdbcCommand(query, connection))
-
             {
                 try
                 {
@@ -179,12 +158,11 @@ namespace biVerifier.Controllers
                             var crmData = new CRMData();
                             crmData.Sites = reader["Sites"].ToString();
                             crmData.Suburb = reader["Suburb"].ToString();
-                            // Assign other properties as needed
                             crmDataList.Add(crmData);
                         }
                     }
                 }
-                catch (OleDbException ex)
+                catch (OdbcException ex)
                 {
                     Console.WriteLine("There was an error " + ex.Message);
                 }
@@ -193,20 +171,14 @@ namespace biVerifier.Controllers
             return View(crmDataList);
         }
 
-
         public IActionResult FilterByProvince()
         {
-            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
-            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\CRM Server\Documents\veriDB\VERIFIER2.accdb;Persist Security Info=False;";
-
             string query = "SELECT * FROM CRM WHERE Region = 'GP'";
-
             var crmDataList = new List<CRMData>();
 
-            using (OdbcConnection connection = new OdbcConnection(connectionString))
+            using (OdbcConnection connection = new OdbcConnection(_connectionString))
             using (OdbcCommand command = new OdbcCommand(query, connection))
-
-
+            {
                 try
                 {
                     connection.Open();
@@ -217,25 +189,17 @@ namespace biVerifier.Controllers
                             var crmData = new CRMData();
                             crmData.Sites = reader["Sites"].ToString();
                             crmData.Suburb = reader["Suburb"].ToString();
-                            // Assign other properties as needed
                             crmDataList.Add(crmData);
                         }
                     }
                 }
-                catch (OleDbException ex)
+                catch (OdbcException ex)
                 {
                     Console.WriteLine("There was an error " + ex.Message);
                 }
+            }
 
             return View(crmDataList);
         }
-
-
-       
-
-       
-       
-
-
     }
 }

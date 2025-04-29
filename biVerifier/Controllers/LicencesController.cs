@@ -1,21 +1,25 @@
 ﻿using biVerifier.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Data.Odbc;
-using System.Data.OleDb;
+using Microsoft.Extensions.Configuration;
 
 namespace biVerifier.Controllers
 {
     public class LicencesController : Controller
     {
+        private readonly string _connectionString;
+
+        public LicencesController(IConfiguration configuration)
+        {
+            _connectionString = configuration.GetConnectionString("CrmDb");
+        }
+
         public IActionResult Index()
         {
-            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
-            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\CRM Server\Documents\veriDB\VERIFIER2.accdb;Persist Security Info=False;";
             string query = "SELECT * FROM Licenses";
-
             var licensesDataList = new List<Licenses>();
 
-            using (OdbcConnection connection = new OdbcConnection(connectionString))
+            using (OdbcConnection connection = new OdbcConnection(_connectionString))
             using (OdbcCommand command = new OdbcCommand(query, connection))
             {
                 try
@@ -42,7 +46,7 @@ namespace biVerifier.Controllers
                         }
                     }
                 }
-                catch (OleDbException ex)
+                catch (OdbcException ex)
                 {
                     Console.WriteLine("There was an error " + ex.Message);
                 }
@@ -53,8 +57,6 @@ namespace biVerifier.Controllers
 
         public IActionResult Search(string searchTerm)
         {
-            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
-            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\CRM Server\Documents\veriDB\VERIFIER2.accdb;Persist Security Info=False;";
             string query = @"
                 SELECT * FROM Licenses 
                 WHERE Client LIKE ? OR Requestor LIKE ? OR ChangeDate LIKE ? 
@@ -63,7 +65,7 @@ namespace biVerifier.Controllers
 
             var licensesDataList = new List<Licenses>();
 
-            using (OdbcConnection connection = new OdbcConnection(connectionString))
+            using (OdbcConnection connection = new OdbcConnection(_connectionString))
             using (OdbcCommand command = new OdbcCommand(query, connection))
             {
                 for (int i = 0; i < 9; i++)
@@ -95,7 +97,7 @@ namespace biVerifier.Controllers
                         }
                     }
                 }
-                catch (OleDbException ex)
+                catch (OdbcException ex)
                 {
                     Console.WriteLine("There was an error " + ex.Message);
                 }

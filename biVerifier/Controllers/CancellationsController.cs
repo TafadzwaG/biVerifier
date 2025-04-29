@@ -1,7 +1,8 @@
 ﻿using biVerifier.Models;
-using Microsoft.AspNetCore.Mvc;
-using System.Data.Odbc;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using System.Data.Odbc;
 
 namespace biVerifier.Controllers
 {
@@ -9,18 +10,19 @@ namespace biVerifier.Controllers
     [Route("[controller]")]
     public class CancellationsController : Controller
     {
+        private readonly string _connectionString;
+
+        public CancellationsController(IConfiguration configuration)
+        {
+            _connectionString = configuration.GetConnectionString("CrmDb");
+        }
+
         [HttpGet]
         [Route("")]
         [Route("Index")]
         public IActionResult Index(string searchTerm)
         {
-            //string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=E:\CODING_HASHIRA\PROJECTS\.NET\databaseAccess\VERIFIER2.accdb;Persist Security Info=False;";
-            string connectionString = @"Driver={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\Users\CRM Server\Documents\veriDB\VERIFIER2.accdb;Persist Security Info=False;";
-
             var cancellationsDataList = new List<CancellationsData>();
-
-
-
 
             string query = "SELECT * FROM Cancellations";
             if (!string.IsNullOrEmpty(searchTerm))
@@ -28,7 +30,7 @@ namespace biVerifier.Controllers
                 query += " WHERE Client LIKE ? OR [Contact Person] LIKE ?";
             }
 
-            using (OdbcConnection connection = new OdbcConnection(connectionString))
+            using (OdbcConnection connection = new OdbcConnection(_connectionString))
             using (OdbcCommand command = new OdbcCommand(query, connection))
             {
                 if (!string.IsNullOrEmpty(searchTerm))

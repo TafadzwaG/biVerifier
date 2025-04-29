@@ -10,7 +10,7 @@
 
 <div class="container" >
     <div class="row justify-content-center" style="margin-top: 13rem">
-        <div class="box" style="width: 600px">
+        <div class="box shadow-sm" style="width: 600px; box-shadow: 10px 4px 8px rgba(0, 0, 0, 0.4);">
             <div class="box-header border-0" style="text-align: center">
                 <img style="height: 60px" src="~/images/logo.jpg" alt="biVerifier Logo" class="img-fluid">
             </div>
@@ -25,18 +25,22 @@
                             <input asp-for="UserPW" type="password" class="form-control"  style="border: 2px solid #cccc"/>
                             <label asp-for="UserPW" class="font-weight-bold" style="font-weight: bold">PASSWORD <span style="color: red">*</span> </label>
                         </div>
-                        <div style="display: flex; justify-content: center; align-items: center">
-                            <button type="submit" class="btn btn-primary text-capitalize" style="text-transform: uppercase; font-weight: bold; background-color: #A51E24; border: 1px solid #A51E24">LOGIN</button>
-
+                        <div class="d-grid">
+                            <button type="submit" class="btn text-uppercase fw-bold" style="background-color: #A51E24; border-color: #A51E24; color: white; border-radius: 10px">
+                                Login
+                            </button>
                         </div>
                     </form>
 
                     @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
                     {
-                        <div style="font-weight: bold" class="alert alert-danger mt-3" role="alert">
+                        <div class="alert alert-danger alert-dismissible fade show mt-3 shadow-sm rounded" role="alert" style="font-weight: 500;">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
                             @ViewBag.ErrorMessage
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     }
+
                 </div>
             </div>
         </div>
