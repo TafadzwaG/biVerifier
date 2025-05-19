@@ -1,21 +1,76 @@
 ﻿@model List<biVerifier.Models.SalesPipeline>
-
 @{
     ViewData["Title"] = "SALES PIPELINE";
 
-}
+    // Group probabilities for summary cards
+    var probabilityGroups = Model
+        .GroupBy(x => string.IsNullOrEmpty(x.Probability) ? "Unnamed" : x.Probability)
+        .Select(g => new { Name = g.Key, Count = g.Count() })
+        .OrderByDescending(x => x.Count)
+        .ToList();
 
+    var totalEnquiries = Model.Count(x => !string.IsNullOrEmpty(x.Probability));
+}
 
 @section Scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+
     <script>
+        $(document).ready(function () {
+            // Initialize datepicker
+            $('.datepicker').datepicker({
+                format: 'yyyy-mm-dd',
+                autoclose: true,
+                todayHighlight: true
+            }).on('changeDate', function () {
+                toggleFilterButtons();
+            });
 
-         function resetSearchFilter() {
-            document.getElementById('searchTerm').value = '';
+            // Initialize month picker
+            $('.monthpicker').datepicker({
+                format: 'yyyy-mm',
+                viewMode: 'months',
+                minViewMode: 'months',
+                autoclose: true
+            }).on('changeDate', function () {
+                toggleFilterButtons();
+            });
 
-            window.location.href = '@Url.Action("Index", "SalesPipeline")';
+            // Handle manual input changes
+            $('.date-filter-input').on('input', function () {
+                toggleFilterButtons();
+            });
+
+            // Initial state
+            toggleFilterButtons();
+        });
+
+        function toggleFilterButtons() {
+            const dateValue = $('#dateFilter').val();
+            const monthValue = $('#monthFilter').val();
+
+            $('#dateFilterBtn').prop('disabled', !dateValue);
+            $('#monthFilterBtn').prop('disabled', !monthValue);
         }
 
+        function resetSearchFilter() {
+            // Clear inputs
+            $('#searchTerm').val('');
+            $('#dateFilter').val('');
+            $('#monthFilter').val('');
+
+            // Reset datepickers
+            $('.datepicker').datepicker('clearDates');
+            $('.monthpicker').datepicker('clearDates');
+
+            // Update button states
+            toggleFilterButtons();
+
+            // Reload page
+            window.location.href = '@Url.Action("Index", "SalesPipeline")';
+        }
 
         function exportToExcel() {
             var table = document.getElementById('dataTable');
@@ -25,18 +80,17 @@
             XLSX.writeFile(wb, 'SalesPipeline.xlsx');
         }
 
-
         function hideTable() {
             var table = document.getElementById('dataTable');
             table.style.display = 'none';
         }
 
-        // Optional: Call hideTable if needed
-        window.onload = hideTable;
+        window.onload = function () {
+            hideTable();
+            toggleFilterButtons();
+        };
     </script>
 }
-
-
 
 <div class="custom-container" style="margin-top: 4rem">
     <div class="row">
@@ -44,7 +98,7 @@
             <div class="box">
                 <div class="box-body">
                     <div class="">
-                        <div class="d-flex  align-items-center justify-content-between mb-20">
+                        <div class="d-flex align-items-center justify-content-between mb-20">
                             <div>
                                 <h4 class="box-title" style="text-transform: uppercase; font-weight: bold;">SALES PIPELINE LIST</h4>
                             </div>
@@ -57,43 +111,132 @@
                         </div>
                     </div>
 
-                    <div class="col-md-6 mt-4">
-                        <form asp-controller="SalesPipeline" asp-action="Search" method="get">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" name="searchTerm" id="searchTerm" placeholder="Search by Client" />
-                                <label for="floatingSearch">Search by Client</label>
-
-                                
+                    <!-- Summary Cards -->
+                    <div class="row mb-4">
+                        <div class="col-md-3">
+                            <div class="card bg-primary text-white">
+                                <div class="card-body">
+                                    <h5 class="card-title">Total Enquiries</h5>
+                                    <p class="card-text display-6">@totalEnquiries</p>
+                                </div>
                             </div>
-                            <button class="btn btn-primary" type="submit">
-                                <i class="fa fa-filter" aria-hidden="true"></i>
-                                SEARCH FILTER
-                            </button>
-                            <button type="button" class="btn btn-outline-secondary" onclick="resetSearchFilter()">
-                                <i class="fa fa-refresh" aria-hidden="true"></i> RESET FILTER
-                            </button>
-                        </form>
+                        </div>
 
-                      
+                        @foreach (var group in probabilityGroups)
+                        {
+                            <div class="col-md-3">
+                                <div class="card @(group.Name == "Unnamed" ? "bg-secondary" : "bg-info") text-white">
+                                    <div class="card-body">
+                                        <h5 class="card-title">@group.Name</h5>
+                                        <p class="card-text display-6">@group.Count</p>
+                                    </div>
+                                </div>
+                            </div>
+                        }
                     </div>
-                    
+
+                    <!-- Filter Forms -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <form asp-controller="SalesPipeline" asp-action="Search" method="get" class="mb-3">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="searchTerm" id="searchTerm" placeholder="Search by Client" />
+                                    <button class="btn btn-primary" type="submit">
+                                        <i class="fa fa-filter" aria-hidden="true"></i>
+                                        Search Client
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-6">
+                            <form asp-controller="SalesPipeline" asp-action="FilterByEnquiries" method="get" class="mb-3">
+                                <div class="input-group">
+                                    <input type="text"
+                                           class="form-control datepicker date-filter-input"
+                                           name="leadMonth"
+                                           id="dateFilter"
+                                           placeholder="Select date (YYYY-MM-DD)"
+                                           autocomplete="off" />
+                                    <button class="btn btn-primary" type="submit" id="dateFilterBtn" disabled>
+                                        <i class="fa fa-filter" aria-hidden="true"></i>
+                                        Filter By Date
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Month Picker Form -->
+                    <div class="row mb-4">
+                        <div class="col-md-6 offset-md-6">
+                            <form asp-controller="SalesPipeline" asp-action="FilterByEnquiries" method="get">
+                                <div class="input-group">
+                                    <input type="text"
+                                           class="form-control monthpicker date-filter-input"
+                                           name="leadMonth"
+                                           id="monthFilter"
+                                           placeholder="Select month (YYYY-MM)"
+                                           autocomplete="off" />
+                                    <button class="btn btn-primary" type="submit" id="monthFilterBtn" disabled>
+                                        <i class="fa fa-calendar" aria-hidden="true"></i>
+                                        Filter By Month
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Filter Results Display -->
+                    @if (ViewBag.EnquiryCount != null)
+                    {
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <div class="alert alert-info">
+                                    <h5>
+                                        <i class="fa fa-info-circle" aria-hidden="true"></i>
+                                        Filter Results
+                                    </h5>
+                                    <p>
+                                        Showing <strong>@Model.Count</strong> records for
+                                        <strong>@ViewBag.FilteredMonth</strong>
+                                    </p>
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <span class="badge bg-primary">Total: @Model.Count</span>
+                                        @foreach (var group in probabilityGroups)
+                                        {
+                                            <span class="badge @(group.Name == "Unnamed" ? "bg-secondary" : "bg-info")">
+                                                @group.Name: @group.Count
+                                            </span>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    <div class="text-end mb-3">
+                        <button type="button" class="btn btn-outline-secondary" onclick="resetSearchFilter()">
+                            <i class="fa fa-refresh" aria-hidden="true"></i> RESET ALL FILTERS
+                        </button>
+                    </div>
+
+                    <!-- Main Table -->
                     <div class="table-responsive rounded card-table">
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr>
                                     <th>QuoteNum</th>
                                     <th>Client</th>
-                                    <th>Lead_Source</th>
-                                    <th>Contact_Person</th>
+                                    <th>Lead Source</th>
+                                    <th>Contact Person</th>
                                     <th>Email</th>
                                     <th>City</th>
                                     <th>Service</th>
                                     <th>Consultant</th>
                                     <th>Revenue</th>
-                                    <th>Markert Type</th>
-
-
-
+                                    <th>Market Type</th>
+                                    <th>Probability</th>
+                                    <th>Lead Month</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -112,7 +255,6 @@
                                         </td>
                                         <td>@cData?.Service</td>
                                         <td>
-
                                             @if (!string.IsNullOrEmpty(cData?.Consultant))
                                             {
                                                 @cData?.Consultant
@@ -124,16 +266,27 @@
                                         </td>
                                         <td>R @cData?.RecurringCost</td>
                                         <td>@cData?.Market</td>
-                                        
-                                       
+                                        <td>
+                                            @if (!string.IsNullOrEmpty(cData?.Probability))
+                                            {
+                                                <span class="badge @(cData.Probability.ToLower() == "high" ? "bg-success" :
+                                                             cData.Probability.ToLower() == "medium" ? "bg-warning" : "bg-info")">
+                                                    @cData?.Probability
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-secondary">Unnamed</span>
+                                            }
+                                        </td>
+                                        <td>@cData?.Lead_Month</td>
                                     </tr>
-
                                 }
-
                             </tbody>
                         </table>
 
-                        <table id="dataTable" class="table table-striped table-hover">
+                        <!-- Hidden table for export -->
+                        <table id="dataTable" class="table table-striped table-hover" style="display: none;">
                             <thead>
                                 <tr>
                                     <th>QuoteNum</th>
@@ -149,8 +302,7 @@
                                     <th>Probability</th>
                                     <th>Market</th>
                                     <th>SageQuote</th>
-
-
+                                    <th>Lead_Month</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -167,13 +319,12 @@
                                         <td>@cData?.Consultant</td>
                                         <td>@cData?.OnceOffCost</td>
                                         <td>@cData?.RecurringCost</td>
-                                        <td>@cData?.Probability</td>
+                                        <td>@(string.IsNullOrEmpty(cData?.Probability) ? "Unnamed" : cData?.Probability)</td>
                                         <td>@cData?.Market</td>
                                         <td>@cData?.SageQuote</td>
+                                        <td>@cData?.Lead_Month</td>
                                     </tr>
-
                                 }
-
                             </tbody>
                         </table>
                     </div>

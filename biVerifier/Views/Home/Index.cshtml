@@ -1,5 +1,4 @@
 ﻿@model List<biVerifier.Models.AggregatedSalesData>
-
 @{
     ViewData["Title"] = "Dashboard";
     int siteCount = ViewData["SiteCount"] != null ? (int)ViewData["SiteCount"] : 0;
@@ -8,19 +7,17 @@
     List<decimal> revenueLost = ViewData["RevenueLost"] as List<decimal>;
     Dictionary<string, int> leadSourceCounts = ViewData["LeadSourceCounts"] as Dictionary<string, int>;
     List<decimal> totalRevenueList = ViewData["TotalRevenue"] as List<decimal>; 
-
-
     var totalMonitoringFeesByConsultant = ViewData["TotalMonitoringFeesByConsultant"] as Dictionary<string, decimal>;
-    var consultantNames = totalMonitoringFeesByConsultant.Keys.ToList();
-    var totalMonitoringFees = totalMonitoringFeesByConsultant.Values.ToList();
+    var consultantNames = totalMonitoringFeesByConsultant?.Keys.ToList();
+    var totalMonitoringFees = totalMonitoringFeesByConsultant?.Values.ToList();
 }
 
 <div class="custom-container" style="margin: 3rem">
-
     <div class="row">
+        <!-- Left Column (Stats and Tables) -->
         <div class="col-md-4">
-           <div class="row">
-              
+            <!-- Stats Cards -->
+            <div class="row">
                 <div class="col-xl-6 col-md-6 col-6">
                     <div class="box">
                         <div class="box-body text-center">
@@ -28,7 +25,7 @@
                                 <img style="height: 40px" src="https://rhythm-admin-template.multipurposethemes.com/images/svg-icon/medical/icon-2.svg" class="" alt="">
                             </div>
                             <p class="text-fade mt-15 mb-5 text-capitalize fw-bold">TOTAL CANCELLATIONS (@DateTime.Now.Year)</p>
-                             <h3 class="mt-0">
+                            <h3 class="mt-0">
                                 <span class="badge bg-primary rounded-pill">
                                     @cancellationCount
                                 </span>
@@ -36,13 +33,14 @@
                         </div>
                     </div>
                 </div>
+                
                 <div class="col-xl-6 col-md-6 col-6">
                     <div class="box">
                         <div class="box-body text-center">
                             <div class="bg-primary-light rounded10 p-20 mx-auto w-100 h-100">
                                 <img style="height: 40px" src="https://rhythm-admin-template.multipurposethemes.com/images/svg-icon/medical/icon-2.svg" class="" alt="">
                             </div>
-                            <p class="text-fade mt-15 mb-5 text-capitalize fw-bold"" >CURRENT REVENUE (@DateTime.Now.Year) </p>
+                            <p class="text-fade mt-15 mb-5 text-capitalize fw-bold">CURRENT REVENUE (@DateTime.Now.Year)</p>
                             <h3 class="mt-0">
                                 <span class="badge bg-primary rounded-pill">
                                     @totalRevenueList[0].ToString("0.00")
@@ -51,98 +49,141 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                 @section ClientCountByMarketType {       
-                   
-                }  
-                 <div>
-                        <div class="box">
-                            <div class="box-header">
-                                <h5 style="font-weight: bold">CLIENT COUNT BY MARKET TYPE</h5>
-                            </div>
-                            <div class="box-body">
-                                    <div id="horizontalBarChart" style="height: 350px;"></div>
-                            </div>
-                        </div> 
-                    </div>
-            </div>
 
-        </div>
-    <div class="col-md-8">
-        <div class="row">
-            <div class="col-md-6">
-                @* <div class="box">
-                    <div class="box-header">
-                        <h5 style="font-weight: bold">SALE BY PERSON</h5>
-                    </div>
-                    <div class="box-body">
-                        <div id="barChart" style="height: 350px;"></div>
-                    </div>
-                </div> *@
-                 <div class="box">
-                    <div class="box-header">
-                        <h5 style="font-weight: bold">SALES BY CONSULTANT</h5>
-                    </div>
-                    <div class="box-body">
-                            <div id="pieChart2" style="height: 350px;"></div>
+                <div class="col-xl-12 col-md-6 col-6">
+                    <div class="box">
+                        <div class="box-body text-center">
+                            <div class="bg-primary-light rounded10 p-20 mx-auto w-100 h-100">
+                                <img style="height: 40px" src="https://rhythm-admin-template.multipurposethemes.com/images/svg-icon/medical/icon-2.svg" class="" alt="">
+                            </div>
+                            <p class="text-fade mt-15 mb-5 text-capitalize fw-bold">QUOTED REVENUE (@DateTime.Now.Year)</p>
+                            <h3 class="mt-0">
+                                <span class="badge bg-primary rounded-pill">
+                                    R @(((decimal)ViewData["QuotedRevenue"]).ToString("0.00"))
+                                </span>
+                            </h3>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="box">
-                    <div class="box-header">
-                        <h5 style="font-weight: bold">REVENUE LOST PER CANCELLATION</h5>
-                    </div>
-                    <div class="box-body">
-                        <div id="lineChart" style="height: 350px;"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="box">
-                    <div class="box-header">
-                        <h5 style="font-weight: bold">CLIENT COUNT BY LEAD SOURCE</h5>
-                    </div>
-                <div class="box-body">
-                        <canvas id="clientCountByLeadSourceChartCanvas" style="height: 350px;"></canvas>
-                </div>
-                </div>
-            </div>
-             <div class="col-md-6">
-                <div class="box">
+            
+            <!-- Enquiries by City Table -->
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="box">
                         <div class="box-header">
-                            <h5 style="font-weight: bold">SALES BY REGION</h5>
+                            <h5 style="font-weight: bold">ENQUIRIES BY CITY</h5>
                         </div>
                         <div class="box-body">
-                            <div id="salesByRegionChart" style="height: 350px;"></div>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>City</th>
+                                            @foreach (var type in (List<string>)ViewData["EnquiryTypes"])
+                                            {
+                                                <th>@type</th>
+                                            }
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var city in (List<string>)ViewData["EnquiryCities"])
+                                        {
+                                            var cityCounts = ((Dictionary<string, Dictionary<string, int>>)ViewData["EnquiryCounts"])[city];
+                                            <tr>
+                                                <td><strong>@city</strong></td>
+                                                @{
+                                                    int cityTotal = 0;
+                                                }
+                                                @foreach (var type in (List<string>)ViewData["EnquiryTypes"])
+                                                {
+                                                    var count = cityCounts.ContainsKey(type) ? cityCounts[type] : 0;
+                                                    cityTotal += count;
+                                                    <td>@count</td>
+                                                }
+                                                <td><strong>@cityTotal</strong></td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td><strong>Total</strong></td>
+                                            @{
+                                                var typeTotals = new Dictionary<string, int>();
+                                                foreach (var type in (List<string>)ViewData["EnquiryTypes"])
+                                                {
+                                                    typeTotals[type] = 0;
+                                                }
+                                                int grandTotal = 0;
+                                                
+                                                foreach (var city in (List<string>)ViewData["EnquiryCities"])
+                                                {
+                                                    var cityCounts = ((Dictionary<string, Dictionary<string, int>>)ViewData["EnquiryCounts"])[city];
+                                                    foreach (var type in (List<string>)ViewData["EnquiryTypes"])
+                                                    {
+                                                        if (cityCounts.ContainsKey(type))
+                                                        {
+                                                            typeTotals[type] += cityCounts[type];
+                                                        }
+                                                    }
+                                                    grandTotal += cityCounts.Values.Sum();
+                                                }
+                                            }
+                                            @foreach (var type in (List<string>)ViewData["EnquiryTypes"])
+                                            {
+                                                <td><strong>@typeTotals[type]</strong></td>
+                                            }
+                                            <td><strong>@grandTotal</strong></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                       
-                   </div>
-            <div class="col-md-12">
-                <!-- Sales by Region Chart Section -->
-               @*  <div class="col-md-6">
-                     @section ClientCountByLeadSourceChart {
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right Column (Charts) -->
+        <div class="col-md-8" style="overflow-y: auto; max-height: 110vh;">
+            <!-- First Row of Charts -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="box">
+                        <div class="box-header">
+                            <h5 style="font-weight: bold">SALES BY CONSULTANT</h5>
+                        </div>
+                        <div class="box-body">
+                            <div id="pieChart2" style="height: 350px;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="box">
+                        <div class="box-header">
+                            <h5 style="font-weight: bold">REVENUE LOST PER CANCELLATION</h5>
+                        </div>
+                        <div class="box-body">
+                            <div id="lineChart" style="height: 350px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Second Row of Charts -->
+            <div class="row">
+                <div class="col-md-6">
                     <div class="box">
                         <div class="box-header">
                             <h5 style="font-weight: bold">CLIENT COUNT BY LEAD SOURCE</h5>
                         </div>
                         <div class="box-body">
-                              <canvas id="clientCountByLeadSourceChartCanvas" style="height: 350px;"></canvas>
+                            <div id="clientCountByLeadSourceChart" style="height: 350px;"></div>
                         </div>
                     </div>
-                 }
-                </div> *@
-
-            </div>
-        </div>
-         <div class="row">
-              <div class="col-md-12">
-                   @* <div class="col-md-6">
-                          @section SalesByRegionChart {
+                </div>
+                <div class="col-md-6">
                     <div class="box">
                         <div class="box-header">
                             <h5 style="font-weight: bold">SALES BY REGION</h5>
@@ -151,33 +192,116 @@
                             <div id="salesByRegionChart" style="height: 350px;"></div>
                         </div>
                     </div>
-                }
-                       
-                   </div> *@
-                   <div class="col-md-6">
-                        @*  @section ConsultantTotalMonitoringFees {
-                            <div class="box">
-                            <div class="box-header">
-                                <h5 style="font-weight: bold">SALES BY CONSULTANT</h5>
-                            </div>
-                          <div class="box-body">
-                                 <div id="pieChart2" style="height: 350px;"></div>
-                            </div>
+                </div>
+            </div>
+            
+            <!-- Third Row of Charts -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="box">
+                        <div class="box-header">
+                            <h5 style="font-weight: bold">QUOTED PROBABILITY BY MARKET</h5>
                         </div>
-                        } *@
-                   </div>
-              </div>
-         </div>
+                        <div class="box-body">
+                            <div id="quotedByMarketChart" style="height: 400px;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="box">
+                        <div class="box-header">
+                            <h5 style="font-weight: bold">CLIENT COUNT BY MARKET TYPE</h5>
+                        </div>
+                        <div class="box-body">
+                            <div id="horizontalBarChart" style="height: 350px;"></div>
+                        </div>
+                    </div> 
+                </div>
+            </div>
+            
+            <!-- Fourth Row (Enquiry Visualization) -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="box">
+                        <div class="box-header">
+                            <h5 style="font-weight: bold">ENQUIRIES BY CITY (VISUALIZATION)</h5>
+                        </div>
+                        <div class="box-body">
+                            <div id="enquiryChart" style="height: 400px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    </div>
-    
 </div>
 
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        // Render the Bar Chart for Aggregated Sales Consultant
+        // First, add a new method to your HomeController to get City vs Probability data
+        // Then call it in your Index action like the other methods
+        
+        // Sample data structure we expect from the controller:
+        var cityProbabilityData = {
+            cities: ['Johannesburg', 'Cape Town', 'Durban', 'Pretoria', 'Port Elizabeth'],
+            probabilities: {
+                'High': [12, 8, 5, 7, 3],
+                'Medium': [15, 10, 8, 9, 4],
+                'Low': [20, 12, 10, 11, 6],
+                'Unnamed': [5, 3, 2, 4, 1]
+            }
+        };
+
+        // Prepare data for the City vs Probability chart
+        var cityProbabilitySeries = [];
+        for (var prob in cityProbabilityData.probabilities) {
+            cityProbabilitySeries.push({
+                name: prob,
+                data: cityProbabilityData.probabilities[prob]
+            });
+        }
+
+        var cityProbabilityOptions = {
+            chart: {
+                type: 'bar',
+                height: 350,
+                stacked: true,
+                toolbar: { show: false }
+            },
+            series: cityProbabilitySeries,
+            xaxis: {
+                categories: cityProbabilityData.cities,
+                title: { text: 'City' }
+            },
+            yaxis: {
+                title: { text: 'Number of Enquiries' }
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    columnWidth: '60%',
+                    endingShape: 'rounded'
+                }
+            },
+            colors: ['#3e82f7', '#04d672', '#fa8b0c', '#ec4a3f'],
+            legend: {
+                position: 'bottom'
+            },
+            tooltip: {
+                y: {
+                    formatter: function (val) {
+                        return val + " enquiries";
+                    }
+                }
+            }
+        };
+
+        var cityProbabilityChart = new ApexCharts(document.querySelector("#cityProbabilityChart"), cityProbabilityOptions);
+        cityProbabilityChart.render();
+
+        // Rest of your existing chart code...
         var consultantNames = [];
         var totalSalesData = [];
         @foreach (var salesData in Model)
@@ -279,48 +403,63 @@
         var salesByRegionChart = new ApexCharts(document.getElementById('salesByRegionChart'), salesByRegionChartData);
         salesByRegionChart.render();
 
-
-
-
-
         // Prepare data for the Client Count by Lead Source Chart
         var leadSourceCounts = @Html.Raw(Json.Serialize(ViewData["LeadSourceCounts"]));
         var leadSources = Object.keys(leadSourceCounts);
         var clientCounts = Object.values(leadSourceCounts);
 
-        var ctx = document.getElementById('clientCountByLeadSourceChartCanvas').getContext('2d');
-        var clientCountByLeadSourceChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: leadSources,
-                datasets: [{
-                    label: 'Client Count',
-                    data: clientCounts,
-                    backgroundColor: '#26A0FC',
-                    borderColor: '#26A0FC',
-                    borderWidth: 1
-                    //#A61D25
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
+        // Render Client Count by Lead Source using ApexCharts
+var leadSourceCounts = @Html.Raw(Json.Serialize(ViewData["LeadSourceCounts"]));
+var leadSources = Object.keys(leadSourceCounts);
+var clientCounts = Object.values(leadSourceCounts);
+
+var clientCountByLeadSourceOptions = {
+    chart: {
+        type: 'bar',
+        height: 350
+    },
+    series: [{
+        name: 'Client Count',
+        data: clientCounts
+    }],
+    xaxis: {
+        categories: leadSources,
+        title: {
+            text: 'Lead Source'
+        }
+    },
+    yaxis: {
+        title: {
+            text: 'Client Count'
+        }
+    },
+    plotOptions: {
+        bar: {
+            columnWidth: '60%',
+            endingShape: 'rounded'
+        }
+    },
+    colors: ['#26A0FC'],
+    tooltip: {
+        y: {
+            formatter: function (val) {
+                return val + " clients";
             }
-        });
+        }
+    }
+};
+
+var clientCountByLeadSourceChart = new ApexCharts(document.querySelector("#clientCountByLeadSourceChart"), clientCountByLeadSourceOptions);
+clientCountByLeadSourceChart.render();
 
 
-
-
-         var clientCountByMarket = @Html.Raw(Json.Serialize(ViewData["ClientCountByMarket"]));
+        var clientCountByMarket = @Html.Raw(Json.Serialize(ViewData["ClientCountByMarket"]));
 
         var horizontalBarChartOptions = {
             chart: {
                 type: 'bar',
                 height: 350,
-                horizontal: true // Set to true to make it horizontal
+                horizontal: true
             },
             series: [{
                 data: Object.values(clientCountByMarket)
@@ -328,28 +467,13 @@
             xaxis: {
                 categories: Object.keys(clientCountByMarket)
             },
-            colors: ['#3e82f7', '#04d672', '#fa8b0c', '#ec4a3f', '#9050c6'] // Add more colors if needed
+            colors: ['#3e82f7', '#04d672', '#fa8b0c', '#ec4a3f', '#9050c6']
         };
 
         var horizontalBarChart = new ApexCharts(document.getElementById('horizontalBarChart'), horizontalBarChartOptions);
         horizontalBarChart.render();
 
-
-         
-        // var totalMonitoringFeesByConsultant = @Html.Raw(Json.Serialize(ViewData["TotalMonitoringFeesByConsultant"]));
-
-        // var pieChartOptions = {
-        //     chart: {
-        //         type: 'pie',
-        //         height: 350,
-        //     },
-        //     series: Object.values(totalMonitoringFeesByConsultant),
-        //     labels: Object.keys(totalMonitoringFeesByConsultant)
-        // };
-
-        // var pieChart = new ApexCharts(document.getElementById('pieChart2'), pieChartOptions);
-        // pieChart.render();
-         var consultantNames = @Html.Raw(Json.Serialize(consultantNames));
+        var consultantNames = @Html.Raw(Json.Serialize(consultantNames));
         var totalSalesData = @Html.Raw(Json.Serialize(totalMonitoringFees));
 
         var pieChartOptions = {
@@ -364,5 +488,242 @@
         var pieChart = new ApexCharts(document.getElementById('pieChart2'), pieChartOptions);
         pieChart.render();
 
+
+
+
+
+
+
+
+
+
+        // Enquiries by City Chart
+var enquiryCities = @Html.Raw(Json.Serialize(ViewData["EnquiryCities"]));
+var enquiryTypes = @Html.Raw(Json.Serialize(ViewData["EnquiryTypes"]));
+var enquiryCounts = @Html.Raw(Json.Serialize(ViewData["EnquiryCounts"]));
+
+// Prepare series data for the chart
+var seriesData = [];
+var colors = ['#3e82f7', '#04d672', '#fa8b0c', '#ec4a3f', '#9050c6', '#ff6384', '#36a2eb'];
+
+enquiryTypes.forEach(function(type, index) {
+    var data = [];
+    enquiryCities.forEach(function(city) {
+        var count = enquiryCounts[city] && enquiryCounts[city][type] ? enquiryCounts[city][type] : 0;
+        data.push(count);
+    });
+    
+    seriesData.push({
+        name: type,
+        data: data,
+        color: colors[index % colors.length] // Cycle through colors
+    });
+});
+
+var enquiryChartOptions = {
+    chart: {
+        type: 'bar',
+        height: 400,
+        stacked: true,
+        toolbar: {
+            show: true,
+            tools: {
+                download: true,
+                selection: true,
+                zoom: true,
+                zoomin: true,
+                zoomout: true,
+                pan: true,
+                reset: true
+            }
+        }
+    },
+    series: seriesData,
+    xaxis: {
+        categories: enquiryCities,
+        title: {
+            text: 'City',
+            style: {
+                fontSize: '14px',
+                fontWeight: 'bold'
+            }
+        },
+        labels: {
+            style: {
+                fontSize: '12px'
+            }
+        }
+    },
+    yaxis: {
+        title: {
+            text: 'Number of Enquiries',
+            style: {
+                fontSize: '14px',
+                fontWeight: 'bold'
+            }
+        },
+        labels: {
+            formatter: function(val) {
+                return Math.round(val); // Show whole numbers only
+            }
+        }
+    },
+    plotOptions: {
+        bar: {
+            horizontal: false,
+            columnWidth: '70%',
+            endingShape: 'rounded',
+            dataLabels: {
+                position: 'top', // Show values on top of bars
+                total: {
+                    enabled: true,
+                    style: {
+                        fontSize: '12px',
+                        fontWeight: 'bold'
+                    }
+                }
+            }
+        }
+    },
+    dataLabels: {
+        enabled: true,
+        formatter: function(val) {
+            return val > 0 ? val : ''; // Only show labels for non-zero values
+        },
+        style: {
+            fontSize: '12px',
+            colors: ['#333']
+        }
+    },
+    legend: {
+        position: 'bottom',
+        horizontalAlign: 'center',
+        fontSize: '14px',
+        itemMargin: {
+            horizontal: 10,
+            vertical: 5
+        }
+    },
+    tooltip: {
+        y: {
+            formatter: function(val) {
+                return val + " enquiries";
+            }
+        }
+    },
+    responsive: [{
+        breakpoint: 1000,
+        options: {
+            plotOptions: {
+                bar: {
+                    columnWidth: '50%'
+                }
+            },
+            legend: {
+                position: 'bottom'
+            }
+        }
+    }]
+};
+
+var enquiryChart = new ApexCharts(document.querySelector("#enquiryChart"), enquiryChartOptions);
+enquiryChart.render();
+
+
+// Quoted by Market Chart
+var quotedMarkets = @Html.Raw(Json.Serialize(ViewData["QuotedMarkets"]));
+var quotedCounts = @Html.Raw(Json.Serialize(ViewData["QuotedCounts"]));
+
+var quotedByMarketOptions = {
+    chart: {
+        type: 'bar',
+        height: 400,
+        toolbar: {
+            show: true,
+            tools: {
+                download: true,
+                selection: true,
+                zoom: true,
+                pan: true,
+                reset: true
+            }
+        }
+    },
+    series: [{
+        name: 'Quoted',
+        data: quotedCounts
+    }],
+    xaxis: {
+        categories: quotedMarkets,
+        title: {
+            text: 'Market',
+            style: {
+                fontSize: '14px',
+                fontWeight: 'bold'
+            }
+        },
+        labels: {
+            rotate: -45,
+            style: {
+                fontSize: '12px'
+            }
+        }
+    },
+    yaxis: {
+        title: {
+            text: 'Number of Quoted Enquiries',
+            style: {
+                fontSize: '14px',
+                fontWeight: 'bold'
+            }
+        },
+        labels: {
+            formatter: function(val) {
+                return Math.round(val);
+            }
+        }
+    },
+    plotOptions: {
+        bar: {
+            horizontal: false,
+            columnWidth: '60%',
+            endingShape: 'rounded',
+            dataLabels: {
+                position: 'top',
+                style: {
+                    fontSize: '12px',
+                    fontWeight: 'bold'
+                }
+            }
+        }
+    },
+    colors: ['#3e82f7'],
+    dataLabels: {
+        enabled: true,
+        formatter: function(val) {
+            return val > 0 ? val : '';
+        }
+    },
+    tooltip: {
+        y: {
+            formatter: function(val) {
+                return val + " quoted enquiries";
+            }
+        }
+    },
+    responsive: [{
+        breakpoint: 1000,
+        options: {
+            plotOptions: {
+                bar: {
+                    columnWidth: '50%'
+                }
+            }
+        }
+    }]
+};
+
+var quotedByMarketChart = new ApexCharts(document.querySelector("#quotedByMarketChart"), quotedByMarketOptions);
+quotedByMarketChart.render();
     </script>
 }

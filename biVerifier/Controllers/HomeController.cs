@@ -4,6 +4,7 @@ using System.Data.Odbc;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
+using System.Text.RegularExpressions;
 
 namespace biVerifier.Controllers
 {
@@ -21,6 +22,7 @@ namespace biVerifier.Controllers
 
         public IActionResult Index()
         {
+
             getCountsInDb();
             AggregatedSalesConsultant();
             reasonForCancellation();
@@ -29,7 +31,174 @@ namespace biVerifier.Controllers
             clientCountGraphByLeadSource();
             ConsultantTotalMonitoringFees();
             clientCountByMarketType();
+            GetCityProbabilityData();
+            QuotedRevenue();
+            GetEnquiriesByCity();
+            GetQuotedByMarket();
             return View();
+        }
+
+        // In your controller action
+        public IActionResult GetQuotedByMarket()
+        {
+            var query = @"
+        SELECT 
+            Market, 
+            COUNT(*) AS Count
+        FROM Sales_Pipeline
+        WHERE Probability = 'Quoted'
+        GROUP BY Market
+        ORDER BY Market";
+
+            var marketData = new Dictionary<string, int>();
+
+            using (OdbcConnection connection = new OdbcConnection(_connectionString))
+            using (OdbcCommand command = new OdbcCommand(query, connection))
+            {
+                connection.Open();
+                using (OdbcDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        string market = reader["Market"].ToString();
+                        if (string.IsNullOrEmpty(market))
+                        {
+                            market = "Unknown";
+                        }
+                        int count = Convert.ToInt32(reader["Count"]);
+                        marketData[market] = count;
+                    }
+                }
+            }
+
+            ViewData["QuotedMarkets"] = marketData.Keys.ToList();
+            ViewData["QuotedCounts"] = marketData.Values.ToList();
+
+            return View("Index");
+        }
+
+        public IActionResult GetEnquiriesByCity()
+        {
+            var probabilityValues = new List<string>();
+
+            using (var connection = new OdbcConnection(_connectionString))
+            {
+                connection.Open();
+
+                string probabilityQuery = @"
+            SELECT DISTINCT IIF(Probability IS NULL OR Probability = '', 'N/A', Probability) AS CleanProbability 
+            FROM Sales_Pipeline 
+            WHERE Probability IS NOT NULL AND Probability <> ''";
+
+                using (var command = new OdbcCommand(probabilityQuery, connection))
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        string value = reader["CleanProbability"].ToString();
+                        if (!string.IsNullOrEmpty(value))
+                        {
+                            probabilityValues.Add(value);
+                        }
+                    }
+                }
+
+                // Add "N/A" manually if no entries were found
+                if (!probabilityValues.Contains("N/A"))
+                {
+                    probabilityValues.Add("N/A");
+                }
+            }
+
+            var query = @"
+        SELECT 
+            IIF(City IS NULL OR City = '', 'N/A', City) AS CleanCity,
+            IIF(Probability IS NULL OR Probability = '', 'N/A', Probability) AS CleanProbability,
+            COUNT(*) AS Count
+        FROM Sales_Pipeline
+        GROUP BY 
+            IIF(City IS NULL OR City = '', 'N/A', City),
+            IIF(Probability IS NULL OR Probability = '', 'N/A', Probability)
+        ORDER BY 
+            IIF(City IS NULL OR City = '', 'N/A', City),
+            IIF(Probability IS NULL OR Probability = '', 'N/A', Probability)";
+
+            var cityData = new Dictionary<string, Dictionary<string, int>>();
+
+            using (var connection = new OdbcConnection(_connectionString))
+            {
+                connection.Open();
+
+                using (var command = new OdbcCommand(query, connection))
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        string city = reader["CleanCity"].ToString();
+                        string probability = reader["CleanProbability"].ToString();
+                        int count = Convert.ToInt32(reader["Count"]);
+
+                        if (!cityData.ContainsKey(city))
+                        {
+                            cityData[city] = new Dictionary<string, int>();
+                        }
+
+                        cityData[city][probability] = count;
+                    }
+                }
+            }
+
+            ViewData["EnquiryCities"] = cityData.Keys.OrderBy(c => c).ToList();
+            ViewData["EnquiryTypes"] = probabilityValues.OrderBy(p => p).ToList();
+            ViewData["EnquiryCounts"] = cityData;
+
+            return View("Index");
+        }
+
+
+
+
+        public IActionResult QuotedRevenue()
+        {
+            decimal quotedRevenue = 0;
+
+            string query = @"
+        SELECT OnceOffCost 
+        FROM Sales_Pipeline 
+        WHERE Probability = 'Quoted'"; // Adjust this condition based on your actual probability values
+
+            using (OdbcConnection connection = new OdbcConnection(_connectionString))
+            using (OdbcCommand command = new OdbcCommand(query, connection))
+            {
+                try
+                {
+                    connection.Open();
+                    using (OdbcDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            string onceOffCost = reader["OnceOffCost"].ToString();
+
+                            if (string.IsNullOrEmpty(onceOffCost) || onceOffCost == "R")
+                                continue;
+
+                            // Remove 'R' and any other non-numeric characters except digits and decimal point
+                            string numericValue = Regex.Replace(onceOffCost, @"[^\d.]", "");
+                            if (decimal.TryParse(numericValue, out decimal result))
+                            {
+                                quotedRevenue += result;
+                            }
+                        }
+                    }
+                }
+                catch (OdbcException ex)
+                {
+                    Console.WriteLine("OdbcException occurred: " + ex.Message);
+                }
+            }
+
+            ViewData["QuotedRevenue"] = quotedRevenue;
+            return View("Index");
         }
 
         public IActionResult clientCountByMarketType()
@@ -272,6 +441,65 @@ namespace biVerifier.Controllers
             ViewData["TotalRevenue"] = totalRevenueList;
             return View("Index");
         }
+
+
+        public IActionResult GetCityProbabilityData()
+        {
+            var result = new Dictionary<string, Dictionary<string, int>>();
+
+            string query = @"
+        SELECT City, Probability, COUNT(*) as Count 
+        FROM Sales_Pipeline 
+        GROUP BY City, Probability
+        ORDER BY City, Probability";
+
+            using (OdbcConnection connection = new OdbcConnection(_connectionString))
+            using (OdbcCommand command = new OdbcCommand(query, connection))
+            {
+                connection.Open();
+                using (OdbcDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        string city = reader["City"].ToString();
+                        string probability = string.IsNullOrEmpty(reader["Probability"].ToString())
+                            ? "Unnamed"
+                            : reader["Probability"].ToString();
+                        int count = Convert.ToInt32(reader["Count"]);
+
+                        if (!result.ContainsKey(city))
+                        {
+                            result[city] = new Dictionary<string, int>();
+                        }
+
+                        result[city][probability] = count;
+                    }
+                }
+            }
+
+            // Convert to a format that's easier to work with in JavaScript
+            var cities = result.Keys.ToList();
+            var probabilities = result.Values.SelectMany(x => x.Keys).Distinct().ToList();
+
+            var probabilityCounts = new Dictionary<string, List<int>>();
+            foreach (var prob in probabilities)
+            {
+                probabilityCounts[prob] = new List<int>();
+                foreach (var city in cities)
+                {
+                    probabilityCounts[prob].Add(result.ContainsKey(city) && result[city].ContainsKey(prob)
+                        ? result[city][prob]
+                        : 0);
+                }
+            }
+
+            ViewData["Cities"] = cities;
+            ViewData["ProbabilityCounts"] = probabilityCounts;
+
+            return View("Index");
+        }
+
+
 
         public IActionResult getSalesByRegion()
         {

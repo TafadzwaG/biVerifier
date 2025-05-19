@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System.Data.Odbc;
+using System.Text.RegularExpressions;
 
 namespace biVerifier.Controllers
 {
@@ -102,6 +103,48 @@ namespace biVerifier.Controllers
             }
 
             return salesPipelineList;
+        }
+
+
+        public IActionResult FilterByEnquiries(string leadMonth)
+        {
+            string query;
+            object[] parameters;
+
+            // Check if the leadMonth is a month name (Jan, Feb, etc.)
+            if (Regex.IsMatch(leadMonth, @"^(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)", RegexOptions.IgnoreCase))
+            {
+                query = "SELECT * FROM Sales_Pipeline WHERE Probability IS NOT NULL AND (leadmonth LIKE ? OR leadmonth LIKE ? OR leadmonth LIKE ?)";
+                parameters = new object[]
+                {
+            leadMonth + "%",
+            "%/" + leadMonth + "%",
+            "% " + leadMonth + "%"
+                };
+            }
+            else
+            {
+                // Try to parse as date
+                if (DateTime.TryParse(leadMonth, out var date))
+                {
+                    query = "SELECT * FROM Sales_Pipeline WHERE Probability IS NOT NULL AND leadmonth = ?";
+                    parameters = new object[] { date.ToString("yyyy/MM/dd") };
+                }
+                else
+                {
+                    // Fallback to simple contains if format is unknown
+                    query = "SELECT * FROM Sales_Pipeline WHERE Probability IS NOT NULL AND leadmonth LIKE ?";
+                    parameters = new object[] { "%" + leadMonth + "%" };
+                }
+            }
+
+            var salesPipelineList = ExecuteQuery(query, parameters);
+
+            // Pass the count to the view
+            ViewBag.EnquiryCount = salesPipelineList.Count;
+            ViewBag.FilteredMonth = leadMonth;
+
+            return View("Index", salesPipelineList);
         }
     }
 }
